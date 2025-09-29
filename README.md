@@ -1,62 +1,48 @@
-# Nico Portfolio (Astro + Tailwind)
+# Nico Abramowski — Data (Warehousing) Portfolio
 
-Starter repo for a clean, fast portfolio with sidebar navigation and dedicated pages for four data projects.
-Built with **Astro + Tailwind** so it's easy to host on GitHub Pages and extend with interactive demos later.
+This repository contains my public portfolio website and interactive project pages focused on **data warehousing / analytics engineering**. It’s designed for hiring managers and teammates to quickly assess my skills in **dimensional modeling, ELT with dbt, data quality, CDC, and performance/governance**.
 
-## Quickstart (Linux Mint Cinnamon)
+[![Deploy status](https://github.com/Nico-Ab/cv-project-website/actions/workflows/deploy.yml/badge.svg)](https://github.com/Nico-Ab/cv-project-website/actions/workflows/deploy.yml)
+
+**Live site:** https://nico-ab.github.io/cv-project-website  
+**CV:** See the “CV” link in the site sidebar (PDF)
+
+---
+
+## What this site shows (in 2 minutes)
+
+- **About:** Short background and what I’m looking for.
+- **Projects:** Four data projects aligned with a practical 8-week learning plan:
+  1) **Mini Data Warehouse (Retail)** — Kimball-style dimensional modeling with dbt, SCD1/2, and a small dashboard.
+  2) **Data Quality & Lineage Observatory** — Expectations with GE/Soda, dbt tests/docs, and lineage.
+  3) **CDC → Warehouse** — Debezium/Kafka into incremental dbt models for near-real-time metrics.
+  4) **Performance & Governance** — Query benchmarking, partitioning/indexes, masking policies, and a DSAR export.
+
+> Each project page summarizes the problem, architecture, and how to run the demo. Where appropriate I include screenshots, dbt docs, and a short Loom walkthrough.
+
+---
+
+## Why this repository exists
+
+- **Transparency:** Everything is open so you can evaluate how I structure code, document decisions, and test data.
+- **Relevance:** The projects mirror the work of analytics engineers: modeling, orchestration, quality gates, and incremental loads.
+- **Operational thinking:** I highlight lineage, CI checks, idempotency, and performance notes—not just SQL.
+
+---
+
+## Tech stack
+
+- **Frontend:** [Astro](https://astro.build) + Tailwind CSS (static, fast, accessible)
+- **Data tooling (across projects):** dbt, Postgres/DuckDB, Metabase/Superset, Great Expectations/Soda, Debezium, Kafka/Redpanda, Airflow/Prefect, ClickHouse
+- **Infra/Dev:** Docker Compose, GitHub Actions (build & deploy to Pages)
+
+---
+
+## Local development (website)
 
 ```bash
-# 1) Install Node 18+ (or 20+). On Mint:
-#    sudo apt-get install -y nodejs npm  # or use nvm for latest LTS
-# 2) Install deps
+# Requirements: Node.js 18+ (or 20+). Repo uses npm and Astro.
+git clone git@github.com:Nico-Ab/cv-project-website.git
+cd cv-project-website
 npm install
-
-# 3) Run dev server
-npm run dev  # then open the printed localhost URL
-
-# 4) Build for production
-npm run build
-```
-
-> Edit files with `xed` (Mint’s editor) or VS Code. Example:
-```bash
-xed src/pages/about.astro
-```
-
-## Structure
-
-```
-src/
-  layouts/       # Base layout with sidebar & theme toggle
-  components/    # Small UI pieces (cards, etc.)
-  pages/
-    about.astro
-    projects/
-      mini-warehouse.astro
-      data-quality-lineage.astro
-      cdc-warehouse.astro
-      performance-governance.astro
-  data/projects.ts
-public/          # static assets (favicon, CV placeholder, images)
-```
-
-## Customize
-
-- Replace placeholders in `about.astro` and each project page.
-- Put your **CV** as `public/CV.pdf` and link to it from the sidebar (currently a placeholder `cv-placeholder.txt`).
-- If you plan to use **GitHub Pages**, set `site` and `base` in `astro.config.mjs` after you know the repo name.
-
-## Deploy to GitHub Pages
-
-1. Create a repo on GitHub (e.g., `portfolio-site`) and push this project.
-2. In `astro.config.mjs`, uncomment and set:
-   ```js
-   site: 'https://<your-username>.github.io/portfolio-site',
-   base: '/portfolio-site/',
-   ```
-3. Enable **Pages** in the repo settings: Source = GitHub Actions.
-4. The included workflow will build & deploy on push to `main`.
-
-## License
-
-MIT — make it yours.
+npm run dev
