@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { projects } from "../data/projects";
+---
+<BaseLayout title="Nico Abramowski — Portfolio">
+  <section class="grid md:grid-cols-[1.2fr_1fr] gap-6 items-center mb-10">
+    <div class="card p-6">
+      <h1 class="text-2xl md:text-3xl font-bold mb-2">Hi, I'm <span class="text-primary">Nico</span> — aspiring Analytics Engineer / Data Warehouse Developer</h1>
+      <p class="text-gray-600 dark:text-gray-300">
+        Short intro goes here. Replace this placeholder with a crisp 2–3 sentence summary of your skills and the kind of problems you solve.
+      </p>
+      <div class="mt-4 flex gap-3">
+        <a href="/about" class="button">About me</a>
+        <a href="/cv-placeholder.txt" class="button">CV (placeholder)</a>
+      </div>
+    </div>
+    <div class="card p-6">
+      <h2 class="font-semibold mb-2">Quick facts</h2>
+      <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+        <li>🎓 B.Sc. Computer Science (soon)</li>
+        <li>🏠 Rostock, Germany • remote-friendly</li>
+        <li>🔧 Linux Mint Cinnamon • VS Code</li>
+        <li>🎯 Interests: ELT, dbt, CDC, data quality</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="mb-8">
+    <h2 class="text-xl font-bold mb-3">Projects (from my 8‑week plan)</h2>
+    <div class="grid sm:grid-cols-2 gap-4">
+      {projects.map(p => <ProjectCard {...p} />)}
+    </div>
+  </section>
+
+  <section class="card p-6">
+    <h2 class="text-lg font-semibold mb-2">What’s coming next</h2>
+    <p class="text-sm text-gray-600 dark:text-gray-300">
+      This site will host interactive demos (Streamlit/Dash or DuckDB-WASM), dbt docs, and dashboards. For now, pages are placeholders.
+    </p>
+  </section>
+</BaseLayout>
