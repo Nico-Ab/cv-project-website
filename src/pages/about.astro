@@ -1,23 +1,31 @@
+
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+const base = import.meta.env.BASE_URL;
 ---
 <BaseLayout title="About — Nico Abramowski">
-  <div class="prose dark:prose-invert max-w-none">
-    <h1>About me (placeholder)</h1>
-    <p>
-      Replace this with a short bio, your values, and what you’re looking for.
-      You can embed a headshot in <code>public/</code> and reference it here.
-    </p>
-    <h2>Skills snapshot</h2>
-    <ul>
-      <li>SQL (Postgres/ClickHouse) • Dimensional modeling (Kimball)</li>
-      <li>dbt • Airflow/Prefect • Data Quality (Great Expectations/Soda)</li>
-      <li>CDC (Debezium/Kafka) • Docker • Linux</li>
-    </ul>
-    <h2>Contact</h2>
-    <p>
-      Email: <a href="mailto:nico.abramowski01@gmail.com">nico.abramowski01@gmail.com</a><br/>
-      GitHub: <a href="https://github.com/Nico-Ab" target="_blank" rel="noreferrer">Nico-Ab</a>
-    </p>
+  <div class="grid gap-6 md:grid-cols-[1fr_320px] items-start">
+    <section class="card p-7 reveal">
+      <h1 class="text-2xl font-bold mb-3">About me (placeholder)</h1>
+      <p class="text-gray-700 dark:text-gray-300 mb-4">
+        Replace this with a short bio, your values, and what you’re looking for. You can add a headshot into <code>public/</code> and reference it here.
+      </p>
+
+      <h2 class="text-lg font-semibold mt-6 mb-2">Skills snapshot</h2>
+      <ul class="space-y-2 text-gray-800 dark:text-gray-300">
+        <li>SQL (Postgres/ClickHouse) • Dimensional modeling (Kimball)</li>
+        <li>dbt • Airflow/Prefect • Data Quality (Great Expectations/Soda)</li>
+        <li>CDC (Debezium/Kafka) • Docker • Linux</li>
+      </ul>
+    </section>
+
+    <aside class="card p-7 reveal" style="transition-delay:.05s">
+      <h2 class="text-lg font-semibold mb-2">Contact</h2>
+      <div class="space-y-2 text-sm text-gray-800 dark:text-gray-300">
+        <div>Email: <a class="underline" href="mailto:nico.abramowski01@gmail.com">nico.abramowski01@gmail.com</a></div>
+        <div>GitHub: <a class="underline" href="https://github.com/Nico-Ab" target="_blank" rel="noreferrer">Nico-Ab</a></div>
+        <div>CV: <a class="underline" href={`${base}cv-placeholder.txt`}>download</a></div>
+      </div>
+    </aside>
   </div>
 </BaseLayout>
