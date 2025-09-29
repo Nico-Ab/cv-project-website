@@ -9,7 +9,7 @@ export default defineConfig({
       applyBaseStyles: true
     }
   })],
-  // ⚠️ When you know your repo name, uncomment and set these for GitHub Pages:
-  // site: 'https://nico-ab.github.io/<REPO_NAME>',
-  // base: '/<REPO_NAME>/',
+  site: 'https://Nico-Ab.github.io/cv-project-website',
+  base: '/cv-project-website/',
+
 });
