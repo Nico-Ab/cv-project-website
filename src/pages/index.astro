@@ -32,7 +32,7 @@ const base = import.meta.env.BASE_URL;
 
   <section class="mb-8 reveal" style="transition-delay:.1s">
     <h2 class="text-xl font-bold mb-3">Projects</h2>
-    <div class="grid sm:grid-cols-2 gap-4">
+    <div class="grid sm:grid-cols-2 gap-4 items-stretch">
       {projects.map(p => <ProjectCard {...p} />)}
     </div>
   </section>

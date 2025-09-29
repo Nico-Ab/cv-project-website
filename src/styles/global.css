@@ -107,13 +107,18 @@
 /* Dot grid pattern that adapts to theme */
 /* Dot grid pattern that adapts to theme */
 .bg-grid {
-  --dot-color: rgba(0,0,0,.10);         /* stronger in light */
+  --dot-color: rgba(0,0,0,.16);          /* was .10 */
+  --dot-size: 1.6px;                     /* was 1px */
+  --dot-gap: 22px;                        /* was 24px */
   position: absolute; inset: 0;
-  background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
-  background-size: 24px 24px;
-  opacity: .6;
+  background-image: radial-gradient(var(--dot-color) var(--dot-size), transparent var(--dot-size));
+  background-size: var(--dot-gap) var(--dot-gap);
+  opacity: .85;                           /* was .6 */
 }
-.dark .bg-grid { --dot-color: rgba(255,255,255,.10); opacity: .45; }
+.dark .bg-grid {
+  --dot-color: rgba(255,255,255,.14);     /* was .10 */
+  opacity: .55;                           /* was .45 */
+}
 
 /* Soft radial accents */
 .bg-accents {
