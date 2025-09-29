@@ -1,60 +1,103 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* -------- Base tweaks -------- */
+/* ========= Base & Defaults ========= */
 @layer base {
   html { @apply scroll-smooth; }
+
+  /* Background + default text (safe in both themes) */
   body { @apply bg-white text-gray-800 dark:bg-neutral-950 dark:text-gray-100; }
+
   ::selection { @apply bg-blue-200 text-blue-900; }
+
+  /* Headings readable in dark mode */
   h1, h2, h3, h4, h5, h6 { @apply text-gray-900 dark:text-gray-100; }
-  p, li, blockquote, small { @apply text-gray-800 dark:text-gray-300; }
+
+  /* Body copy readable in dark mode */
+  p, span, li, small, em, strong, blockquote, figcaption, dd, dt {
+    @apply text-gray-800 dark:text-gray-300;
+  }
+
+  /* Links: accessible contrast */
+  a { @apply text-blue-600 dark:text-blue-300; }
+  a:hover { @apply underline; }
+
+  /* Code/text blocks */
+  code, kbd, samp { @apply text-pink-600 dark:text-pink-300; }
+  pre { @apply bg-gray-100 dark:bg-neutral-900 text-gray-800 dark:text-gray-100 rounded-xl p-4 overflow-auto; }
 }
 
-/* -------- Design tokens -------- */
+/* ========= Design Tokens / Utilities ========= */
 @layer utilities {
   .container-xl { @apply max-w-6xl mx-auto px-4; }
 }
 
-/* -------- Components -------- */
+/* ========= Components ========= */
 @layer components {
   .card {
     @apply rounded-2xl shadow-sm border border-gray-200/60 dark:border-white/10 bg-white dark:bg-neutral-900;
   }
   .button {
-    @apply inline-flex items-center gap-2 rounded-xl px-4 py-2 border border-gray-300 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-neutral-800 transition;
+    @apply inline-flex items-center gap-2 rounded-xl px-4 py-2 border border-gray-300 dark:border-white/10
+           hover:bg-gray-50 dark:hover:bg-neutral-800 transition;
   }
   .btn-primary {
     @apply inline-flex items-center gap-2 rounded-xl px-4 py-2 font-medium;
     background: linear-gradient(135deg, #2563eb 0%, #22d3ee 100%);
-    color: white;
-    box-shadow: 0 6px 18px rgba(37, 99, 235, .25);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(37,99,235,.25);
   }
   .btn-ghost {
-    @apply inline-flex items-center gap-2 rounded-xl px-4 py-2 border border-gray-300 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-neutral-800;
+    @apply inline-flex items-center gap-2 rounded-xl px-4 py-2 border border-gray-300 dark:border-white/10
+           hover:bg-gray-50 dark:hover:bg-neutral-800;
   }
-  .navlink {
-    @apply block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 transition;
-  }
-  .navlink-active {
-    @apply bg-gray-100 dark:bg-neutral-800 font-medium;
-  }
+  .navlink { @apply block px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800 transition; }
+  .navlink-active { @apply bg-gray-100 dark:bg-neutral-800 font-medium; }
 }
 
-/* -------- Animations -------- */
+/* ========= Animations ========= */
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
+  0%   { transform: translateY(0px); }
+  50%  { transform: translateY(-6px); }
   100% { transform: translateY(0px); }
 }
 .animate-fade-up { animation: fade-up .5s ease-out both; }
-.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-float   { animation: float 6s ease-in-out infinite; }
 
-/* Reveal on scroll (via IntersectionObserver in layout) */
+/* Reveal on scroll */
 .reveal { opacity: 0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ========= DARK MODE READABILITY SAFETY NET =========
+   Force readable text if components hard-code light colors.
+   These overrides win due to `.dark …` scope + !important.
+*/
+@layer utilities {
+  /* Pure black */
+  .dark .text-black { color: #ffffff !important; }
+
+  /* Gray scale overrides (Tailwind + popular aliases) */
+  .dark .text-gray-900, .dark .text-stone-900, .dark .text-zinc-900,
+  .dark .text-slate-900, .dark .text-neutral-900 { color: #f3f4f6 !important; }
+  .dark .text-gray-800, .dark .text-stone-800, .dark .text-zinc-800,
+  .dark .text-slate-800, .dark .text-neutral-800 { color: #e5e7eb !important; }
+  .dark .text-gray-700, .dark .text-stone-700, .dark .text-zinc-700,
+  .dark .text-slate-700, .dark .text-neutral-700 { color: #d1d5db !important; }
+  .dark .text-gray-600, .dark .text-stone-600, .dark .text-zinc-600,
+  .dark .text-slate-600, .dark .text-neutral-600 { color: #cbd5e1 !important; }
+
+  /* Generic “muted” helpers */
+  .dark .text-muted, .dark .text-secondary { color: #cbd5e1 !important; }
+}
+
+/* Optional: borders/dividers readable in dark mode */
+@layer base {
+  hr { @apply border-gray-200 dark:border-white/10; }
+  table { @apply border-collapse; }
+  th, td { @apply border-gray-200 dark:border-white/10; }
+}

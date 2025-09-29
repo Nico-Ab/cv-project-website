@@ -1,9 +1,11 @@
-
 ---
+import "../styles/global.css";  // 👈 ensures Tailwind & overrides are loaded
+
 const {
   title = "Nico Abramowski — Data (Warehousing) Portfolio",
-  description = "Portfolio & project demos."
+  description = "Portfolio & project demos.",
 } = Astro.props;
+
 const base = import.meta.env.BASE_URL;
 const path = Astro.url.pathname;
 const isActive = (href) => path === href || (path.startsWith(href) && href !== base);
@@ -18,39 +20,51 @@ const isActive = (href) => path === href || (path.startsWith(href) && href !== b
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body class="min-h-screen antialiased">
     <div class="grid grid-cols-1 lg:grid-cols-[260px_1fr] min-h-screen">
       <!-- Sidebar -->
-      <aside class="border-b lg:border-b-0 lg:border-r border-gray-200/70 dark:border-white/10 bg-white dark:bg-neutral-900 sticky top-0 z-30">
+      <aside
+        class="border-b lg:border-b-0 lg:border-r border-gray-200/70 dark:border-white/10
+               bg-white dark:bg-neutral-900 sticky top-0 z-30"
+      >
         <div class="p-4">
           <a href={base} class="flex items-center gap-3">
-            <img src={`${base}favicon.svg`} alt="logo" class="w-8 h-8 animate-float"/>
+            <img src={`${base}favicon.svg`} alt="logo" class="w-8 h-8 animate-float" />
             <div>
               <div class="font-bold">Nico Abramowski</div>
               <div class="text-xs text-gray-500">Data / Warehousing</div>
             </div>
           </a>
         </div>
+
         <nav class="px-2 pb-4 space-y-1 text-sm">
           <a class={`navlink ${isActive(`${base}about`) ? 'navlink-active' : ''}`} href={`${base}about`}>About</a>
-          <div class="px-3 pt-3 text-xs uppercase tracking-wider text-gray-500">Projects (8-week plan)</div>
+
+          <div class="px-3 pt-3 text-xs uppercase tracking-wider text-gray-500">
+            Projects (8-week plan)
+          </div>
           <a class={`navlink ${isActive(`${base}projects/mini-warehouse`) ? 'navlink-active' : ''}`} href={`${base}projects/mini-warehouse`}>Mini Data Warehouse</a>
           <a class={`navlink ${isActive(`${base}projects/data-quality-lineage`) ? 'navlink-active' : ''}`} href={`${base}projects/data-quality-lineage`}>Data Quality &amp; Lineage</a>
           <a class={`navlink ${isActive(`${base}projects/cdc-warehouse`) ? 'navlink-active' : ''}`} href={`${base}projects/cdc-warehouse`}>CDC → Warehouse</a>
           <a class={`navlink ${isActive(`${base}projects/performance-governance`) ? 'navlink-active' : ''}`} href={`${base}projects/performance-governance`}>Performance &amp; Governance</a>
+
           <div class="px-3 pt-3 text-xs uppercase tracking-wider text-gray-500">More</div>
           <a class="navlink" href="https://github.com/Nico-Ab" target="_blank" rel="noreferrer">GitHub</a>
           <a class="navlink" href={`${base}cv-placeholder.txt`}>CV (placeholder)</a>
         </nav>
+
         <div class="px-4 pb-4 flex items-center justify-between text-sm">
           <button id="themeToggle" class="button" aria-label="Toggle theme">Toggle theme</button>
           <a class="text-gray-500 hover:underline" href={base}>Home</a>
         </div>
       </aside>
 
-      <!-- Main -->
+      <!-- Main content -->
       <main class="relative bg-white dark:bg-neutral-950">
         <!-- soft gradient accents -->
         <div class="pointer-events-none absolute inset-0 opacity-40 dark:opacity-20" aria-hidden="true"
@@ -61,7 +75,7 @@ const isActive = (href) => path === href || (path.startsWith(href) && href !== b
       </main>
     </div>
 
-    <!-- Theme (default: light). Respect saved choice or OS prefers Dark. Also set up simple scroll reveal. -->
+    <!-- Theme (default light), plus scroll reveal -->
     <script>
       (function () {
         const html = document.documentElement;
