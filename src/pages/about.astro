@@ -6,34 +6,32 @@ const base = import.meta.env.BASE_URL;
   <div class="grid gap-6 md:grid-cols-[1fr_320px] items-start">
     <section class="card p-7 reveal">
       <h1 class="text-2xl font-bold mb-3">About me</h1>
+
       <p class="text-gray-700 dark:text-gray-300 mb-4">
-        I’m a final-year B.Sc. Computer Science student at the University of Rostock (2020–present).
-        My hands-on background is in Linux networking (TSN/SDN) and data work, and I’m now focusing that
-        engineering mindset on data warehousing and analytics engineering. :contentReference[oaicite:0]{index=0}
+        I’m Nico, a final-year Computer Science student at the University of Rostock. Most of my hands-on work has been on Linux, networking (TSN/SDN), and scripting. Lately I’ve been focusing on data work—good SQL, tidy models, and small, reliable pipelines.
       </p>
 
-      <h2 class="text-lg font-semibold mt-6 mb-2">What I bring</h2>
+      <p class="text-gray-700 dark:text-gray-300 mb-4">
+        I prefer straightforward solutions: clear dbt models, basic tests that catch the obvious stuff, and dashboards that answer a question without extra clicks. I document as I go and automate repetitive steps.
+      </p>
+
+      <h2 class="text-lg font-semibold mt-6 mb-2">Tools I use</h2>
       <ul class="space-y-2 text-gray-800 dark:text-gray-300">
-        <li><strong>Data & SQL:</strong> solid SQL; comfortable with Python data tooling (NumPy, pandas, scikit-learn) for wrangling and simple ML. :contentReference[oaicite:1]{index=1}</li>
-        <li><strong>Linux-first engineering:</strong> Git, Bash, Docker (basics), reproducible scripts, and clean code/testing habits. :contentReference[oaicite:2]{index=2}</li>
-        <li><strong>Networking fundamentals:</strong> TSN concepts (scheduling/traffic shaping) and SDN basics—useful for thinking about SLAs, latency, and reliability in pipelines. :contentReference[oaicite:3]{index=3}</li>
+        <li><strong>SQL:</strong> Postgres, DuckDB; dimensional modeling (Kimball).</li>
+        <li><strong>Python:</strong> pandas, basic NumPy; small ETL/ELT scripts.</li>
+        <li><strong>Data platform:</strong> dbt, Airflow/Prefect basics, Great Expectations/Soda basics.</li>
+        <li><strong>Infra:</strong> Docker, Git, Linux (Mint); some Kafka/Debezium.</li>
       </ul>
 
       <h2 class="text-lg font-semibold mt-6 mb-2">Recent work</h2>
       <ul class="space-y-2 text-gray-800 dark:text-gray-300">
-        <li><a class="underline" href="https://github.com/Nico-Ab/linuxhost" target="_blank" rel="noreferrer">linuxhost</a> — Linux host configuration for TSN/SDN experiments; scripts & docs for setup and testing. :contentReference[oaicite:4]{index=4}</li>
-        <li>Bachelor’s thesis: <em>Nutzung von Large Language Models für natürlichsprachliche Anfragen auf Provenienz-Graphen</em> (with ePrints record). :contentReference[oaicite:5]{index=5}</li>
+        <li>Configured Linux hosts for a TSN/SDN testbed and wrote helper scripts.</li>
+        <li>Bachelor’s thesis on using large language models for natural-language queries over provenance graphs.</li>
       </ul>
-
-      <h2 class="text-lg font-semibold mt-6 mb-2">Languages</h2>
-      <p class="text-gray-800 dark:text-gray-300">
-        German (native), English (C1), Bulgarian (beginner). :contentReference[oaicite:6]{index=6}
-      </p>
 
       <h2 class="text-lg font-semibold mt-6 mb-2">What I’m looking for</h2>
       <p class="text-gray-800 dark:text-gray-300">
-        Data warehousing / analytics engineering roles where I can model clean dims/facts, build robust ELT with tests,
-        and ship docs/dashboards that answer real business questions—ideally in a remote-friendly setup.
+        An entry-level role in data warehousing / analytics engineering where I can build and test models, automate ELT, and publish simple, useful dashboards. Remote-friendly is a plus.
       </p>
     </section>
 
@@ -43,11 +41,8 @@ const base = import.meta.env.BASE_URL;
         <div>Email: <a class="underline" href="mailto:nico.abramowski01@gmail.com">nico.abramowski01@gmail.com</a></div>
         <div>GitHub: <a class="underline" href="https://github.com/Nico-Ab" target="_blank" rel="noreferrer">Nico-Ab</a></div>
         <div>LinkedIn: <a class="underline" href="https://www.linkedin.com/in/nico-abramowski-0aa460383" target="_blank" rel="noreferrer">nico-abramowski-0aa460383</a></div>
-        <div>CV: <a class="underline" href={`${base}CV.pdf`} download>download PDF</a></div>
+        <div>CV: <a class="underline" href={`${base}CV.pdf`} download>Download PDF</a></div>
       </div>
-      <p class="text-xs text-gray-500 dark:text-gray-400 mt-4">
-        Phone available on request.
-      </p>
     </aside>
   </div>
 </BaseLayout>
