@@ -1,5 +1,5 @@
 ---
-import "../styles/global.css"; // ensure Tailwind & your overrides load
+import "../styles/global.css"; // Tailwind + your overrides
 
 const {
   title = "Nico Abramowski — Data (Warehousing) Portfolio",
@@ -8,7 +8,7 @@ const {
 
 const base = import.meta.env.BASE_URL;
 const path = Astro.url.pathname;
-const isActive = (href: string) => path === href || (path.startsWith(href) && href !== base);
+const isActive = (href) => path === href || (path.startsWith(href) && href !== base);
 ---
 <html lang="en">
   <head>
@@ -23,8 +23,8 @@ const isActive = (href: string) => path === href || (path.startsWith(href) && hr
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   </head>
   <body class="min-h-screen antialiased">
-    <!-- Mobile header (lg:hidden) -->
-    <header class="lg:hidden sticky top-0 z-40 border-b border-gray-200/70 dark:border-white/10 bg-white/95 dark:bg-neutral-900/95 backdrop-blur">
+    <!-- Mobile header -->
+    <header class="lg:hidden sticky top-0 z-50 border-b border-gray-200/70 dark:border-white/10 bg-white/95 dark:bg-neutral-900/95 backdrop-blur">
       <div class="container-xl py-3 flex items-center justify-between">
         <a href={base} class="flex items-center gap-3">
           <img src={`${base}favicon.svg`} alt="logo" class="w-7 h-7" />
@@ -38,7 +38,8 @@ const isActive = (href: string) => path === href || (path.startsWith(href) && hr
           <button id="mobileMenu" class="button py-2 px-3" aria-controls="mobileNav" aria-expanded="false">Menu</button>
         </div>
       </div>
-      <nav id="mobileNav" class="hidden pb-3">
+      <!-- Nav starts hidden on every page load -->
+      <nav id="mobileNav" class="hidden pb-3 border-t border-gray-200/70 dark:border-white/10">
         <div class="container-xl">
           <a class="block px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800" href={`${base}about`}>About</a>
           <div class="px-3 pt-2 pb-1 text-xs uppercase tracking-wider text-gray-500">Projects</div>
@@ -88,7 +89,6 @@ const isActive = (href: string) => path === href || (path.startsWith(href) && hr
           <div class="bg-grid absolute inset-0"></div>
           <div class="bg-accents absolute inset-0"></div>
         </div>
-
         <div class="container-xl py-6 sm:py-8 lg:py-10 relative z-10">
           <slot />
         </div>
@@ -100,7 +100,7 @@ const isActive = (href: string) => path === href || (path.startsWith(href) && hr
       (function () {
         const html = document.documentElement;
 
-        // theme
+        // Theme toggle
         try {
           const saved = localStorage.getItem('theme');
           if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -116,17 +116,37 @@ const isActive = (href: string) => path === href || (path.startsWith(href) && hr
           });
         } catch (e) {}
 
-        // mobile menu
+        // Mobile menu: always start CLOSED; close on nav, and when resizing up to desktop
         const menuBtn = document.getElementById('mobileMenu');
         const mobileNav = document.getElementById('mobileNav');
+
+        const collapse = () => { if (mobileNav && !mobileNav.classList.contains('hidden')) mobileNav.classList.add('hidden'); };
+        const toggle = () => { if (mobileNav) mobileNav.classList.toggle('hidden'); };
+
+        // Force closed on load (prevents "stuck open" on some pages)
+        collapse();
+
         if (menuBtn && mobileNav) {
           menuBtn.addEventListener('click', () => {
-            const isHidden = mobileNav.classList.toggle('hidden');
-            menuBtn.setAttribute('aria-expanded', String(!isHidden));
+            toggle();
+            menuBtn.setAttribute('aria-expanded', String(!mobileNav.classList.contains('hidden')));
+          });
+
+          // Close after clicking any link inside the mobile menu
+          mobileNav.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+              collapse();
+              menuBtn.setAttribute('aria-expanded', 'false');
+            });
           });
         }
 
-        // scroll reveal
+        // Close when resizing to desktop
+        window.addEventListener('resize', () => {
+          if (window.innerWidth >= 1024) collapse();
+        });
+
+        // Scroll reveal
         const els = document.querySelectorAll('.reveal');
         const obs = new IntersectionObserver((entries) => {
           entries.forEach(e => {
