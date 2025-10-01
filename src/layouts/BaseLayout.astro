@@ -44,7 +44,7 @@ const isActive = (href) => path === href || (path.startsWith(href) && href !== b
           <a class={`navlink ${isActive(`${base}projects/performance-governance`) ? 'navlink-active' : ''}`} href={`${base}projects/performance-governance`}>Performance &amp; Governance</a>
           <div class="px-3 pt-3 text-xs uppercase tracking-wider text-gray-500">More</div>
           <a class="navlink" href="https://github.com/Nico-Ab" target="_blank" rel="noreferrer">GitHub</a>
-          <a class="navlink" href={`${base}cv-placeholder.txt`}>CV (placeholder)</a>
+          <a class="navlink" href={`${import.meta.env.BASE_URL}CV.pdf`} download>CV (PDF)</a>
         </nav>
         <div class="px-4 pb-4 flex items-center justify-between text-sm">
           <button id="themeToggle" class="button" aria-label="Toggle theme">Toggle theme</button>
