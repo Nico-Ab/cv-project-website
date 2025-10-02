@@ -13,10 +13,10 @@ This repository contains my public portfolio website and interactive project pag
 
 - **About:** Short background and what I’m looking for.
 - **Projects:** Four data projects aligned with a practical 8-week learning plan:
-  1) **Mini Data Warehouse (Retail)** — Kimball-style dimensional modeling with dbt, SCD1/2, and a small dashboard.
-  2) **Data Quality & Lineage Observatory** — Expectations with GE/Soda, dbt tests/docs, and lineage.
-  3) **CDC → Warehouse** — Debezium/Kafka into incremental dbt models for near-real-time metrics.
-  4) **Performance & Governance** — Query benchmarking, partitioning/indexes, masking policies, and a DSAR export.
+  1) **Mini Data Warehouse (Retail)** - Kimball-style dimensional modeling with dbt, SCD1/2, and a small dashboard.
+  2) **Data Quality & Lineage Observatory** - Expectations with GE/Soda, dbt tests/docs, and lineage.
+  3) **CDC → Warehouse** - Debezium/Kafka into incremental dbt models for near-real-time metrics.
+  4) **Performance & Governance**  Query benchmarking, partitioning/indexes, masking policies, and a DSAR export.
 
 > Each project page summarizes the problem, architecture, and how to run the demo. Where appropriate I include screenshots, dbt docs, and a short Loom walkthrough.
 
