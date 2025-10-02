@@ -117,17 +117,17 @@
 /* Dot grid pattern that adapts to theme */
 /* Dot grid pattern that adapts to theme */
 .bg-grid {
-  --dot-color: rgba(0,0,0,.16);          /* was .10 */
-  --dot-size: 1.6px;                     /* was 1px */
-  --dot-gap: 22px;                        /* was 24px */
+  --dot-color: rgba(0,0,0,.16); 
+  --dot-size: 1.6px;
+  --dot-gap: 22px;
   position: absolute; inset: 0;
   background-image: radial-gradient(var(--dot-color) var(--dot-size), transparent var(--dot-size));
   background-size: var(--dot-gap) var(--dot-gap);
-  opacity: .85;                           /* was .6 */
+  opacity: .85;
 }
 .dark .bg-grid {
-  --dot-color: rgba(255,255,255,.14);     /* was .10 */
-  opacity: .55;                           /* was .45 */
+  --dot-color: rgba(255,255,255,.14);  
+  opacity: .55;
 }
 
 /* Soft radial accents */

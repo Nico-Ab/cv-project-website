@@ -8,30 +8,38 @@ const base = import.meta.env.BASE_URL;
       <h1 class="text-2xl font-bold mb-3">About me</h1>
 
       <p class="text-gray-700 dark:text-gray-300 mb-4">
-        I’m Nico, a final-year Computer Science student at the University of Rostock. Most of my hands-on work has been on Linux, networking (TSN/SDN), and scripting. Lately I’ve been focusing on data work—good SQL, tidy models, and small, reliable pipelines.
+        I’m Nico Abramowski, a B.Sc. Computer Science candidate at the University of Rostock. I’m building a career in
+        data warehousing and analytics engineering, with a focus on clear dimensional models, reliable ELT pipelines,
+        and concise documentation.
       </p>
 
-      <p class="text-gray-700 dark:text-gray-300 mb-4">
-        I prefer straightforward solutions: clear dbt models, basic tests that catch the obvious stuff, and dashboards that answer a question without extra clicks. I document as I go and automate repetitive steps.
+      <h2 class="text-lg font-semibold mt-6 mb-2">Focus areas</h2>
+      <ul class="space-y-2 text-gray-800 dark:text-gray-300">
+        <li><strong>Modeling:</strong> Kimball-style dims/facts, SCD strategies, pragmatic naming and testing.</li>
+        <li><strong>ELT & Orchestration:</strong> <em>dbt</em> for transformations; Airflow/Prefect (foundational); idempotent, incremental loads.</li>
+        <li><strong>Data quality:</strong> Expectations and basic data contracts that prevent regressions.</li>
+        <li><strong>Delivery:</strong> Lightweight dashboards and docs that answer a specific business question.</li>
+      </ul>
+
+      <h2 class="text-lg font-semibold mt-6 mb-2">Toolbox</h2>
+      <ul class="space-y-2 text-gray-800 dark:text-gray-300">
+        <li><strong>SQL & Warehouses:</strong> PostgreSQL, DuckDB.</li>
+        <li><strong>Transformation:</strong> dbt.</li>
+        <li><strong>Python:</strong> pandas, small ETL/ELT utilities.</li>
+        <li><strong>Platform:</strong> Docker, Git, Linux (Mint).</li>
+        <li><strong>Streaming (intro):</strong> Kafka/Debezium.</li>
+      </ul>
+
+      <h2 class="text-lg font-semibold mt-6 mb-2">Background</h2>
+      <p class="text-gray-800 dark:text-gray-300">
+        Prior work included Linux networking (TSN/SDN) and scripting, which shaped my bias toward reliability,
+        repeatability, and simple designs.
       </p>
-
-      <h2 class="text-lg font-semibold mt-6 mb-2">Tools I use</h2>
-      <ul class="space-y-2 text-gray-800 dark:text-gray-300">
-        <li><strong>SQL:</strong> Postgres, DuckDB; dimensional modeling (Kimball).</li>
-        <li><strong>Python:</strong> pandas, basic NumPy; small ETL/ELT scripts.</li>
-        <li><strong>Data platform:</strong> dbt, Airflow/Prefect basics, Great Expectations/Soda basics.</li>
-        <li><strong>Infra:</strong> Docker, Git, Linux (Mint); some Kafka/Debezium.</li>
-      </ul>
-
-      <h2 class="text-lg font-semibold mt-6 mb-2">Recent work</h2>
-      <ul class="space-y-2 text-gray-800 dark:text-gray-300">
-        <li>Configured Linux hosts for a TSN/SDN testbed and wrote helper scripts.</li>
-        <li>Bachelor’s thesis on using large language models for natural-language queries over provenance graphs.</li>
-      </ul>
 
       <h2 class="text-lg font-semibold mt-6 mb-2">What I’m looking for</h2>
       <p class="text-gray-800 dark:text-gray-300">
-        An entry-level role in data warehousing / analytics engineering where I can build and test models, automate ELT, and publish simple, useful dashboards. Remote-friendly is a plus.
+        Entry-level roles in data warehousing / analytics engineering. I enjoy shipping clean models, automated
+        transformations with tests, and straightforward dashboards. Remote-friendly teams are a plus.
       </p>
     </section>
 

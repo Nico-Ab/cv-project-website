@@ -8,7 +8,7 @@ export interface Props {
 const { title, summary, href, stack = [] } = Astro.props;
 ---
 <a href={href} class="group relative block h-full">
-  <!-- consistent bottom glow for every card -->
+  <!-- bottom glow -->
   <span
     aria-hidden="true"
     class="absolute z-0 -bottom-3 left-4 right-4 h-6 rounded-[20px]
@@ -16,15 +16,17 @@ const { title, summary, href, stack = [] } = Astro.props;
     style="background: linear-gradient(90deg, rgba(37,99,235,.45), rgba(34,211,238,.45));">
   </span>
 
-  <!-- Same height for all cards -->
-  <div class="relative z-10 card rounded-2xl p-5 h-full min-h-[200px] flex flex-col gap-2">
-    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
-    <p class="text-sm text-gray-700 dark:text-gray-300">{summary}</p>
+  <!-- uniform height, responsive spacing -->
+  <div class="relative z-10 card rounded-2xl p-4 md:p-5 h-full min-h-[170px] md:min-h-[200px] flex flex-col gap-2">
+    <h3 class="text-base md:text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
+    <p class="text-sm md:text-[0.95rem] text-gray-700 dark:text-gray-300">{summary}</p>
 
     {stack.length > 0 && (
       <div class="mt-auto pt-2 flex flex-wrap gap-2">
         {stack.map(s => (
-          <span class="text-xs px-2 py-1 rounded bg-gray-100 dark:bg-neutral-800 border border-gray-200 dark:border-white/10">{s}</span>
+          <span class="text-xs px-2 py-1 rounded bg-gray-100 dark:bg-neutral-800 border border-gray-200 dark:border-white/10">
+            {s}
+          </span>
         ))}
       </div>
     )}

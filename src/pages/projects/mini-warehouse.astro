@@ -1,25 +1,30 @@
-
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="Mini Data Warehouse (Retail) — Project">
+<BaseLayout title="Mini Data Warehouse — Project">
   <section class="card p-7 reveal">
-    <h1 class="text-2xl font-bold mb-3">Mini Data Warehouse (Retail) (placeholder)</h1>
-    <p class="text-gray-700 dark:text-gray-300">
-      This page is a scaffold for the project. Later, replace with a summary, architecture, how to run, screenshots, and a short demo video.
+    <h1 class="text-2xl font-bold mb-2">Mini Data Warehouse (Retail)</h1>
+    <p class="text-sm inline-flex items-center gap-2 px-2 py-1 rounded bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 mb-4">
+      🛠️ In progress — first models & tests landing soon
     </p>
-    <ul class="mt-4 list-disc pl-6 text-gray-800 dark:text-gray-300 space-y-1">
-      <li>Problem summary & business questions</li>
-      <li>Architecture diagram, ERD, lineage</li>
-      <li>How to run (Docker Compose), datasets, and credentials handling</li>
-      <li>dbt docs & tests, CI status badges</li>
-      <li>Demo video and screenshots</li>
-    </ul>
-    
-<div class="mt-6">
-  <h2 class="text-lg font-semibold mb-1">Stack</h2>
-  <p class="text-gray-700 dark:text-gray-300">Postgres or DuckDB for development; dbt for modeling; Metabase or Superset for BI.</p>
-</div>
 
+    <p class="text-gray-700 dark:text-gray-300 mb-4">
+      Small retail domain modeled with Kimball: staging → dims/facts, plus basic SCD handling.
+      The aim is a clear star schema and a dashboard that answers a few concrete questions.
+    </p>
+
+    <h2 class="text-lg font-semibold mb-2">Scope</h2>
+    <ul class="list-disc pl-6 space-y-1 text-gray-800 dark:text-gray-300">
+      <li>Staging views with source tests (not null, unique, accepted values)</li>
+      <li><em>dim_customer</em>, <em>dim_product</em>, <em>dim_date</em>, <em>fct_orders</em></li>
+      <li>SCD1 for products; SCD2 for customers (simple example)</li>
+    </ul>
+
+    <h2 class="text-lg font-semibold mt-6 mb-2">Status</h2>
+    <ul class="list-disc pl-6 space-y-1 text-gray-800 dark:text-gray-300">
+      <li>Schema draft & seeds prepared</li>
+      <li>dbt project skeleton ready</li>
+      <li><strong>Next:</strong> add SCD2 logic to <em>dim_customer</em>, publish dbt docs, and wire a small dashboard</li>
+    </ul>
   </section>
 </BaseLayout>

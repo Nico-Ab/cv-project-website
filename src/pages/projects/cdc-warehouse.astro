@@ -1,25 +1,29 @@
-
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 <BaseLayout title="CDC → Warehouse — Project">
   <section class="card p-7 reveal">
-    <h1 class="text-2xl font-bold mb-3">CDC → Warehouse (placeholder)</h1>
-    <p class="text-gray-700 dark:text-gray-300">
-      This page is a scaffold for the project. Later, replace with a summary, architecture, how to run, screenshots, and a short demo video.
+    <h1 class="text-2xl font-bold mb-2">CDC → Warehouse</h1>
+    <p class="text-sm inline-flex items-center gap-2 px-2 py-1 rounded bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 mb-4">
+      🛠️ In progress — events flowing into incremental models
     </p>
-    <ul class="mt-4 list-disc pl-6 text-gray-800 dark:text-gray-300 space-y-1">
-      <li>Problem summary & business questions</li>
-      <li>Architecture diagram, ERD, lineage</li>
-      <li>How to run (Docker Compose), datasets, and credentials handling</li>
-      <li>dbt docs & tests, CI status badges</li>
-      <li>Demo video and screenshots</li>
-    </ul>
-    
-<div class="mt-6">
-  <h2 class="text-lg font-semibold mb-1">Stack</h2>
-  <p class="text-gray-700 dark:text-gray-300">Source Postgres → Debezium → Kafka/Redpanda → dbt incremental models.</p>
-</div>
 
+    <p class="text-gray-700 dark:text-gray-300 mb-4">
+      Change Data Capture from a source database into incremental dbt models. Goal: near-real-time
+      “orders today” and a simple customer 360 built on upserts and idempotent loads.
+    </p>
+
+    <h2 class="text-lg font-semibold mb-2">Scope</h2>
+    <ul class="list-disc pl-6 space-y-1 text-gray-800 dark:text-gray-300">
+      <li>Source Postgres emitting order events (CDC)</li>
+      <li>Incremental models with late-arriving data handling</li>
+      <li>Latency-aware metrics table for quick reporting</li>
+    </ul>
+
+    <h2 class="text-lg font-semibold mt-6 mb-2">Status</h2>
+    <ul class="list-disc pl-6 space-y-1 text-gray-800 dark:text-gray-300">
+      <li>Source schema & event format drafted</li>
+      <li><strong>Next:</strong> implement upsert logic and a small live metrics view</li>
+    </ul>
   </section>
 </BaseLayout>
