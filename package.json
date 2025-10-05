@@ -6,17 +6,20 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test:e2e": "playwright test",
+    "preview": "astro preview --port 4173"
   },
   "dependencies": {
-    "astro": "^4.13.0",
-    "@astrojs/tailwind": "^5.1.0"
+    "@astrojs/tailwind": "^5.1.0",
+    "astro": "^4.13.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.55.1",
     "autoprefixer": "^10.4.19",
     "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.14",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "tailwindcss": "^3.4.14"
   }
+  
 }
