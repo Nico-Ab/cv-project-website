@@ -1,30 +1,37 @@
-export const projects = [
+export type Project = {
+  title: string;
+  summary: string;
+  href: string;     // relative path (no leading slash)
+  stack?: string[];
+};
+
+export const projects: Project[] = [
   {
-    slug: "mini-warehouse",
     title: "Mini Data Warehouse (Retail)",
-    href: "/projects/mini-warehouse",
-    summary: "Dimensional modeling with dbt; SCD1/SCD2; simple dashboard & docs.",
-    stack: ["Astro site", "dbt", "Postgres/DuckDB", "Metabase/Superset"],
+    summary:
+      "A compact retail dataset modeled with Kimball dims/facts in dbt. Goal: a clear star schema, predictable loads, and a small KPI view.",
+    href: "projects/mini-warehouse",
+    stack: ["dbt", "Postgres/DuckDB", "SQL"]
   },
   {
-    slug: "data-quality-lineage",
-    title: "Data Quality & Lineage Observatory",
-    href: "/projects/data-quality-lineage",
-    summary: "Great Expectations/Soda, lineage with dbt docs/OpenLineage; CI that blocks bad data.",
-    stack: ["GE/Soda", "dbt", "Airflow/Prefect"],
+    title: "Data Quality & Lineage",
+    summary:
+      "Add expectations and lineage so issues surface early and ownership is clear. Failing checks block deployments with a useful message.",
+    href: "projects/data-quality-lineage",
+    stack: ["dbt tests", "Great Expectations/Soda"]
   },
   {
-    slug: "cdc-warehouse",
     title: "CDC → Warehouse",
-    href: "/projects/cdc-warehouse",
-    summary: "Debezium/Kafka into incremental models; near-real-time orders + Customer 360.",
-    stack: ["Debezium", "Kafka/Redpanda", "dbt"],
+    summary:
+      "Stream changes from a source DB into incremental models. Focus: idempotent upserts, late-arriving data, and near-real-time metrics.",
+    href: "projects/cdc-warehouse",
+    stack: ["Debezium/Kafka", "dbt", "SQL"]
   },
   {
-    slug: "performance-governance",
     title: "Performance & Governance",
-    href: "/projects/performance-governance",
-    summary: "Benchmarks (partitioning, indexes) + PII masking and a DSAR export script.",
-    stack: ["ClickHouse/Postgres", "dbt", "RLS/Policies"],
-  },
+    summary:
+      "Measure query plans and timings before/after simple optimizations, then add basic masking/row-level rules and a minimal DSAR export.",
+    href: "projects/performance-governance",
+    stack: ["SQL", "Indexing/Partitioning", "Policies"]
+  }
 ];
