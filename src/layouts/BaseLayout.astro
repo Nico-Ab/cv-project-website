@@ -62,18 +62,18 @@ const isActive = (href: string) => {
           <BrandMark compact={true} />
           <div class="brand-copy">
             <div class="brand-copy__title">Nico Abramowski</div>
-            <div class="brand-copy__meta">Software, Linux, and Technical Work</div>
+            <div class="brand-copy__meta">Technical Portfolio</div>
           </div>
         </a>
 
         <div class="mobile-shell__controls">
           <button class="mode-toggle themeToggle" aria-label="Toggle theme">
-            <span class="schema-label">theme</span>
-            <span data-theme-label>light</span>
+            <span class="mode-toggle__label">Theme</span>
+            <span class="mode-toggle__value" data-theme-label>light</span>
           </button>
           <button id="mobileMenu" class="mode-toggle" aria-label="Menu" aria-controls="mobileNav" aria-expanded="false">
-            <span class="schema-label">menu</span>
-            <span data-menu-label>open</span>
+            <span class="mode-toggle__label">Menu</span>
+            <span class="mode-toggle__value" data-menu-label>open</span>
           </button>
         </div>
       </div>
@@ -111,21 +111,18 @@ const isActive = (href: string) => {
             <BrandMark />
             <div class="brand-copy">
               <div class="brand-copy__title">Nico Abramowski</div>
-              <div class="brand-copy__meta">Software, Linux, and Technical Work</div>
+              <div class="brand-copy__meta">Technical Portfolio</div>
             </div>
           </a>
 
           <div class="sidebar-status panel accent-cyan">
-            <div class="panel-header">
-              <span class="schema-label">profile</span>
-              <span class="meta-inline">current focus</span>
-            </div>
+            <span class="schema-label">Current profile</span>
             <p>
               At the end of my Computer Science studies at the University of Rostock, with practical work across software
               implementation, Android, Linux-based workflows, and technical documentation.
             </p>
             <div class="sidebar-status__foot">
-              <span class="status-pill">Open to junior roles</span>
+              <a class="inline-link" href={aboutHref}>Read the full profile</a>
             </div>
           </div>
 
@@ -170,8 +167,8 @@ const isActive = (href: string) => {
 
           <div class="sidebar-footer">
             <button class="mode-toggle themeToggle" aria-label="Toggle theme">
-              <span class="schema-label">theme</span>
-              <span data-theme-label>light</span>
+              <span class="mode-toggle__label">Theme</span>
+              <span class="mode-toggle__value" data-theme-label>light</span>
             </button>
           </div>
         </div>

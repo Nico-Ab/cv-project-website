@@ -12,7 +12,7 @@ const { project } = Astro.props;
     <div class="case-hero__main">
       <div class="eyebrow-row">
         <span class="schema-label">{project.category}</span>
-        <span class="meta-chip">{project.evidenceLabel}</span>
+        <span class="meta-inline">{project.evidenceLabel}</span>
       </div>
 
       <h1 class="case-title">{project.title}</h1>
@@ -40,10 +40,6 @@ const { project } = Astro.props;
 
     <aside class="case-facts" aria-label="Project facts">
       <div class="meta-card case-fact">
-        <span class="meta-card__label">Project type</span>
-        <strong class="meta-card__value">{project.category}</strong>
-      </div>
-      <div class="meta-card case-fact">
         <span class="meta-card__label">Project proof</span>
         <strong class="meta-card__value">{project.evidenceLabel}</strong>
       </div>
@@ -57,16 +53,14 @@ const { project } = Astro.props;
   <div class="case-grid">
     <article class="panel case-panel reveal">
       <div class="panel-header">
-        <span class="schema-label">what it is</span>
-        <span class="meta-inline">project summary</span>
+        <span class="schema-label">What it is</span>
       </div>
       <p class="section-copy">{project.whatItIs}</p>
     </article>
 
     <article class="panel case-panel reveal" style="transition-delay:.05s">
       <div class="panel-header">
-        <span class="schema-label">problem it addresses</span>
-        <span class="meta-inline">why the work matters</span>
+        <span class="schema-label">Problem it addresses</span>
       </div>
       <p class="section-copy">{project.problem}</p>
     </article>
@@ -75,8 +69,7 @@ const { project } = Astro.props;
   <div class="case-grid case-grid--lower">
     <article class="panel case-panel reveal">
       <div class="panel-header">
-        <span class="schema-label">what I implemented</span>
-        <span class="meta-inline">real work in the repo</span>
+        <span class="schema-label">What I implemented</span>
       </div>
       <ul class="data-list">
         {project.implemented.map((item) => (
@@ -87,8 +80,7 @@ const { project } = Astro.props;
 
     <article class="panel case-panel reveal" style="transition-delay:.05s">
       <div class="panel-header">
-        <span class="schema-label">what it demonstrates</span>
-        <span class="meta-inline">skills shown by the work</span>
+        <span class="schema-label">What it demonstrates</span>
       </div>
       <ul class="data-list">
         {project.demonstrates.map((item) => (

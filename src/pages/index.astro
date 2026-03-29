@@ -42,7 +42,7 @@ const technicalStrengths = [
     <article class="panel hero-panel accent-amber reveal">
       <div class="eyebrow-row">
         <span class="schema-label">technical portfolio</span>
-        <span class="status-pill">Open to junior roles</span>
+        <span class="meta-chip">Open to junior roles</span>
       </div>
 
       <div class="hero-heading">
@@ -74,26 +74,23 @@ const technicalStrengths = [
       </div>
     </article>
 
-    <article class="panel query-console hero-console accent-cyan reveal" data-role="query-console">
+    <article class="panel query-console hero-console accent-cyan reveal" data-role="query-console" aria-hidden="true">
       <div class="query-console__bar">
         <div class="query-console__dots">
           <span></span>
           <span></span>
           <span></span>
         </div>
-        <span class="schema-label">profile/current_work.md</span>
+        <span class="schema-label">recent work</span>
       </div>
       <div class="query-console__body">
-        <div class="query-line query-line--accent">implemented_work: "Erasmus staff mobility portal"</div>
-        <div class="query-line">android_project: "German Learning App"</div>
-        <div class="query-line">environment: "Linux, Git, scripting, documentation"</div>
-        <div class="query-line">strength: "structured debugging and reproducibility"</div>
-        <div class="query-line query-line--muted">foundation: "Computer Science, University of Rostock"</div>
-        <div class="query-line query-line--accent">approach: "careful, practical, clear"<span class="query-cursor"></span></div>
+        <div class="query-line query-line--accent">web_application = "Erasmus staff mobility portal"</div>
+        <div class="query-line">android_app = "German Learning App"</div>
+        <div class="query-line">systems_work = "Linux, scripting, networking"</div>
+        <div class="query-line query-line--muted">working_style = "structured, practical, documented"</div>
+        <div class="query-line query-line--accent">focus = "build, debug, improve"<span class="query-cursor"></span></div>
       </div>
-      <div class="query-console__footer">
-        Practical implementation, clear documentation, and technical work that can be understood and maintained.
-      </div>
+      <div class="query-console__footer">Recent work across web, Android, and Linux-based environments.</div>
     </article>
   </section>
 
@@ -101,7 +98,6 @@ const technicalStrengths = [
     <article class="panel backlog-panel accent-jade reveal">
       <div class="panel-header">
         <span class="schema-label">implemented work</span>
-        <span class="meta-inline">recent practical experience</span>
       </div>
       <div class="backlog-list">
         {implementedWork.map((item) => (
@@ -119,7 +115,6 @@ const technicalStrengths = [
     <article class="panel backlog-panel accent-steel reveal" style="transition-delay:.05s">
       <div class="panel-header">
         <span class="schema-label">technical approach</span>
-        <span class="meta-inline">how I like to work</span>
       </div>
       <ul class="data-list">
         {technicalStrengths.map((item) => (
@@ -131,12 +126,10 @@ const technicalStrengths = [
 
   <section class="section-heading reveal">
     <div>
-      <span class="schema-label">projects</span>
       <h2>Selected projects</h2>
     </div>
     <p>
-      A smaller set of case studies focused on real implemented work. Each page explains the problem, the actual
-      implementation, the stack used, and what the project shows about how I work.
+      Real projects with clearer proof: what they are, what was implemented, and what they demonstrate technically.
     </p>
   </section>
 
