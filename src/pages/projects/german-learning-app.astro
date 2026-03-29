@@ -3,8 +3,11 @@ import ProjectCaseStudy from "../../components/ProjectCaseStudy.astro";
 import { getProjectBySlug } from "../../data/projects";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const project = getProjectBySlug("mini-warehouse");
+const project = getProjectBySlug("german-learning-app");
 ---
-<BaseLayout title={`${project.title} | Project`}>
+<BaseLayout
+  title={`${project.title} | Project`}
+  description="Case study for the German Learning App: an Android flashcard app built with Kotlin and Jetpack Compose."
+>
   <ProjectCaseStudy project={project} />
 </BaseLayout>

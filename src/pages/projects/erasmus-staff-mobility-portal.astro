@@ -1,0 +1,13 @@
+---
+import ProjectCaseStudy from "../../components/ProjectCaseStudy.astro";
+import { getProjectBySlug } from "../../data/projects";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const project = getProjectBySlug("erasmus-staff-mobility-portal");
+---
+<BaseLayout
+  title={`${project.title} | Project`}
+  description="Case study for the Erasmus Staff Mobility Portal: an internal web application for structured staff mobility workflows."
+>
+  <ProjectCaseStudy project={project} />
+</BaseLayout>

@@ -298,6 +298,7 @@
   background: rgba(255, 255, 255, 0.26);
   color: var(--muted);
   font-size: 0.76rem;
+  max-width: 100%;
 }
 
 .dark .meta-chip {
@@ -790,6 +791,7 @@
 .project-card__title {
   font-size: 1.35rem;
   line-height: 1.12;
+  overflow-wrap: anywhere;
 }
 
 .project-card__summary {
@@ -799,7 +801,7 @@
 
 .project-card__footer {
   margin-top: auto;
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 .project-card__open {
@@ -904,8 +906,35 @@
   padding: 1.35rem;
 }
 
+.case-facts {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.case-fact {
+  height: 100%;
+}
+
+.case-fact__copy {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+
 .case-stack {
   margin-top: 1.35rem;
+}
+
+.project-actions {
+  align-items: flex-start;
+}
+
+.section-copy {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  line-height: 1.7;
 }
 
 .artifact-slot {

@@ -3,8 +3,11 @@ import ProjectCaseStudy from "../../components/ProjectCaseStudy.astro";
 import { getProjectBySlug } from "../../data/projects";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const project = getProjectBySlug("cdc-warehouse");
+const project = getProjectBySlug("linuxhost-tsn-plugin");
 ---
-<BaseLayout title={`${project.title} | Project`}>
+<BaseLayout
+  title={`${project.title} | Project`}
+  description="Case study for a Linux host TSN / NETCONF plugin project involving Sysrepo, YANG, and systems work."
+>
   <ProjectCaseStudy project={project} />
 </BaseLayout>

@@ -4,12 +4,19 @@ test('homepage renders updated profile and base-aware project links', async ({ p
   await page.goto('./');
   await expect(page.getByRole('heading', { level: 1, name: /software and technical work/i })).toBeVisible();
   await expect(page.locator('[data-role="query-console"]').first()).toBeVisible();
-  await expect(page.getByText('Erasmus staff mobility portal', { exact: true })).toBeVisible();
-  await expect(page.getByText('German Learning App', { exact: true })).toBeVisible();
-  await expect(page.locator('[data-role="project-card"]')).toHaveCount(4);
+  await expect(page.locator('[data-role="project-card"]')).toHaveCount(3);
   await expect(
-    page.locator('[data-role="project-card"][href$="/cv-project-website/projects/mini-warehouse"]')
+    page.locator('[data-role="project-card"][href$="/cv-project-website/projects/erasmus-staff-mobility-portal"]')
   ).toHaveCount(1);
+  await expect(
+    page.locator('[data-role="project-card"][href$="/cv-project-website/projects/german-learning-app"]')
+  ).toHaveCount(1);
+  await expect(
+    page.locator('[data-role="project-card"][href$="/cv-project-website/projects/linuxhost-tsn-plugin"]')
+  ).toHaveCount(1);
+  await expect(page.locator('[data-role="project-card"]').filter({ hasText: 'Erasmus Staff Mobility Portal' })).toHaveCount(1);
+  await expect(page.locator('[data-role="project-card"]').filter({ hasText: 'German Learning App' })).toHaveCount(1);
+  await expect(page.locator('[data-role="project-card"]').filter({ hasText: 'Linux Host TSN / NETCONF Plugin' })).toHaveCount(1);
   await expect(page.locator('body')).not.toContainText('Active build sequence');
   await expect(page.locator('body')).not.toContainText('Warehouse / Analytics Engineering');
 });
@@ -42,7 +49,9 @@ test('mobile menu opens and closes', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
   await expect(page.getByRole('heading', { level: 1, name: /software and technical work/i })).toBeVisible();
-  await expect(page.getByText('Erasmus staff mobility portal', { exact: true })).toBeVisible();
+  await expect(
+    page.locator('[data-role="project-card"]').filter({ hasText: 'Erasmus Staff Mobility Portal' })
+  ).toHaveCount(1);
   const menuBtn = page.getByRole('button', { name: 'Menu' });
   await expect(menuBtn).toBeVisible();
   await menuBtn.click();
@@ -51,4 +60,27 @@ test('mobile menu opens and closes', async ({ page }) => {
   await expect(page).toHaveURL(/about/);
   await expect(page.locator('#mobileNav')).toBeHidden();
   await expect(page.locator('main').getByText(/University of Rostock/i).first()).toBeVisible();
+});
+
+test('project cards stay readable on mobile', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+
+  const linuxCard = page
+    .locator('[data-role="project-card"]')
+    .filter({ has: page.getByText('Linux Host TSN / NETCONF Plugin', { exact: true }) });
+
+  await expect(linuxCard).toBeVisible();
+
+  const title = linuxCard.locator('.project-card__title');
+  const chipRow = linuxCard.locator('.chip-row').first();
+
+  await expect(title).toBeVisible();
+  await expect(chipRow).toBeVisible();
+
+  const titleOverflows = await title.evaluate((node) => node.scrollWidth > node.clientWidth + 1);
+  const chipRowOverflows = await chipRow.evaluate((node) => node.scrollWidth > node.clientWidth + 1);
+
+  expect(titleOverflows).toBeFalsy();
+  expect(chipRowOverflows).toBeFalsy();
 });
