@@ -1,0 +1,116 @@
+---
+import type { ProjectRecord } from "../data/projects";
+
+export interface Props {
+  project: ProjectRecord;
+}
+
+const { project } = Astro.props;
+const queryName = project.slug.replace(/-/g, "_");
+---
+<section class={`case-study accent-${project.accentKey}`}>
+  <header class="panel case-hero reveal" data-role="project-hero">
+    <div class="case-hero__main">
+      <div class="eyebrow-row">
+        <span class="schema-label">{project.category}</span>
+        <span class="status-pill">{project.statusLabel}</span>
+      </div>
+
+      <h1 class="case-title">{project.title}</h1>
+      <p class="case-summary">{project.overview}</p>
+
+      <div class="chip-row case-stack">
+        {project.stack.map((item) => (
+          <span class="meta-chip">{item}</span>
+        ))}
+      </div>
+    </div>
+
+    <div class="query-console case-query" data-role="query-console" aria-hidden="true">
+      <div class="query-console__bar">
+        <div class="query-console__dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <span class="schema-label">plan/{queryName}.sql</span>
+      </div>
+      <div class="query-console__body">
+        <div class="query-line query-line--accent">WITH active_project AS (</div>
+        <div class="query-line">  SELECT '{project.slug}' AS slug,</div>
+        <div class="query-line">         '{project.category}' AS category,</div>
+        <div class="query-line">         '{project.statusLabel.toLowerCase()}' AS status</div>
+        <div class="query-line">)</div>
+        <div class="query-line query-line--muted">SELECT next_milestone FROM active_project;</div>
+        <div class="query-line query-line--accent">
+          -- ready to ship<span class="query-cursor"></span>
+        </div>
+      </div>
+      <div class="query-console__footer">{project.nextMilestone}</div>
+    </div>
+  </header>
+
+  <div class="case-grid">
+    <article class="panel case-panel reveal">
+      <div class="panel-header">
+        <span class="schema-label">scope</span>
+        <span class="meta-inline">target build surface</span>
+      </div>
+      <ul class="data-list">
+        {project.scope.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </article>
+
+    <article class="panel case-panel reveal" style="transition-delay:.05s">
+      <div class="panel-header">
+        <span class="schema-label">status</span>
+        <span class="meta-inline">current implementation state</span>
+      </div>
+      <ul class="data-list">
+        {project.status.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </article>
+  </div>
+
+  <div class="case-grid case-grid--lower">
+    <article class="panel case-panel reveal">
+      <div class="panel-header">
+        <span class="schema-label">planned artifacts</span>
+        <span class="meta-inline">reserved evidence slots</span>
+      </div>
+      <div class="artifact-grid">
+        {project.plannedArtifacts.map((artifact) => (
+          <div class="artifact-slot">
+            <h3>{artifact.title}</h3>
+            <p>{artifact.description}</p>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <article class="panel case-panel reveal" style="transition-delay:.05s">
+      <div class="panel-header">
+        <span class="schema-label">delivery lane</span>
+        <span class="meta-inline">why this project matters</span>
+      </div>
+      <div class="delivery-lane">
+        <div class="delivery-row">
+          <span>Current focus</span>
+          <p>{project.summary}</p>
+        </div>
+        <div class="delivery-row">
+          <span>Goal</span>
+          <p>{project.goal}</p>
+        </div>
+        <div class="delivery-row">
+          <span>Next milestone</span>
+          <p>{project.nextMilestone}</p>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>

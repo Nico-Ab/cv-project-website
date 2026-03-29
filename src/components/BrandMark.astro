@@ -1,0 +1,12 @@
+---
+export interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+<span class={`brand-mark${compact ? " brand-mark-compact" : ""}`} aria-hidden="true">
+  <span></span>
+  <span></span>
+  <span></span>
+</span>

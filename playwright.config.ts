@@ -7,13 +7,16 @@ export default defineConfig({
   fullyParallel: true,
   reporter: [['list']],
   use: {
-    baseURL: 'http://localhost:4173/',
+    baseURL: 'http://localhost:4173/cv-project-website/',
     headless: true,
   },
   webServer: {
-    command: 'npm run preview -- --port=4173',
-    url: 'http://localhost:4173/',
+    command: 'npm run preview',
+    url: 'http://localhost:4173/cv-project-website/',
     reuseExistingServer: !process.env.CI,
-    timeout: 120000
+    timeout: 120000,
+    env: {
+      ASTRO_TELEMETRY_DISABLED: '1',
+    },
   },
 });

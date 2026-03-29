@@ -1,47 +1,130 @@
-
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BrandMark from "../components/BrandMark.astro";
 import ProjectCard from "../components/ProjectCard.astro";
-import { projects } from "../data/projects";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { projects, withBasePath } from "../data/projects";
+
 const base = import.meta.env.BASE_URL;
+const focusCards = [
+  { label: "Current role", value: "B.Sc. Computer Science candidate" },
+  { label: "Workbench", value: "Linux Mint + VS Code" },
+  { label: "Focus", value: "ELT, dbt, CDC, and data quality" },
+  { label: "Target role", value: "Analytics Engineering / Warehousing" },
+];
+const roadmap = [
+  { id: "01", title: "DuckDB-WASM sandbox", state: "planned" },
+  { id: "02", title: "dbt docs snapshots", state: "queued" },
+  { id: "03", title: "Dashboard embeds", state: "queued" },
+];
+const deliveryRules = [
+  "Model grain and naming should stay readable before polish is added.",
+  "Tests and evidence should ship alongside the transformation logic.",
+  "Dashboards only matter if the warehouse layer answers a concrete question.",
+];
 ---
-<BaseLayout title="Nico Abramowski — Portfolio">
-  <section class="grid md:grid-cols-[1.2fr_1fr] gap-6 items-center mb-10">
-    <div class="card p-7 reveal">
-      <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-3 text-gray-900 dark:text-gray-100">
-        Hi, I'm <span class="text-gradient">Nico</span> - aspiring Analytics Engineer / Data Warehouse Developer
-      </h1>
-      <p class="text-gray-700 dark:text-gray-300">
-        I design clean dimensional models and dbt-based ELT with tests and simple dashboards.
-        Below are projects I’m building. Each page notes what’s done and what’s next.
-      </p>
-      <div class="mt-5 flex flex-wrap gap-3">
-        <a href={`${base}about`} class="btn-primary">About me</a>
-        <a href={`${base}CV.pdf`} class="btn-ghost" download>CV (PDF)</a>
+<BaseLayout title="Nico Abramowski | Query Console Portfolio">
+  <section class="home-hero">
+    <article class="panel hero-panel accent-amber reveal">
+      <div class="eyebrow-row">
+        <span class="schema-label">portfolio query console</span>
+        <span class="status-pill">4 project nodes active</span>
       </div>
+
+      <div class="hero-heading">
+        <BrandMark compact={true} />
+        <h1 class="hero-title">
+          Designing <span class="text-gradient">dimensional models</span> and warehouse flows that stay readable under pressure.
+        </h1>
+      </div>
+
+      <p class="hero-copy">
+        I build dbt-centered ELT, dimensional models, and data-quality guardrails for practical reporting systems. This
+        site is structured like a working database console: current projects, implementation status, and the next
+        artifact to ship.
+      </p>
+
+      <div class="hero-actions">
+        <a href={withBasePath(base, "/about")} class="btn-primary">Open dossier</a>
+        <a href={withBasePath(base, "/CV.pdf")} class="btn-secondary" download>Download CV</a>
+      </div>
+
+      <div class="hero-meta-grid">
+        {focusCards.map((item) => (
+          <div class="meta-card">
+            <span class="meta-card__label">{item.label}</span>
+            <strong class="meta-card__value">{item.value}</strong>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <article class="panel query-console hero-console accent-cyan reveal" data-role="query-console">
+      <div class="query-console__bar">
+        <div class="query-console__dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <span class="schema-label">console/candidate_profile.sql</span>
+      </div>
+      <div class="query-console__body">
+        <div class="query-line query-line--accent">WITH candidate_profile AS (</div>
+        <div class="query-line">  SELECT 'nico_abramowski' AS engineer,</div>
+        <div class="query-line">         ARRAY['dbt', 'duckdb', 'postgres'] AS toolkit,</div>
+        <div class="query-line">         'clear warehouse design' AS mission</div>
+        <div class="query-line">)</div>
+        <div class="query-line query-line--muted">SELECT * FROM candidate_profile;</div>
+        <div class="query-line query-line--accent">-- active and shipping<span class="query-cursor"></span></div>
+      </div>
+      <div class="query-console__footer">Organized around warehouse builds, quality systems, CDC, and governance.</div>
+    </article>
+  </section>
+
+  <section class="section-heading reveal">
+    <div>
+      <span class="schema-label">project schema</span>
+      <h2>Active build sequence</h2>
     </div>
-    <div class="card p-7 reveal animate-fade-up" style="animation-delay:.06s">
-      <h2 class="font-semibold mb-2">Quick facts</h2>
-      <ul class="space-y-2 text-sm text-gray-800 dark:text-gray-300">
-        <li>🎓 B.Sc. Computer Science (soon)</li>
-        <li>🏠 Blagoevgrad, Bulgaria</li>
-        <li>🔧 Linux Mint Cinnamon • VS Code</li>
-        <li>🎯 Interests: ELT, dbt, CDC, data quality</li>
+    <p>Each project card tracks the problem space, the stack in play, and the next concrete milestone.</p>
+  </section>
+
+  <div class="project-grid">
+    {projects.map((project, index) => (
+      <div class="reveal" style={`transition-delay:${index * 0.04}s`}>
+        <ProjectCard project={project} href={withBasePath(base, project.href)} />
+      </div>
+    ))}
+  </div>
+
+  <section class="home-bottom">
+    <article class="panel backlog-panel accent-cyan reveal">
+      <div class="panel-header">
+        <span class="schema-label">roadmap</span>
+        <span class="meta-inline">next artifacts</span>
+      </div>
+      <div class="backlog-list">
+        {roadmap.map((item) => (
+          <div class="backlog-row">
+            <span class="backlog-row__id">{item.id}</span>
+            <div>
+              <strong>{item.title}</strong>
+              <p>{item.state}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <article class="panel backlog-panel accent-steel reveal" style="transition-delay:.05s">
+      <div class="panel-header">
+        <span class="schema-label">delivery rules</span>
+        <span class="meta-inline">how the portfolio grows</span>
+      </div>
+      <ul class="data-list">
+        {deliveryRules.map((item) => (
+          <li>{item}</li>
+        ))}
       </ul>
-    </div>
-  </section>
-
-  <section class="mb-8 reveal" style="transition-delay:.1s">
-    <h2 class="text-xl font-bold mb-3">Projects</h2>
-    <div class="grid sm:grid-cols-2 gap-4 items-stretch">
-      {projects.map(p => <ProjectCard {...p} />)}
-    </div>
-  </section>
-
-  <section class="card p-6 reveal" style="transition-delay:.15s">
-    <h2 class="text-lg font-semibold mb-2">What’s coming next</h2>
-    <p class="text-sm text-gray-700 dark:text-gray-300">
-      This site will host interactive demos (Streamlit/Dash or DuckDB-WASM), dbt docs, and dashboards.
-    </p>
+    </article>
   </section>
 </BaseLayout>

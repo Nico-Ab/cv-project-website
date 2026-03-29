@@ -1,14 +1,30 @@
 ---
-import "../styles/global.css"; // Tailwind + your overrides
+import BrandMark from "../components/BrandMark.astro";
+import { projects, withBasePath } from "../data/projects";
+import "../styles/global.css";
 
 const {
-  title = "Nico Abramowski - Data (Warehousing) Portfolio",
-  description = "Portfolio & project demos.",
+  title = "Nico Abramowski | Data Warehousing Portfolio",
+  description = "Portfolio and project walkthroughs for data warehousing and analytics engineering.",
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL;
 const path = Astro.url.pathname;
-const isActive = (href) => path === href || (path.startsWith(href) && href !== base);
+const overviewHref = base;
+const aboutHref = withBasePath(base, "/about");
+const cvHref = withBasePath(base, "/CV.pdf");
+const navProjects = projects.map((project) => ({
+  ...project,
+  url: withBasePath(base, project.href),
+}));
+
+const isActive = (href: string) => {
+  if (href === overviewHref) {
+    return path === overviewHref;
+  }
+
+  return path === href || path.startsWith(`${href}/`);
+};
 ---
 <html lang="en">
   <head>
@@ -19,144 +35,248 @@ const isActive = (href) => path === href || (path.startsWith(href) && href !== b
 
     <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+          if (saved === "dark" || (!saved && prefersDark)) {
+            document.documentElement.classList.add("dark");
+          }
+        } catch (error) {}
+      })();
+    </script>
   </head>
-  <body class="min-h-screen antialiased">
-    <!-- Mobile header -->
-    <header class="lg:hidden sticky top-0 z-50 border-b border-gray-200/70 dark:border-white/10 bg-white/95 dark:bg-neutral-900/95 backdrop-blur">
-      <div class="container-xl py-3 flex items-center justify-between">
-        <a href={base} class="flex items-center gap-3">
-          <img src={`${base}favicon.svg`} alt="logo" class="w-7 h-7" />
-          <div>
-            <div class="font-bold leading-none">Nico Abramowski</div>
-            <div class="text-[11px] text-gray-500 leading-none">Data / Warehousing</div>
+  <body>
+    <header class="mobile-shell">
+      <div class="container-xl mobile-shell__bar">
+        <a href={overviewHref} class="brand-lockup">
+          <BrandMark compact={true} />
+          <div class="brand-copy">
+            <div class="brand-copy__title">Nico Abramowski</div>
+            <div class="brand-copy__meta">Warehouse / Analytics Engineering</div>
           </div>
         </a>
-        <div class="flex items-center gap-2">
-          <button class="button themeToggle py-2 px-3" aria-label="Toggle theme">Theme</button>
-          <button id="mobileMenu" class="button py-2 px-3" aria-controls="mobileNav" aria-expanded="false">Menu</button>
+
+        <div class="mobile-shell__controls">
+          <button class="mode-toggle themeToggle" aria-label="Toggle theme">
+            <span class="schema-label">mode</span>
+            <span data-theme-label>light</span>
+          </button>
+          <button id="mobileMenu" class="mode-toggle" aria-label="Menu" aria-controls="mobileNav" aria-expanded="false">
+            <span class="schema-label">menu</span>
+            <span data-menu-label>open</span>
+          </button>
         </div>
       </div>
-      <!-- Nav starts hidden on every page load -->
-      <nav id="mobileNav" class="hidden pb-3 border-t border-gray-200/70 dark:border-white/10">
-        <div class="container-xl">
-          <a class="block px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800" href={`${base}about`}>About</a>
-          <div class="px-3 pt-2 pb-1 text-xs uppercase tracking-wider text-gray-500">Projects</div>
-          <a class="block px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800" href={`${base}projects/mini-warehouse`}>Mini Data Warehouse</a>
-          <a class="block px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800" href={`${base}projects/data-quality-lineage`}>Data Quality &amp; Lineage</a>
-          <a class="block px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800" href={`${base}projects/cdc-warehouse`}>CDC → Warehouse</a>
-          <a class="block px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800" href={`${base}projects/performance-governance`}>Performance &amp; Governance</a>
-          <div class="px-3 pt-2 pb-1 text-xs uppercase tracking-wider text-gray-500">More</div>
-          <a class="block px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800" href="https://github.com/Nico-Ab" target="_blank" rel="noreferrer">GitHub</a>
-          <a class="block px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-800" href={`${base}CV.pdf`} download>CV (PDF)</a>
+
+      <nav id="mobileNav" class="mobile-drawer hidden">
+        <div class="container-xl mobile-drawer__inner">
+          <div class="nav-group">
+            <div class="nav-group__label">workspace</div>
+            <a class={`mobile-navlink ${isActive(overviewHref) ? "mobile-navlink-active" : ""}`} href={overviewHref}>Overview</a>
+            <a class={`mobile-navlink ${isActive(aboutHref) ? "mobile-navlink-active" : ""}`} href={aboutHref}>About</a>
+          </div>
+
+          <div class="nav-group">
+            <div class="nav-group__label">project schema</div>
+            {navProjects.map((project) => (
+              <a class={`mobile-navlink ${isActive(project.url) ? "mobile-navlink-active" : ""}`} href={project.url}>
+                {project.title}
+              </a>
+            ))}
+          </div>
+
+          <div class="nav-group">
+            <div class="nav-group__label">links</div>
+            <a class="mobile-navlink" href="https://github.com/Nico-Ab" target="_blank" rel="noreferrer">GitHub</a>
+            <a class="mobile-navlink" href={cvHref} download>CV (PDF)</a>
+          </div>
         </div>
       </nav>
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-[260px_1fr] min-h-screen">
-      <!-- Desktop sidebar -->
-      <aside class="hidden lg:block lg:sticky lg:top-0 border-r border-gray-200/70 dark:border-white/10 bg-white dark:bg-neutral-900 z-30">
-        <div class="p-4">
-          <a href={base} class="flex items-center gap-3">
-            <img src={`${base}favicon.svg`} alt="logo" class="w-8 h-8" />
-            <div>
-              <div class="font-bold">Nico Abramowski</div>
-              <div class="text-xs text-gray-500">Data / Warehousing</div>
+    <div class="workspace-shell">
+      <aside class="workspace-sidebar" data-role="workspace-sidebar">
+        <div class="sidebar-frame">
+          <a href={overviewHref} class="brand-lockup">
+            <BrandMark />
+            <div class="brand-copy">
+              <div class="brand-copy__title">Nico Abramowski</div>
+              <div class="brand-copy__meta">Warehouse / Analytics Engineering</div>
             </div>
           </a>
-        </div>
-        <nav class="px-2 pb-4 space-y-1 text-sm">
-          <a class={`navlink ${isActive(`${base}about`) ? 'navlink-active' : ''}`} href={`${base}about`}>About</a>
-          <div class="px-3 pt-3 text-xs uppercase tracking-wider text-gray-500">Projects</div>
-          <a class={`navlink ${isActive(`${base}projects/mini-warehouse`) ? 'navlink-active' : ''}`} href={`${base}projects/mini-warehouse`}>Mini Data Warehouse</a>
-          <a class={`navlink ${isActive(`${base}projects/data-quality-lineage`) ? 'navlink-active' : ''}`} href={`${base}projects/data-quality-lineage`}>Data Quality &amp; Lineage</a>
-          <a class={`navlink ${isActive(`${base}projects/cdc-warehouse`) ? 'navlink-active' : ''}`} href={`${base}projects/cdc-warehouse`}>CDC → Warehouse</a>
-          <a class={`navlink ${isActive(`${base}projects/performance-governance`) ? 'navlink-active' : ''}`} href={`${base}projects/performance-governance`}>Performance &amp; Governance</a>
-          <div class="px-3 pt-3 text-xs uppercase tracking-wider text-gray-500">More</div>
-          <a class="navlink" href="https://github.com/Nico-Ab" target="_blank" rel="noreferrer">GitHub</a>
-          <a class="navlink" href={`${base}CV.pdf`} download>CV (PDF)</a>
-        </nav>
-        <div class="px-4 pb-4">
-          <button class="button themeToggle w-full" aria-label="Toggle theme">Toggle theme</button>
+
+          <div class="sidebar-status panel accent-cyan">
+            <div class="panel-header">
+              <span class="schema-label">workspace</span>
+              <span class="meta-inline">query console</span>
+            </div>
+            <p>
+              Portfolio organized like an active warehouse workspace with status, stack, and delivery notes.
+            </p>
+            <div class="sidebar-status__foot">
+              <span class="status-pill">4 project nodes active</span>
+            </div>
+          </div>
+
+          <nav class="sidebar-nav">
+            <div class="nav-group">
+              <div class="nav-group__label">workspace</div>
+              <a class={`nav-tab ${isActive(overviewHref) ? "nav-tab-active" : ""}`} href={overviewHref}>
+                <span>Overview</span>
+                <span class="nav-tab__meta">home</span>
+              </a>
+              <a class={`nav-tab ${isActive(aboutHref) ? "nav-tab-active" : ""}`} href={aboutHref}>
+                <span>About</span>
+                <span class="nav-tab__meta">dossier</span>
+              </a>
+            </div>
+
+            <div class="nav-group">
+              <div class="nav-group__label">project schema</div>
+              {navProjects.map((project) => (
+                <a
+                  class={`nav-tab accent-${project.accentKey} ${isActive(project.url) ? "nav-tab-active" : ""}`}
+                  href={project.url}
+                >
+                  <span>{project.title}</span>
+                  <span class="nav-tab__meta">{project.category}</span>
+                </a>
+              ))}
+            </div>
+
+            <div class="nav-group">
+              <div class="nav-group__label">links</div>
+              <a class="nav-tab" href="https://github.com/Nico-Ab" target="_blank" rel="noreferrer">
+                <span>GitHub</span>
+                <span class="nav-tab__meta">source</span>
+              </a>
+              <a class="nav-tab" href={cvHref} download>
+                <span>CV (PDF)</span>
+                <span class="nav-tab__meta">download</span>
+              </a>
+            </div>
+          </nav>
+
+          <div class="sidebar-footer">
+            <button class="mode-toggle themeToggle" aria-label="Toggle theme">
+              <span class="schema-label">mode</span>
+              <span data-theme-label>light</span>
+            </button>
+          </div>
         </div>
       </aside>
 
-      <!-- Main -->
-      <main class="relative bg-white dark:bg-neutral-950">
-        <!-- Background layers -->
-        <div class="absolute inset-0 z-0 pointer-events-none">
-          <div class="bg-grid absolute inset-0"></div>
-          <div class="bg-accents absolute inset-0"></div>
+      <main class="workspace-main">
+        <div class="workspace-background" aria-hidden="true">
+          <div class="workspace-grid"></div>
+          <div class="workspace-lines"></div>
+          <div class="workspace-scan"></div>
         </div>
-        <div class="container-xl py-6 sm:py-8 lg:py-10 relative z-10">
+
+        <div class="container-xl page-frame">
           <slot />
         </div>
       </main>
     </div>
 
-    <!-- Theme + mobile menu + scroll reveal -->
     <script>
-      (function () {
+      (() => {
         const html = document.documentElement;
+        const menuBtn = document.getElementById("mobileMenu");
+        const mobileNav = document.getElementById("mobileNav");
+        const themeLabels = document.querySelectorAll("[data-theme-label]");
+        const menuLabels = document.querySelectorAll("[data-menu-label]");
 
-        // Theme toggle
+        const syncThemeLabels = () => {
+          const themeValue = html.classList.contains("dark") ? "dark" : "light";
+          themeLabels.forEach((node) => {
+            node.textContent = themeValue;
+          });
+        };
+
+        const collapseMenu = () => {
+          if (!mobileNav) return;
+
+          mobileNav.classList.add("hidden");
+          menuBtn?.setAttribute("aria-expanded", "false");
+          menuLabels.forEach((node) => {
+            node.textContent = "open";
+          });
+        };
+
+        const toggleMenu = () => {
+          if (!mobileNav) return;
+
+          mobileNav.classList.toggle("hidden");
+
+          const isOpen = !mobileNav.classList.contains("hidden");
+          menuBtn?.setAttribute("aria-expanded", String(isOpen));
+          menuLabels.forEach((node) => {
+            node.textContent = isOpen ? "close" : "open";
+          });
+        };
+
         try {
-          const saved = localStorage.getItem('theme');
-          if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            html.classList.add('dark');
-          } else {
-            html.classList.remove('dark');
-          }
-          document.querySelectorAll('.themeToggle').forEach(btn => {
-            btn.addEventListener('click', () => {
-              html.classList.toggle('dark');
-              localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+          syncThemeLabels();
+
+          document.querySelectorAll(".themeToggle").forEach((button) => {
+            button.addEventListener("click", () => {
+              html.classList.toggle("dark");
+              localStorage.setItem("theme", html.classList.contains("dark") ? "dark" : "light");
+              syncThemeLabels();
             });
           });
-        } catch (e) {}
+        } catch (error) {}
 
-        // Mobile menu: always start CLOSED; close on nav, and when resizing up to desktop
-        const menuBtn = document.getElementById('mobileMenu');
-        const mobileNav = document.getElementById('mobileNav');
-
-        const collapse = () => { if (mobileNav && !mobileNav.classList.contains('hidden')) mobileNav.classList.add('hidden'); };
-        const toggle = () => { if (mobileNav) mobileNav.classList.toggle('hidden'); };
-
-        // Force closed on load (prevents "stuck open" on some pages)
-        collapse();
+        collapseMenu();
 
         if (menuBtn && mobileNav) {
-          menuBtn.addEventListener('click', () => {
-            toggle();
-            menuBtn.setAttribute('aria-expanded', String(!mobileNav.classList.contains('hidden')));
+          menuBtn.addEventListener("click", () => {
+            toggleMenu();
           });
 
-          // Close after clicking any link inside the mobile menu
-          mobileNav.querySelectorAll('a').forEach(a => {
-            a.addEventListener('click', () => {
-              collapse();
-              menuBtn.setAttribute('aria-expanded', 'false');
+          mobileNav.querySelectorAll("a").forEach((link) => {
+            link.addEventListener("click", () => {
+              collapseMenu();
             });
           });
         }
 
-        // Close when resizing to desktop
-        window.addEventListener('resize', () => {
-          if (window.innerWidth >= 1024) collapse();
+        window.addEventListener("resize", () => {
+          if (window.innerWidth >= 1024) {
+            collapseMenu();
+          }
         });
 
-        // Scroll reveal
-        const els = document.querySelectorAll('.reveal');
-        const obs = new IntersectionObserver((entries) => {
-          entries.forEach(e => {
-            if (e.isIntersecting) {
-              e.target.classList.add('visible');
-              obs.unobserve(e.target);
-            }
-          });
-        }, { threshold: 0.15 });
-        els.forEach(el => obs.observe(el));
+        const revealItems = document.querySelectorAll(".reveal");
+
+        if (!("IntersectionObserver" in window)) {
+          revealItems.forEach((item) => item.classList.add("visible"));
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.16 }
+        );
+
+        revealItems.forEach((item) => observer.observe(item));
       })();
     </script>
   </body>

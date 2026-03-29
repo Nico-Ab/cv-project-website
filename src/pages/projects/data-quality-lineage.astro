@@ -1,29 +1,10 @@
 ---
+import ProjectCaseStudy from "../../components/ProjectCaseStudy.astro";
+import { getProjectBySlug } from "../../data/projects";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const project = getProjectBySlug("data-quality-lineage");
 ---
-<BaseLayout title="Data Quality & Lineage - Project">
-  <section class="card p-7 reveal">
-    <h1 class="text-2xl font-bold mb-2">Data Quality & Lineage</h1>
-    <p class="text-sm inline-flex items-center gap-2 px-2 py-1 rounded bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 mb-4">
-      🛠️ In progress - wiring checks & lineage
-    </p>
-
-    <p class="text-gray-700 dark:text-gray-300 mb-4">
-      Add expectations and lineage so broken data is caught early and table ownership is clear.
-      This complements the mini-warehouse with CI checks and easy-to-browse docs.
-    </p>
-
-    <h2 class="text-lg font-semibold mb-2">Scope</h2>
-    <ul class="list-disc pl-6 space-y-1 text-gray-800 dark:text-gray-300">
-      <li>dbt tests on critical dims/facts</li>
-      <li>Great Expectations/Soda for row-level expectations (nulls, ranges, duplicates)</li>
-      <li>Lineage via dbt docs (and OpenLineage later)</li>
-    </ul>
-
-    <h2 class="text-lg font-semibold mt-6 mb-2">Status</h2>
-    <ul class="list-disc pl-6 space-y-1 text-gray-800 dark:text-gray-300">
-      <li>Critical tests identified</li>
-      <li><strong>Next:</strong> wire failing-test demo and publish lineage screenshots</li>
-    </ul>
-  </section>
+<BaseLayout title={`${project.title} | Project`}>
+  <ProjectCaseStudy project={project} />
 </BaseLayout>

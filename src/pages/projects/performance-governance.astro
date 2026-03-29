@@ -1,29 +1,10 @@
 ---
+import ProjectCaseStudy from "../../components/ProjectCaseStudy.astro";
+import { getProjectBySlug } from "../../data/projects";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const project = getProjectBySlug("performance-governance");
 ---
-<BaseLayout title="Performance & Governance - Project">
-  <section class="card p-7 reveal">
-    <h1 class="text-2xl font-bold mb-2">Performance & Governance</h1>
-    <p class="text-sm inline-flex items-center gap-2 px-2 py-1 rounded bg-gray-100 dark:bg-neutral-800 text-gray-700 dark:text-gray-300 mb-4">
-      🛠️ In progress - first benchmarks & masking rules
-    </p>
-
-    <p class="text-gray-700 dark:text-gray-300 mb-4">
-      Practical SQL tuning and sensible policies. Compare baseline vs. partitioning/indexing, then
-      add basic masking/row-level rules and a simple DSAR export.
-    </p>
-
-    <h2 class="text-lg font-semibold mb-2">Scope</h2>
-    <ul class="list-disc pl-6 space-y-1 text-gray-800 dark:text-gray-300">
-      <li>Before/after query plans and timings</li>
-      <li>Partitioning/indexes (or projections) documented with deltas</li>
-      <li>Masking views & minimal DSAR script</li>
-    </ul>
-
-    <h2 class="text-lg font-semibold mt-6 mb-2">Status</h2>
-    <ul class="list-disc pl-6 space-y-1 text-gray-800 dark:text-gray-300">
-      <li>Benchmark queries selected</li>
-      <li><strong>Next:</strong> run timings, capture plans, and add masking policy examples</li>
-    </ul>
-  </section>
+<BaseLayout title={`${project.title} | Project`}>
+  <ProjectCaseStudy project={project} />
 </BaseLayout>
