@@ -14,15 +14,9 @@ const { project, href = project.href } = Astro.props;
   data-role="project-card"
   data-accent={project.accentKey}
 >
-  <div class="project-card__trace" aria-hidden="true">
-    <span></span>
-    <span></span>
-    <span></span>
-  </div>
-
   <div class="project-card__header">
     <span class="schema-label">{project.category}</span>
-    <span class="meta-inline">{project.statusLabel}</span>
+    <span class="meta-inline">{project.evidenceLabel}</span>
   </div>
 
   <h3 class="project-card__title">{project.title}</h3>
@@ -30,10 +24,10 @@ const { project, href = project.href } = Astro.props;
 
   <div class="project-card__footer">
     <div class="chip-row">
-      {project.stack.map((item) => (
+      {project.stack.slice(0, 4).map((item) => (
         <span class="meta-chip">{item}</span>
       ))}
     </div>
-    <span class="project-card__open">view notes</span>
+    <span class="project-card__open">open case study</span>
   </div>
 </a>

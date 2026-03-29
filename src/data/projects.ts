@@ -1,8 +1,8 @@
 export type AccentKey = "amber" | "cyan" | "jade" | "steel";
 
-export interface ProjectArtifact {
-  title: string;
-  description: string;
+export interface ProjectLink {
+  label: string;
+  href: string;
 }
 
 export interface ProjectRecord {
@@ -10,16 +10,17 @@ export interface ProjectRecord {
   title: string;
   href: string;
   category: string;
-  statusLabel: string;
+  navMeta: string;
+  evidenceLabel: string;
   accentKey: AccentKey;
   summary: string;
-  overview: string;
-  goal: string;
-  nextMilestone: string;
+  whatItIs: string;
+  problem: string;
+  implemented: string[];
   stack: string[];
-  scope: string[];
-  status: string[];
-  plannedArtifacts: ProjectArtifact[];
+  demonstrates: string[];
+  currentState: string;
+  links: ProjectLink[];
 }
 
 export const withBasePath = (base: string, href: string) => {
@@ -29,166 +30,112 @@ export const withBasePath = (base: string, href: string) => {
 
 export const projects: ProjectRecord[] = [
   {
-    slug: "mini-warehouse",
-    title: "Mini Data Warehouse (Retail)",
-    href: "/projects/mini-warehouse",
-    category: "database modeling",
-    statusLabel: "study note",
+    slug: "erasmus-staff-mobility-portal",
+    title: "Erasmus Staff Mobility Portal",
+    href: "/projects/erasmus-staff-mobility-portal",
+    category: "university web application",
+    navMeta: "web app",
+    evidenceLabel: "repo + docs + tests",
     accentKey: "amber",
-    summary: "Notes on dimensional modeling, SCD handling, and reporting structure in a small retail example.",
-    overview:
-      "This page documents a small warehouse-style learning project around staging, star schemas, and reporting questions. It is useful as a structured database study exercise, not as a finished production system.",
-    goal:
-      "It shows how I think about schema design, testing, and explaining tradeoffs in a compact example.",
-    nextMilestone:
-      "If I continue it, the next addition would be a fuller SCD2 example, clearer docs, and a small reporting view.",
-    stack: ["dbt", "Postgres / DuckDB", "Dimensional modeling", "Reporting example"],
-    scope: [
-      "Staging views and basic source checks for a small retail dataset.",
-      "A compact star-schema shape with dimensions and facts.",
-      "Simple SCD-style handling discussed as part of the modeling approach.",
+    summary:
+      "Internal portal for Erasmus+ staff mobility workflows with role-based access, case handling, document management, reporting, and bilingual support.",
+    whatItIs:
+      "This is an internal Erasmus+ staff mobility portal for South-West University. It is designed for staff members, officers, and admins who need one place to manage profiles, mobility cases, private documents, and reporting.",
+    problem:
+      "Staff mobility workflows involve registration, approvals, document handling, case review, and reporting. The portal turns that into one structured web application instead of a scattered manual process.",
+    implemented: [
+      "Credentials-based registration and login with approval-gated accounts.",
+      "Role-aware dashboards and workflows for staff, officers, and admins.",
+      "Editable staff profiles with faculty and department relationships.",
+      "Mobility case drafting, resuming, submission, review, comments, status changes, and archive paths.",
+      "Private document upload, version history, and permission-checked download handling.",
+      "Reporting views, filtered case lists, CSV export, audit logging, and English/Bulgarian language switching.",
     ],
-    status: [
-      "The page currently serves mainly as structured study notes for the schema and test ideas.",
-      "Concept tests in tests/projects cover integrity and SCD-style behavior related to this topic.",
-      "It should not be read as a finished warehouse implementation or production dashboard.",
+    stack: ["Next.js", "React", "TypeScript", "Prisma", "PostgreSQL", "NextAuth", "Zod", "Docker", "Vitest", "Playwright"],
+    demonstrates: [
+      "Building a database-backed web application around a real workflow instead of a toy CRUD example.",
+      "Handling authentication, role-based access, and approval logic in a way that matches actual users.",
+      "Working with reproducible local setup, test coverage, and documentation as part of the implementation.",
+      "Turning a university-domain process into a clearer technical system with traceable actions and reporting.",
     ],
-    plannedArtifacts: [
-      {
-        title: "Schema diagram",
-        description: "Could be added later to make the star-schema shape easier to inspect.",
-      },
-      {
-        title: "dbt docs snapshot",
-        description: "Could be added later if the project grows into a fuller documented example.",
-      },
-      {
-        title: "Reporting view",
-        description: "Could be added later to show how the modeled data answers a small reporting question.",
-      },
+    currentState:
+      "The repository contains a locally runnable v1 for internal use and evaluation. It is not presented here as a finished hosted production rollout.",
+    links: [
+      { label: "GitHub repo", href: "https://github.com/Nico-Ab/Erasmus-Website" },
+      { label: "Project docs", href: "https://github.com/Nico-Ab/Erasmus-Website/tree/master/docs" },
     ],
   },
   {
-    slug: "data-quality-lineage",
-    title: "Data Quality & Lineage Observatory",
-    href: "/projects/data-quality-lineage",
-    category: "data quality",
-    statusLabel: "study note",
+    slug: "german-learning-app",
+    title: "German Learning App",
+    href: "/projects/german-learning-app",
+    category: "android application",
+    navMeta: "android",
+    evidenceLabel: "repo + technical report",
     accentKey: "jade",
     summary:
-      "Notes on testing, expectations, and lineage in smaller database projects.",
-    overview:
-      "This page collects ideas around checks, lineage, and failure visibility for smaller data workflows. It is a technical note, not a completed observability product.",
-    goal:
-      "I kept it on the site because debugging, validation, and clear failure signals matter well beyond data-specific roles.",
-    nextMilestone:
-      "If I continue it, I would add a clearer failing-test demo and a simpler lineage view.",
-    stack: ["dbt tests", "DuckDB / pytest", "Expectation checks", "Documentation"],
-    scope: [
-      "Checks around nulls, ranges, duplicates, and broken assumptions.",
-      "Simple lineage thinking for smaller projects where dependencies still need to stay understandable.",
-      "A compact example of how validation can stop bad data from spreading.",
+      "Offline-first Android flashcard app with spaced repetition, deck-based studying, daily limits, and local persistence.",
+    whatItIs:
+      "This is a small Android flashcard app built to make vocabulary practice more structured while also serving as a real Android development project in Kotlin.",
+    problem:
+      "Vocabulary study gets harder to sustain when review is unstructured. The app uses spaced repetition and deck-level limits so studying stays manageable instead of turning into a long unsorted card list.",
+    implemented: [
+      "An SM-2-style study flow where card ratings update intervals, ease, and next review time.",
+      "Deck-based study sessions with due-card and new-card counts.",
+      "A configurable daily new-card limit so study sessions stay realistic.",
+      "Offline progress storage using Room, with no account or server required.",
+      "Settings and a layered data/domain/ui project structure to keep the codebase readable as features grow.",
     ],
-    status: [
-      "This page is currently a study-oriented write-up rather than a finished monitoring system.",
-      "The repo already includes concept tests around expectations and failing checks for this topic.",
-      "It should not be read as a production observability stack or completed lineage platform.",
+    stack: ["Kotlin", "Jetpack Compose", "Navigation Compose", "Room", "SQLite", "DataStore", "KSP"],
+    demonstrates: [
+      "Implementing domain logic in Kotlin instead of only wiring screens together.",
+      "Building Android UI with Compose while keeping persistence and business logic separated.",
+      "Thinking in offline-first terms and using local storage intentionally.",
+      "Using a personal-use product idea to practice architecture, state, and maintainable feature growth.",
     ],
-    plannedArtifacts: [
+    currentState:
+      "The core study flow and local persistence are implemented. Statistics, in-app editing, import/export, and broader test coverage are still work in progress.",
+    links: [
+      { label: "GitHub repo", href: "https://github.com/Nico-Ab/German_Learning_App" },
       {
-        title: "Expectation failure demo",
-        description: "Could be added later to make the validation story easier to inspect.",
-      },
-      {
-        title: "Lineage view",
-        description: "Could be added later as a simple dependency snapshot for the example models.",
-      },
-      {
-        title: "Validation notes",
-        description: "Could be added later to explain which checks matter most and why.",
+        label: "Technical report",
+        href: "https://github.com/Nico-Ab/German_Learning_App/blob/master/Technical-Document.pdf",
       },
     ],
   },
   {
-    slug: "cdc-warehouse",
-    title: "CDC -> Warehouse",
-    href: "/projects/cdc-warehouse",
-    category: "cdc / streaming",
-    statusLabel: "exploration",
+    slug: "linuxhost-tsn-plugin",
+    title: "Linux Host TSN / NETCONF Plugin",
+    href: "/projects/linuxhost-tsn-plugin",
+    category: "systems / networking project",
+    navMeta: "systems",
+    evidenceLabel: "repo + plugin code",
     accentKey: "cyan",
     summary:
-      "Exploratory notes on CDC, idempotent updates, and moving source changes into warehouse tables.",
-    overview:
-      "This page captures a smaller exploration of change-data-capture patterns and replay-safe updates. It is useful as a learning exercise around event-driven data movement, not as a deployed streaming system.",
-    goal:
-      "It shows interest in system behavior, correctness under replays, and how technical ideas move from concept tests to implementation.",
-    nextMilestone:
-      "If I continue it, I would add a clearer ingest-path example and a small current-state view.",
-    stack: ["Debezium", "Kafka / Redpanda", "Incremental models", "Customer 360"],
-    scope: [
-      "A source-database-to-target flow shaped around CDC concepts.",
-      "Replay-safe updates and idempotent handling as the core technical concern.",
-      "A compact example of how streaming ideas connect to warehouse-style storage.",
+      "Linux and networking project around configuring TSN talker/listener behavior through Sysrepo, NETCONF, and YANG.",
+    whatItIs:
+      "This project focuses on managing Linux hosts inside a TSN testbed. The repository contains a Sysrepo plugin and supporting environment for configuring talker/listener behavior through NETCONF and YANG-based configuration.",
+    problem:
+      "In TSN environments, the host side also needs structured configuration, not just the switches. This project brings Linux talker/listener configuration into a more controllable workflow using the same network-management ideas.",
+    implemented: [
+      "A Docker-based setup for working with the TSN host environment reproducibly.",
+      "C-based Sysrepo plugin code in the repository's plugin module.",
+      "YANG models and XML change examples for configuration paths.",
+      "Integration around Sysrepo and Netopeer2 so configuration changes can drive host-side behavior.",
+      "Supporting resources for UDP, VLAN, instructions, and related testbed material.",
     ],
-    status: [
-      "This page currently documents the idea and its important correctness concerns.",
-      "Concept tests in the repo already cover idempotent upsert behavior related to this topic.",
-      "It should not be read as a live deployed CDC pipeline.",
+    stack: ["C", "Linux", "Docker", "Sysrepo", "Netopeer2", "NETCONF", "YANG", "TSN"],
+    demonstrates: [
+      "Comfort with Linux-based technical environments and lower-level systems work.",
+      "Working across protocols, configuration models, and implementation details instead of staying only at UI level.",
+      "Reading standards and technical material, then turning that into a runnable development setup.",
+      "Connecting networking concepts to code, tooling, and reproducible experimentation.",
     ],
-    plannedArtifacts: [
-      {
-        title: "Pipeline trace",
-        description: "Could be added later to show the handoff from source changes to target tables.",
-      },
-      {
-        title: "Upsert logic note",
-        description: "Could be added later as a short replay-safe update example.",
-      },
-      {
-        title: "Current-state view",
-        description: "Could be added later as a compact view of what the ingest path is meant to support.",
-      },
-    ],
-  },
-  {
-    slug: "performance-governance",
-    title: "Performance & Governance",
-    href: "/projects/performance-governance",
-    category: "performance / governance",
-    statusLabel: "study note",
-    accentKey: "steel",
-    summary:
-      "Notes on query performance, masking rules, and simple governed data access.",
-    overview:
-      "This page documents a compact exploration around performance measurement and basic data-governance concerns. It is not presented as a complete operational policy system.",
-    goal:
-      "I kept it because tuning, access boundaries, and explainable tradeoffs are part of practical technical work.",
-    nextMilestone:
-      "If I continue it, I would add clearer benchmark evidence and a small masking example.",
-    stack: ["Query plans", "Partitioning / indexing", "Masking rules", "DSAR export"],
-    scope: [
-      "Before-and-after query plans and timings as a way to reason about performance.",
-      "Simple examples of masking or restricted views.",
-      "A small governed-access example to show why policy and implementation belong together.",
-    ],
-    status: [
-      "This page currently serves as a structured note around performance and access concerns.",
-      "The repo includes a concept benchmark test related to the measurement side of this topic.",
-      "It should not be read as a complete governance framework or finished policy implementation.",
-    ],
-    plannedArtifacts: [
-      {
-        title: "Benchmark ledger",
-        description: "Could be added later to show timings and plan deltas in a compact format.",
-      },
-      {
-        title: "Masking example",
-        description: "Could be added later to show how sensitive fields might be restricted or obscured.",
-      },
-      {
-        title: "Access example",
-        description: "Could be added later as a small governed retrieval example.",
-      },
+    currentState:
+      "This is best read as systems and testbed work rather than as a polished end-user product. The repository is strongest as code, environment, and technical implementation evidence.",
+    links: [
+      { label: "GitHub repo", href: "https://github.com/Nico-Ab/linuxhost" },
+      { label: "Project brief", href: "https://github.com/Nico-Ab/linuxhost/blob/main/project.md" },
     ],
   },
 ];

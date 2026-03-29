@@ -87,7 +87,7 @@ const isActive = (href: string) => {
           </div>
 
           <div class="nav-group">
-            <div class="nav-group__label">project notes</div>
+            <div class="nav-group__label">projects</div>
             {navProjects.map((project) => (
               <a class={`mobile-navlink ${isActive(project.url) ? "mobile-navlink-active" : ""}`} href={project.url}>
                 {project.title}
@@ -143,14 +143,14 @@ const isActive = (href: string) => {
             </div>
 
             <div class="nav-group">
-              <div class="nav-group__label">project notes</div>
+              <div class="nav-group__label">projects</div>
               {navProjects.map((project) => (
                 <a
                   class={`nav-tab accent-${project.accentKey} ${isActive(project.url) ? "nav-tab-active" : ""}`}
                   href={project.url}
                 >
                   <span>{project.title}</span>
-                  <span class="nav-tab__meta">{project.statusLabel}</span>
+                  <span class="nav-tab__meta">{project.navMeta}</span>
                 </a>
               ))}
             </div>

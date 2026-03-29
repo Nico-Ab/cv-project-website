@@ -6,18 +6,30 @@ export interface Props {
 }
 
 const { project } = Astro.props;
-const queryName = project.slug.replace(/-/g, "_");
 ---
 <section class={`case-study accent-${project.accentKey}`}>
   <header class="panel case-hero reveal" data-role="project-hero">
     <div class="case-hero__main">
       <div class="eyebrow-row">
         <span class="schema-label">{project.category}</span>
-        <span class="meta-chip">{project.statusLabel}</span>
+        <span class="meta-chip">{project.evidenceLabel}</span>
       </div>
 
       <h1 class="case-title">{project.title}</h1>
-      <p class="case-summary">{project.overview}</p>
+      <p class="case-summary">{project.summary}</p>
+
+      <div class="hero-actions project-actions">
+        {project.links.map((link, index) => (
+          <a
+            href={link.href}
+            class={index === 0 ? "btn-primary" : "btn-secondary"}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
 
       <div class="chip-row case-stack">
         {project.stack.map((item) => (
@@ -26,88 +38,63 @@ const queryName = project.slug.replace(/-/g, "_");
       </div>
     </div>
 
-    <div class="query-console case-query" data-role="query-console" aria-hidden="true">
-      <div class="query-console__bar">
-        <div class="query-console__dots">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-        <span class="schema-label">notes/{queryName}.md</span>
+    <aside class="case-facts" aria-label="Project facts">
+      <div class="meta-card case-fact">
+        <span class="meta-card__label">Project type</span>
+        <strong class="meta-card__value">{project.category}</strong>
       </div>
-      <div class="query-console__body">
-        <div class="query-line query-line--accent">title: "{project.title}"</div>
-        <div class="query-line">area: "{project.category}"</div>
-        <div class="query-line">note_type: "{project.statusLabel.toLowerCase()}"</div>
-        <div class="query-line">focus: "{project.summary}"</div>
-        <div class="query-line query-line--muted">status: "current scope and honest limitations"</div>
-        <div class="query-line query-line--accent">next_if_continued: "document the next practical addition"<span class="query-cursor"></span></div>
+      <div class="meta-card case-fact">
+        <span class="meta-card__label">Project proof</span>
+        <strong class="meta-card__value">{project.evidenceLabel}</strong>
       </div>
-      <div class="query-console__footer">This page records what the project covers today and what would still need to be built.</div>
-    </div>
+      <div class="meta-card case-fact">
+        <span class="meta-card__label">Current position</span>
+        <p class="case-fact__copy">{project.currentState}</p>
+      </div>
+    </aside>
   </header>
 
   <div class="case-grid">
     <article class="panel case-panel reveal">
       <div class="panel-header">
-        <span class="schema-label">current scope</span>
-        <span class="meta-inline">what this page covers</span>
+        <span class="schema-label">what it is</span>
+        <span class="meta-inline">project summary</span>
       </div>
-      <ul class="data-list">
-        {project.scope.map((item) => (
-          <li>{item}</li>
-        ))}
-      </ul>
+      <p class="section-copy">{project.whatItIs}</p>
     </article>
 
     <article class="panel case-panel reveal" style="transition-delay:.05s">
       <div class="panel-header">
-        <span class="schema-label">current state</span>
-        <span class="meta-inline">what is true today</span>
+        <span class="schema-label">problem it addresses</span>
+        <span class="meta-inline">why the work matters</span>
       </div>
-      <ul class="data-list">
-        {project.status.map((item) => (
-          <li>{item}</li>
-        ))}
-      </ul>
+      <p class="section-copy">{project.problem}</p>
     </article>
   </div>
 
   <div class="case-grid case-grid--lower">
     <article class="panel case-panel reveal">
       <div class="panel-header">
-        <span class="schema-label">possible additions</span>
-        <span class="meta-inline">not implemented yet</span>
+        <span class="schema-label">what I implemented</span>
+        <span class="meta-inline">real work in the repo</span>
       </div>
-      <div class="artifact-grid">
-        {project.plannedArtifacts.map((artifact) => (
-          <div class="artifact-slot">
-            <h3>{artifact.title}</h3>
-            <p>{artifact.description}</p>
-          </div>
+      <ul class="data-list">
+        {project.implemented.map((item) => (
+          <li>{item}</li>
         ))}
-      </div>
+      </ul>
     </article>
 
     <article class="panel case-panel reveal" style="transition-delay:.05s">
       <div class="panel-header">
-        <span class="schema-label">why it is here</span>
-        <span class="meta-inline">why I kept this note on the site</span>
+        <span class="schema-label">what it demonstrates</span>
+        <span class="meta-inline">skills shown by the work</span>
       </div>
-      <div class="delivery-lane">
-        <div class="delivery-row">
-          <span>Current focus</span>
-          <p>{project.summary}</p>
-        </div>
-        <div class="delivery-row">
-          <span>What it shows</span>
-          <p>{project.goal}</p>
-        </div>
-        <div class="delivery-row">
-          <span>If continued</span>
-          <p>{project.nextMilestone}</p>
-        </div>
-      </div>
+      <ul class="data-list">
+        {project.demonstrates.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
     </article>
   </div>
 </section>
