@@ -13,7 +13,7 @@ const queryName = project.slug.replace(/-/g, "_");
     <div class="case-hero__main">
       <div class="eyebrow-row">
         <span class="schema-label">{project.category}</span>
-        <span class="status-pill">{project.statusLabel}</span>
+        <span class="meta-chip">{project.statusLabel}</span>
       </div>
 
       <h1 class="case-title">{project.title}</h1>
@@ -33,28 +33,25 @@ const queryName = project.slug.replace(/-/g, "_");
           <span></span>
           <span></span>
         </div>
-        <span class="schema-label">plan/{queryName}.sql</span>
+        <span class="schema-label">notes/{queryName}.md</span>
       </div>
       <div class="query-console__body">
-        <div class="query-line query-line--accent">WITH active_project AS (</div>
-        <div class="query-line">  SELECT '{project.slug}' AS slug,</div>
-        <div class="query-line">         '{project.category}' AS category,</div>
-        <div class="query-line">         '{project.statusLabel.toLowerCase()}' AS status</div>
-        <div class="query-line">)</div>
-        <div class="query-line query-line--muted">SELECT next_milestone FROM active_project;</div>
-        <div class="query-line query-line--accent">
-          -- ready to ship<span class="query-cursor"></span>
-        </div>
+        <div class="query-line query-line--accent">title: "{project.title}"</div>
+        <div class="query-line">area: "{project.category}"</div>
+        <div class="query-line">note_type: "{project.statusLabel.toLowerCase()}"</div>
+        <div class="query-line">focus: "{project.summary}"</div>
+        <div class="query-line query-line--muted">status: "current scope and honest limitations"</div>
+        <div class="query-line query-line--accent">next_if_continued: "document the next practical addition"<span class="query-cursor"></span></div>
       </div>
-      <div class="query-console__footer">{project.nextMilestone}</div>
+      <div class="query-console__footer">This page records what the project covers today and what would still need to be built.</div>
     </div>
   </header>
 
   <div class="case-grid">
     <article class="panel case-panel reveal">
       <div class="panel-header">
-        <span class="schema-label">scope</span>
-        <span class="meta-inline">target build surface</span>
+        <span class="schema-label">current scope</span>
+        <span class="meta-inline">what this page covers</span>
       </div>
       <ul class="data-list">
         {project.scope.map((item) => (
@@ -65,8 +62,8 @@ const queryName = project.slug.replace(/-/g, "_");
 
     <article class="panel case-panel reveal" style="transition-delay:.05s">
       <div class="panel-header">
-        <span class="schema-label">status</span>
-        <span class="meta-inline">current implementation state</span>
+        <span class="schema-label">current state</span>
+        <span class="meta-inline">what is true today</span>
       </div>
       <ul class="data-list">
         {project.status.map((item) => (
@@ -79,8 +76,8 @@ const queryName = project.slug.replace(/-/g, "_");
   <div class="case-grid case-grid--lower">
     <article class="panel case-panel reveal">
       <div class="panel-header">
-        <span class="schema-label">planned artifacts</span>
-        <span class="meta-inline">reserved evidence slots</span>
+        <span class="schema-label">possible additions</span>
+        <span class="meta-inline">not implemented yet</span>
       </div>
       <div class="artifact-grid">
         {project.plannedArtifacts.map((artifact) => (
@@ -94,8 +91,8 @@ const queryName = project.slug.replace(/-/g, "_");
 
     <article class="panel case-panel reveal" style="transition-delay:.05s">
       <div class="panel-header">
-        <span class="schema-label">delivery lane</span>
-        <span class="meta-inline">why this project matters</span>
+        <span class="schema-label">why it is here</span>
+        <span class="meta-inline">why I kept this note on the site</span>
       </div>
       <div class="delivery-lane">
         <div class="delivery-row">
@@ -103,11 +100,11 @@ const queryName = project.slug.replace(/-/g, "_");
           <p>{project.summary}</p>
         </div>
         <div class="delivery-row">
-          <span>Goal</span>
+          <span>What it shows</span>
           <p>{project.goal}</p>
         </div>
         <div class="delivery-row">
-          <span>Next milestone</span>
+          <span>If continued</span>
           <p>{project.nextMilestone}</p>
         </div>
       </div>

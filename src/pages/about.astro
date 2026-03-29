@@ -3,21 +3,24 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { withBasePath } from "../data/projects";
 
 const base = import.meta.env.BASE_URL;
-const focusAreas = [
-  "Kimball-style dimensions and facts, SCD strategies, pragmatic naming, and testable model design.",
-  "dbt for transformations, incremental patterns, and orchestration foundations with Airflow or Prefect.",
-  "Data-quality checks and lightweight contracts that stop regressions before they spread.",
-  "Compact dashboards and docs that answer a clear business question instead of showing everything at once.",
+const implementedWork = [
+  "Implemented work on an Erasmus staff mobility portal for South-West University in a practical university environment.",
+  "A German learning app built in Kotlin with Android Studio.",
+  "Linux-based scripting, debugging, documentation, and repeatable technical workflows.",
+  "This portfolio site itself, which I use to present work clearly and keep the structure maintainable.",
 ];
 const toolbox = [
-  "SQL and warehouses: PostgreSQL and DuckDB.",
-  "Transformation: dbt.",
-  "Python: pandas plus small ETL / ELT utilities.",
-  "Platform: Docker, Git, and Linux Mint.",
-  "Streaming foundations: Kafka and Debezium.",
+  "Kotlin and Android Studio for app work.",
+  "Linux, Git, shell-based workflows, and practical troubleshooting.",
+  "SQL, scripting, and small technical utilities.",
+  "Astro and Tailwind on the web side, including this portfolio site.",
+  "Documentation that helps somebody else understand the setup and the change.",
 ];
 ---
-<BaseLayout title="About | Nico Abramowski">
+<BaseLayout
+  title="About | Nico Abramowski"
+  description="About Nico Abramowski: practical software, Android, Linux, scripting, and technical project work."
+>
   <section class="about-grid">
     <article class="panel dossier-summary accent-amber reveal">
       <div class="eyebrow-row">
@@ -27,9 +30,10 @@ const toolbox = [
 
       <h1 class="case-title">About Nico</h1>
       <p class="case-summary">
-        I'm Nico Abramowski, a B.Sc. Computer Science candidate at the University of Rostock. I'm building a career in
-        data warehousing and analytics engineering, with a bias toward clear dimensional models, reliable ELT flows, and
-        documentation that helps people trust what they are looking at.
+        I'm Nico Abramowski, at the end of my Computer Science studies at the University of Rostock. I'm most
+        comfortable in practical technical work where implementation, debugging, documentation, and reliability all
+        matter. Recent work includes an Erasmus staff mobility portal for South-West University and a German learning
+        app built with Kotlin and Android Studio.
       </p>
 
       <div class="hero-meta-grid about-meta-grid">
@@ -39,18 +43,18 @@ const toolbox = [
         </div>
         <div class="meta-card">
           <span class="meta-card__label">Studies</span>
-          <strong class="meta-card__value">B.Sc. Computer Science</strong>
+          <strong class="meta-card__value">Computer Science at the University of Rostock</strong>
         </div>
         <div class="meta-card">
-          <span class="meta-card__label">Bias</span>
-          <strong class="meta-card__value">Reliable, readable systems</strong>
+          <span class="meta-card__label">Working style</span>
+          <strong class="meta-card__value">Calm implementation, clear debugging, and usable documentation</strong>
         </div>
       </div>
     </article>
 
     <aside class="panel dossier-panel accent-cyan reveal" style="transition-delay:.05s">
       <div class="panel-header">
-        <span class="schema-label">contact endpoints</span>
+        <span class="schema-label">contact</span>
         <span class="meta-inline">where to reach me</span>
       </div>
 
@@ -80,11 +84,11 @@ const toolbox = [
   <section class="dossier-grid">
     <article class="panel dossier-panel reveal">
       <div class="panel-header">
-        <span class="schema-label">focus_areas</span>
-        <span class="meta-inline">current engineering interests</span>
+        <span class="schema-label">implemented_work</span>
+        <span class="meta-inline">recent practical work</span>
       </div>
       <ul class="data-list">
-        {focusAreas.map((item) => (
+        {implementedWork.map((item) => (
           <li>{item}</li>
         ))}
       </ul>
@@ -92,8 +96,20 @@ const toolbox = [
 
     <article class="panel dossier-panel accent-jade reveal" style="transition-delay:.04s">
       <div class="panel-header">
-        <span class="schema-label">toolbox</span>
-        <span class="meta-inline">working stack</span>
+        <span class="schema-label">technical_foundation</span>
+        <span class="meta-inline">what I bring to the work</span>
+      </div>
+      <p class="dossier-copy">
+        My background in Computer Science has given me a strong foundation in software development, databases, system
+        thinking, and structured problem solving. I like work where I can understand the full path from a problem to an
+        implementation, then debug it carefully and leave it in a better documented state.
+      </p>
+    </article>
+
+    <article class="panel dossier-panel accent-steel reveal" style="transition-delay:.08s">
+      <div class="panel-header">
+        <span class="schema-label">tools_and_workflow</span>
+        <span class="meta-inline">how I usually work</span>
       </div>
       <ul class="data-list">
         {toolbox.map((item) => (
@@ -102,25 +118,26 @@ const toolbox = [
       </ul>
     </article>
 
-    <article class="panel dossier-panel accent-steel reveal" style="transition-delay:.08s">
+    <article class="panel dossier-panel accent-cyan reveal" style="transition-delay:.12s">
       <div class="panel-header">
         <span class="schema-label">background</span>
         <span class="meta-inline">previous technical context</span>
       </div>
       <p class="dossier-copy">
-        Prior work included Linux networking, TSN / SDN, and scripting. That background shaped my preference for
-        repeatable systems, operational clarity, and designs that remain easy to inspect when something goes wrong.
+        Earlier technical work included Linux networking, TSN / SDN, and scripting. That background strengthened my
+        preference for repeatable setups, operational clarity, and systems that stay understandable when something goes
+        wrong.
       </p>
     </article>
 
-    <article class="panel dossier-panel accent-cyan reveal" style="transition-delay:.12s">
+    <article class="panel dossier-panel accent-amber reveal" style="transition-delay:.16s">
       <div class="panel-header">
         <span class="schema-label">what_i_am_looking_for</span>
         <span class="meta-inline">next role</span>
       </div>
       <p class="dossier-copy">
-        Entry-level roles in data warehousing or analytics engineering. I want to help ship clean models, tested
-        transformations, and dashboards that are grounded in the warehouse rather than disconnected from it.
+        I'm looking for junior software, web, QA automation, platform-adjacent, and other technical engineering roles
+        where I can contribute practically, keep learning quickly, and work close to real systems and users.
       </p>
     </article>
   </section>

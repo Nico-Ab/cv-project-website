@@ -22,7 +22,7 @@ const { project, href = project.href } = Astro.props;
 
   <div class="project-card__header">
     <span class="schema-label">{project.category}</span>
-    <span class="status-pill">{project.statusLabel}</span>
+    <span class="meta-inline">{project.statusLabel}</span>
   </div>
 
   <h3 class="project-card__title">{project.title}</h3>
@@ -34,6 +34,6 @@ const { project, href = project.href } = Astro.props;
         <span class="meta-chip">{item}</span>
       ))}
     </div>
-    <span class="project-card__open">open case file</span>
+    <span class="project-card__open">view notes</span>
   </div>
 </a>

@@ -6,41 +6,57 @@ import { projects, withBasePath } from "../data/projects";
 
 const base = import.meta.env.BASE_URL;
 const focusCards = [
-  { label: "Current role", value: "B.Sc. Computer Science candidate" },
-  { label: "Workbench", value: "Linux Mint + VS Code" },
-  { label: "Focus", value: "ELT, dbt, CDC, and data quality" },
-  { label: "Target role", value: "Analytics Engineering / Warehousing" },
+  { label: "Studies", value: "At the end of my Computer Science studies at the University of Rostock" },
+  { label: "Implemented work", value: "Erasmus portal and a Kotlin Android learning app" },
+  { label: "Working style", value: "Linux, scripting, documentation, and structured debugging" },
+  { label: "Role fit", value: "Junior software, web, QA automation, platform, and technical roles" },
 ];
-const roadmap = [
-  { id: "01", title: "DuckDB-WASM sandbox", state: "planned" },
-  { id: "02", title: "dbt docs snapshots", state: "queued" },
-  { id: "03", title: "Dashboard embeds", state: "queued" },
+const implementedWork = [
+  {
+    id: "WEB",
+    title: "Erasmus staff mobility portal",
+    detail: "Practical implementation work for South-West University in a university environment.",
+  },
+  {
+    id: "APP",
+    title: "German Learning App",
+    detail: "Built in Kotlin with Android Studio as a concrete mobile development project.",
+  },
+  {
+    id: "OPS",
+    title: "Linux-based technical work",
+    detail: "Scripting, troubleshooting, documentation, and reproducible workflows.",
+  },
 ];
-const deliveryRules = [
-  "Model grain and naming should stay readable before polish is added.",
-  "Tests and evidence should ship alongside the transformation logic.",
-  "Dashboards only matter if the warehouse layer answers a concrete question.",
+const technicalStrengths = [
+  "I prefer clear structure, readable code, and setups that can be reproduced later without guesswork.",
+  "When something breaks, I like to debug methodically and document both the cause and the fix.",
+  "My background in Computer Science has given me a strong foundation for moving between software, data, and system-oriented work.",
 ];
 ---
-<BaseLayout title="Nico Abramowski | Query Console Portfolio">
+<BaseLayout
+  title="Nico Abramowski | Technical Portfolio"
+  description="Portfolio of practical software, Android, Linux, scripting, and technical project work by Nico Abramowski."
+>
   <section class="home-hero">
     <article class="panel hero-panel accent-amber reveal">
       <div class="eyebrow-row">
-        <span class="schema-label">portfolio query console</span>
-        <span class="status-pill">4 project nodes active</span>
+        <span class="schema-label">technical portfolio</span>
+        <span class="status-pill">Open to junior roles</span>
       </div>
 
       <div class="hero-heading">
         <BrandMark compact={true} />
         <h1 class="hero-title">
-          Designing <span class="text-gradient">dimensional models</span> and warehouse flows that stay readable under pressure.
+          Software and technical work I can <span class="text-gradient">build, debug, and explain</span> clearly.
         </h1>
       </div>
 
       <p class="hero-copy">
-        I build dbt-centered ELT, dimensional models, and data-quality guardrails for practical reporting systems. This
-        site is structured like a working database console: current projects, implementation status, and the next
-        artifact to ship.
+        I'm Nico Abramowski, at the end of my Computer Science studies at the University of Rostock. My recent
+        implemented work includes an Erasmus staff mobility portal for South-West University, a German learning app in
+        Kotlin and Android Studio, and Linux-based scripting and documentation. I'm looking for junior roles where
+        careful implementation and technical reliability matter.
       </p>
 
       <div class="hero-actions">
@@ -65,27 +81,63 @@ const deliveryRules = [
           <span></span>
           <span></span>
         </div>
-        <span class="schema-label">console/candidate_profile.sql</span>
+        <span class="schema-label">profile/current_work.md</span>
       </div>
       <div class="query-console__body">
-        <div class="query-line query-line--accent">WITH candidate_profile AS (</div>
-        <div class="query-line">  SELECT 'nico_abramowski' AS engineer,</div>
-        <div class="query-line">         ARRAY['dbt', 'duckdb', 'postgres'] AS toolkit,</div>
-        <div class="query-line">         'clear warehouse design' AS mission</div>
-        <div class="query-line">)</div>
-        <div class="query-line query-line--muted">SELECT * FROM candidate_profile;</div>
-        <div class="query-line query-line--accent">-- active and shipping<span class="query-cursor"></span></div>
+        <div class="query-line query-line--accent">implemented_work: "Erasmus staff mobility portal"</div>
+        <div class="query-line">android_project: "German Learning App"</div>
+        <div class="query-line">environment: "Linux, Git, scripting, documentation"</div>
+        <div class="query-line">strength: "structured debugging and reproducibility"</div>
+        <div class="query-line query-line--muted">foundation: "Computer Science, University of Rostock"</div>
+        <div class="query-line query-line--accent">approach: "careful, practical, clear"<span class="query-cursor"></span></div>
       </div>
-      <div class="query-console__footer">Organized around warehouse builds, quality systems, CDC, and governance.</div>
+      <div class="query-console__footer">
+        Practical implementation, clear documentation, and technical work that can be understood and maintained.
+      </div>
+    </article>
+  </section>
+
+  <section class="home-bottom">
+    <article class="panel backlog-panel accent-jade reveal">
+      <div class="panel-header">
+        <span class="schema-label">implemented work</span>
+        <span class="meta-inline">recent practical experience</span>
+      </div>
+      <div class="backlog-list">
+        {implementedWork.map((item) => (
+          <div class="backlog-row">
+            <span class="backlog-row__id">{item.id}</span>
+            <div>
+              <strong>{item.title}</strong>
+              <p>{item.detail}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </article>
+
+    <article class="panel backlog-panel accent-steel reveal" style="transition-delay:.05s">
+      <div class="panel-header">
+        <span class="schema-label">technical approach</span>
+        <span class="meta-inline">how I like to work</span>
+      </div>
+      <ul class="data-list">
+        {technicalStrengths.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
     </article>
   </section>
 
   <section class="section-heading reveal">
     <div>
-      <span class="schema-label">project schema</span>
-      <h2>Active build sequence</h2>
+      <span class="schema-label">project notes</span>
+      <h2>Database and data explorations</h2>
     </div>
-    <p>Each project card tracks the problem space, the stack in play, and the next concrete milestone.</p>
+    <p>
+      These pages collect smaller database-focused study projects and technical notes. They remain part of the site,
+      but they are secondary to my implemented software and technical work.
+    </p>
   </section>
 
   <div class="project-grid">
@@ -95,36 +147,4 @@ const deliveryRules = [
       </div>
     ))}
   </div>
-
-  <section class="home-bottom">
-    <article class="panel backlog-panel accent-cyan reveal">
-      <div class="panel-header">
-        <span class="schema-label">roadmap</span>
-        <span class="meta-inline">next artifacts</span>
-      </div>
-      <div class="backlog-list">
-        {roadmap.map((item) => (
-          <div class="backlog-row">
-            <span class="backlog-row__id">{item.id}</span>
-            <div>
-              <strong>{item.title}</strong>
-              <p>{item.state}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </article>
-
-    <article class="panel backlog-panel accent-steel reveal" style="transition-delay:.05s">
-      <div class="panel-header">
-        <span class="schema-label">delivery rules</span>
-        <span class="meta-inline">how the portfolio grows</span>
-      </div>
-      <ul class="data-list">
-        {deliveryRules.map((item) => (
-          <li>{item}</li>
-        ))}
-      </ul>
-    </article>
-  </section>
 </BaseLayout>

@@ -4,8 +4,8 @@ import { projects, withBasePath } from "../data/projects";
 import "../styles/global.css";
 
 const {
-  title = "Nico Abramowski | Data Warehousing Portfolio",
-  description = "Portfolio and project walkthroughs for data warehousing and analytics engineering.",
+  title = "Nico Abramowski | Technical Portfolio",
+  description = "Portfolio of practical software, Android, Linux, scripting, and technical project work by Nico Abramowski.",
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL;
@@ -44,6 +44,7 @@ const isActive = (href: string) => {
     <script is:inline>
       (() => {
         try {
+          document.documentElement.classList.add("js");
           const saved = localStorage.getItem("theme");
           const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
@@ -61,13 +62,13 @@ const isActive = (href: string) => {
           <BrandMark compact={true} />
           <div class="brand-copy">
             <div class="brand-copy__title">Nico Abramowski</div>
-            <div class="brand-copy__meta">Warehouse / Analytics Engineering</div>
+            <div class="brand-copy__meta">Software, Linux, and Technical Work</div>
           </div>
         </a>
 
         <div class="mobile-shell__controls">
           <button class="mode-toggle themeToggle" aria-label="Toggle theme">
-            <span class="schema-label">mode</span>
+            <span class="schema-label">theme</span>
             <span data-theme-label>light</span>
           </button>
           <button id="mobileMenu" class="mode-toggle" aria-label="Menu" aria-controls="mobileNav" aria-expanded="false">
@@ -80,13 +81,13 @@ const isActive = (href: string) => {
       <nav id="mobileNav" class="mobile-drawer hidden">
         <div class="container-xl mobile-drawer__inner">
           <div class="nav-group">
-            <div class="nav-group__label">workspace</div>
+            <div class="nav-group__label">pages</div>
             <a class={`mobile-navlink ${isActive(overviewHref) ? "mobile-navlink-active" : ""}`} href={overviewHref}>Overview</a>
             <a class={`mobile-navlink ${isActive(aboutHref) ? "mobile-navlink-active" : ""}`} href={aboutHref}>About</a>
           </div>
 
           <div class="nav-group">
-            <div class="nav-group__label">project schema</div>
+            <div class="nav-group__label">project notes</div>
             {navProjects.map((project) => (
               <a class={`mobile-navlink ${isActive(project.url) ? "mobile-navlink-active" : ""}`} href={project.url}>
                 {project.title}
@@ -110,26 +111,27 @@ const isActive = (href: string) => {
             <BrandMark />
             <div class="brand-copy">
               <div class="brand-copy__title">Nico Abramowski</div>
-              <div class="brand-copy__meta">Warehouse / Analytics Engineering</div>
+              <div class="brand-copy__meta">Software, Linux, and Technical Work</div>
             </div>
           </a>
 
           <div class="sidebar-status panel accent-cyan">
             <div class="panel-header">
-              <span class="schema-label">workspace</span>
-              <span class="meta-inline">query console</span>
+              <span class="schema-label">profile</span>
+              <span class="meta-inline">current focus</span>
             </div>
             <p>
-              Portfolio organized like an active warehouse workspace with status, stack, and delivery notes.
+              At the end of my Computer Science studies at the University of Rostock, with practical work across software
+              implementation, Android, Linux-based workflows, and technical documentation.
             </p>
             <div class="sidebar-status__foot">
-              <span class="status-pill">4 project nodes active</span>
+              <span class="status-pill">Open to junior roles</span>
             </div>
           </div>
 
           <nav class="sidebar-nav">
             <div class="nav-group">
-              <div class="nav-group__label">workspace</div>
+              <div class="nav-group__label">pages</div>
               <a class={`nav-tab ${isActive(overviewHref) ? "nav-tab-active" : ""}`} href={overviewHref}>
                 <span>Overview</span>
                 <span class="nav-tab__meta">home</span>
@@ -141,14 +143,14 @@ const isActive = (href: string) => {
             </div>
 
             <div class="nav-group">
-              <div class="nav-group__label">project schema</div>
+              <div class="nav-group__label">project notes</div>
               {navProjects.map((project) => (
                 <a
                   class={`nav-tab accent-${project.accentKey} ${isActive(project.url) ? "nav-tab-active" : ""}`}
                   href={project.url}
                 >
                   <span>{project.title}</span>
-                  <span class="nav-tab__meta">{project.category}</span>
+                  <span class="nav-tab__meta">{project.statusLabel}</span>
                 </a>
               ))}
             </div>
@@ -168,7 +170,7 @@ const isActive = (href: string) => {
 
           <div class="sidebar-footer">
             <button class="mode-toggle themeToggle" aria-label="Toggle theme">
-              <span class="schema-label">mode</span>
+              <span class="schema-label">theme</span>
               <span data-theme-label>light</span>
             </button>
           </div>
