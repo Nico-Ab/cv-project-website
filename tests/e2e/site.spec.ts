@@ -77,6 +77,34 @@ test('desktop sidebar can scroll to the theme toggle', async ({ page }) => {
   await expect(themeToggle).toBeVisible();
 });
 
+test('sidebar profile card can scroll when its content exceeds the available height', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 560 });
+  await page.goto('./');
+
+  const profileCard = page.locator('[data-role="sidebar-profile"]');
+  await expect(profileCard).toBeVisible();
+
+  const scrollInfo = await profileCard.evaluate((node) => {
+    const element = node as HTMLElement;
+    const before = element.scrollTop;
+    element.scrollTop = element.scrollHeight;
+
+    return {
+      before,
+      after: element.scrollTop,
+      scrollHeight: element.scrollHeight,
+      clientHeight: element.clientHeight,
+      overflowY: getComputedStyle(element).overflowY,
+    };
+  });
+
+  expect(scrollInfo.overflowY).toBe('auto');
+
+  if (scrollInfo.scrollHeight > scrollInfo.clientHeight + 1) {
+    expect(scrollInfo.after).toBeGreaterThan(scrollInfo.before);
+  }
+});
+
 test('theme toggle works and persists', async ({ page }) => {
   await page.goto('./');
   const html = page.locator('html');
