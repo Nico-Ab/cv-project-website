@@ -1,4 +1,5 @@
 export type AccentKey = "amber" | "cyan" | "jade" | "steel";
+export type ProjectKind = "project" | "demo";
 
 export interface ProjectLink {
   label: string;
@@ -9,6 +10,7 @@ export interface ProjectRecord {
   slug: string;
   title: string;
   href: string;
+  kind: ProjectKind;
   category: string;
   navMeta: string;
   evidenceLabel: string;
@@ -33,6 +35,7 @@ export const projects: ProjectRecord[] = [
     slug: "erasmus-staff-mobility-portal",
     title: "Erasmus Staff Mobility Portal",
     href: "/projects/erasmus-staff-mobility-portal",
+    kind: "project",
     category: "university web application",
     navMeta: "web app",
     evidenceLabel: "repo + docs + tests",
@@ -63,12 +66,14 @@ export const projects: ProjectRecord[] = [
     links: [
       { label: "GitHub repo", href: "https://github.com/Nico-Ab/Erasmus-Website" },
       { label: "Project docs", href: "https://github.com/Nico-Ab/Erasmus-Website/tree/master/docs" },
+      { label: "Workflow demo", href: "/cv-project-website/projects/workflow-permissions-demo#demo" },
     ],
   },
   {
     slug: "german-learning-app",
     title: "German Learning App",
     href: "/projects/german-learning-app",
+    kind: "project",
     category: "android application",
     navMeta: "android",
     evidenceLabel: "repo + technical report",
@@ -101,12 +106,14 @@ export const projects: ProjectRecord[] = [
         label: "Technical report",
         href: "https://github.com/Nico-Ab/German_Learning_App/blob/master/Technical-Document.pdf",
       },
+      { label: "Review demo", href: "/cv-project-website/projects/review-scheduling-demo#demo" },
     ],
   },
   {
     slug: "linuxhost-tsn-plugin",
     title: "Linux Host TSN / NETCONF Plugin",
     href: "/projects/linuxhost-tsn-plugin",
+    kind: "project",
     category: "systems / networking project",
     navMeta: "systems",
     evidenceLabel: "repo + plugin code",
@@ -136,6 +143,114 @@ export const projects: ProjectRecord[] = [
     links: [
       { label: "GitHub repo", href: "https://github.com/Nico-Ab/linuxhost" },
       { label: "Project brief", href: "https://github.com/Nico-Ab/linuxhost/blob/main/project.md" },
+    ],
+  },
+  {
+    slug: "browser-sql-reporting-demo",
+    title: "Browser SQL Reporting Demo",
+    href: "/projects/browser-sql-reporting-demo",
+    kind: "demo",
+    category: "interactive technical demo",
+    navMeta: "live demo",
+    evidenceLabel: "live demo + code",
+    accentKey: "steel",
+    summary:
+      "Run real SQL in the browser against a small sample dataset inspired by staff mobility reporting.",
+    whatItIs:
+      "This is a small in-browser SQL and reporting demo built directly into the portfolio. It uses a local sample dataset and a browser-side SQLite engine so visitors can explore joins, aggregates, and result tables without leaving the site.",
+    problem:
+      "A portfolio can talk about databases and reporting, but an interactive demo is stronger evidence than static copy. This page gives a compact way to show schema thinking, query design, and result presentation in one place.",
+    implemented: [
+      "A local SQLite database running in the browser through sql.js.",
+      "A small relational sample dataset modeled around staff members, mobility cases, and case documents.",
+      "Preset reporting queries for joins, counts, averages, and missing-document checks.",
+      "An editable SQL query box with run, reset, empty-state, and error-state handling.",
+      "A schema explorer and result table designed to stay readable on desktop and mobile screens.",
+    ],
+    stack: ["Astro", "sql.js", "SQLite", "JavaScript", "HTML", "CSS"],
+    demonstrates: [
+      "Turning relational data into a small, understandable interactive tool instead of a static mockup.",
+      "Working with schema design, SQL queries, aggregates, joins, and practical result presentation.",
+      "Shipping a browser-safe technical demo that is self-contained, fast, and honest about its scope.",
+      "Using the portfolio itself as a place to demonstrate implementation, not only describe it.",
+    ],
+    currentState:
+      "This is a portfolio demo that runs locally in the browser with sample data only. It is meant to demonstrate technical thinking, not to stand in for a production reporting system.",
+    links: [
+      { label: "GitHub repo", href: "https://github.com/Nico-Ab/cv-project-website" },
+      { label: "Open demo", href: "/cv-project-website/projects/browser-sql-reporting-demo#demo" },
+    ],
+  },
+  {
+    slug: "workflow-permissions-demo",
+    title: "Workflow & Permissions Demo",
+    href: "/projects/workflow-permissions-demo",
+    kind: "demo",
+    category: "interactive workflow demo",
+    navMeta: "live demo",
+    evidenceLabel: "live demo + logic",
+    accentKey: "amber",
+    summary:
+      "Role-based workflow simulator inspired by the Erasmus portal work, with blocked actions, document review, status transitions, and audit history.",
+    whatItIs:
+      "This is a compact in-browser workflow simulator inspired by the kinds of case handling and permissions logic involved in the Erasmus staff mobility portal work. It uses one sample case and simplified rules so the interaction stays easy to understand.",
+    problem:
+      "Workflow-heavy applications need more than forms. They need clear state transitions, role boundaries, document review rules, and a visible record of what changed. This demo turns those ideas into something interactive and inspectable.",
+    implemented: [
+      "Role switching between staff, officer, and admin views.",
+      "Permission checks that allow or block actions based on the current role and case state.",
+      "Status transitions for draft, submission, correction, decision, approval, and archive paths.",
+      "Document state handling for missing, pending review, approved, and needs-update cases.",
+      "An audit-style activity log that records each successful workflow change.",
+    ],
+    stack: ["Astro", "JavaScript", "HTML", "CSS", "State logic", "UI flows"],
+    demonstrates: [
+      "Thinking in application workflows instead of only page layouts.",
+      "Mapping business rules into small but real permission and state transitions.",
+      "Keeping a process-oriented UI readable while still showing why actions are allowed or blocked.",
+      "Using the portfolio itself to show web-application logic inspired by real project work.",
+    ],
+    currentState:
+      "This is a small portfolio simulator with sample data and simplified rules. It is intentionally presented as a demo inspired by the real portal work, not as the actual university system.",
+    links: [
+      { label: "GitHub repo", href: "https://github.com/Nico-Ab/cv-project-website" },
+      { label: "Open demo", href: "/cv-project-website/projects/workflow-permissions-demo#demo" },
+    ],
+  },
+  {
+    slug: "review-scheduling-demo",
+    title: "Review Scheduling Demo",
+    href: "/projects/review-scheduling-demo",
+    kind: "demo",
+    category: "interactive learning demo",
+    navMeta: "live demo",
+    evidenceLabel: "live demo + ux logic",
+    accentKey: "jade",
+    summary:
+      "Compact spaced-repetition review demo inspired by the German Learning App, with ratings, progress, and next-review scheduling.",
+    whatItIs:
+      "This is a small browser demo inspired by the review flow of the German Learning App. It focuses on the user-facing part of the experience: seeing a card, revealing the answer, rating recall, and watching the next review timing update immediately.",
+    problem:
+      "Learning tools are not only about storing cards. They also need a clear review flow, understandable scheduling feedback, and an interface that helps users stay oriented while moving through repeated study sessions.",
+    implemented: [
+      "A sample review queue with visible progress through the current session.",
+      "Answer reveal before rating so the review flow mirrors a real flashcard interaction.",
+      "Hard, medium, and easy ratings that update interval, ease, and next-review timing.",
+      "A session log and deck overview so the scheduling effect is visible after each review.",
+      "A compact, browser-friendly UI that keeps the product flow understandable on desktop and mobile.",
+    ],
+    stack: ["Astro", "JavaScript", "HTML", "CSS", "State logic", "UX flow"],
+    demonstrates: [
+      "Implementing user-facing product logic instead of only building technical back-office tools.",
+      "Translating a learning flow into understandable state transitions and feedback.",
+      "Thinking about clarity, pacing, and progressive disclosure in a small interactive interface.",
+      "Using the portfolio to show practical product-minded implementation inspired by real app work.",
+    ],
+    currentState:
+      "This is a compact browser demo with sample cards and simplified scheduling rules. It is inspired by the Android app's review flow, not presented as the full app in another form.",
+    links: [
+      { label: "GitHub repo", href: "https://github.com/Nico-Ab/cv-project-website" },
+      { label: "Open demo", href: "/cv-project-website/projects/review-scheduling-demo#demo" },
     ],
   },
 ];

@@ -13,6 +13,7 @@ const { project, href = project.href } = Astro.props;
   class={`project-card panel accent-${project.accentKey}`}
   data-role="project-card"
   data-accent={project.accentKey}
+  data-project-kind={project.kind}
 >
   <div class="project-card__header">
     <span class="schema-label">{project.category}</span>
@@ -28,6 +29,6 @@ const { project, href = project.href } = Astro.props;
         <span class="meta-chip">{item}</span>
       ))}
     </div>
-    <span class="project-card__open">View project</span>
+    <span class="project-card__open">{project.kind === "demo" ? "Open demo" : "View project"}</span>
   </div>
 </a>

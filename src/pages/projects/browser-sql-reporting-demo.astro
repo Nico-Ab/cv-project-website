@@ -1,0 +1,13 @@
+---
+import SqlReportingDemo from "../../components/SqlReportingDemo.astro";
+import { getProjectBySlug } from "../../data/projects";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const project = getProjectBySlug("browser-sql-reporting-demo");
+---
+<BaseLayout
+  title={`${project.title} | Project`}
+  description="Interactive in-browser SQL reporting demo using a local sample dataset and browser-side SQLite."
+>
+  <SqlReportingDemo project={project} />
+</BaseLayout>

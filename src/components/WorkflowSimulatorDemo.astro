@@ -1,0 +1,742 @@
+---
+import type { ProjectRecord } from "../data/projects";
+import {
+  workflowDemoInitialState,
+  workflowRoleOptions,
+  workflowStages,
+} from "../data/workflowDemo";
+
+export interface Props {
+  project: ProjectRecord;
+}
+
+const { project } = Astro.props;
+const demoConfig = JSON.stringify({
+  initialState: workflowDemoInitialState,
+  roles: workflowRoleOptions,
+  stages: workflowStages,
+});
+---
+<section class={`case-study accent-${project.accentKey}`}>
+  <header class="panel case-hero reveal" data-role="project-hero">
+    <div class="case-hero__main">
+      <div class="eyebrow-row">
+        <span class="schema-label">{project.category}</span>
+        <span class="meta-inline">{project.evidenceLabel}</span>
+      </div>
+
+      <h1 class="case-title">{project.title}</h1>
+      <p class="case-summary">{project.summary}</p>
+
+      <div class="hero-actions project-actions">
+        <a href="#demo" class="btn-primary">Open demo</a>
+        <a href="https://github.com/Nico-Ab/cv-project-website" class="btn-secondary" target="_blank" rel="noreferrer">
+          GitHub repo
+        </a>
+      </div>
+
+      <div class="chip-row case-stack">
+        {project.stack.map((item) => (
+          <span class="meta-chip">{item}</span>
+        ))}
+      </div>
+    </div>
+
+    <aside class="case-facts" aria-label="Demo facts">
+      <div class="meta-card case-fact">
+        <span class="meta-card__label">What you can do</span>
+        <p class="case-fact__copy">Switch roles, attempt actions, and watch permissions, status, documents, and audit history update together.</p>
+      </div>
+      <div class="meta-card case-fact">
+        <span class="meta-card__label">What it is not</span>
+        <p class="case-fact__copy">
+          This is a compact workflow simulator inspired by the portal work, not the real South-West University
+          deployment.
+        </p>
+      </div>
+    </aside>
+  </header>
+
+  <div class="case-grid">
+    <article class="panel case-panel reveal">
+      <div class="panel-header">
+        <span class="schema-label">What it demonstrates</span>
+      </div>
+      <ul class="data-list">
+        {project.demonstrates.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </article>
+
+    <article class="panel case-panel reveal" style="transition-delay:.05s">
+      <div class="panel-header">
+        <span class="schema-label">What to try</span>
+      </div>
+      <ul class="data-list">
+        <li>Stay on the staff role and try to submit immediately to see the blocked state.</li>
+        <li>Upload the missing agreement, submit the case, then switch to officer review.</li>
+        <li>Try forwarding the case too early, then approve the pending documents and move it to decision.</li>
+        <li>Switch to admin to approve and archive the case, or reset the simulator and explore the correction path.</li>
+      </ul>
+    </article>
+  </div>
+
+  <div class="workflow-demo-grid" id="demo">
+    <article class="panel case-panel workflow-demo-panel reveal">
+      <div class="panel-header workflow-demo-toolbar">
+        <span class="schema-label">Workflow simulator</span>
+        <button type="button" class="btn-secondary" id="workflow-demo-reset">Reset demo</button>
+      </div>
+
+      <p class="section-copy">
+        This simulator uses one sample mobility case with simplified rules. It is meant to show how role-based
+        workflows, permissions, review steps, and audit history can fit together in a compact web application.
+      </p>
+
+      <div class="workflow-role-switch" role="group" aria-label="Choose demo role">
+        {workflowRoleOptions.map((role, index) => (
+          <button
+            type="button"
+            class={`workflow-role-button ${index === 0 ? "workflow-role-button-active" : ""}`}
+            data-workflow-role-switch={role.id}
+            aria-pressed={index === 0 ? "true" : "false"}
+          >
+            {role.label}
+          </button>
+        ))}
+      </div>
+
+      <div class="workflow-fact-grid">
+        <div class="meta-card workflow-fact">
+          <span class="meta-card__label">Case</span>
+          <strong class="meta-card__value">{workflowDemoInitialState.caseId}</strong>
+        </div>
+        <div class="meta-card workflow-fact">
+          <span class="meta-card__label">Applicant</span>
+          <strong class="meta-card__value">{workflowDemoInitialState.applicantName}</strong>
+        </div>
+        <div class="meta-card workflow-fact">
+          <span class="meta-card__label">Current role</span>
+          <strong class="meta-card__value" id="workflow-demo-current-role">{workflowRoleOptions[0].label}</strong>
+        </div>
+        <div class="meta-card workflow-fact">
+          <span class="meta-card__label">Current status</span>
+          <strong class="workflow-status-value workflow-status-value--draft" id="workflow-demo-status">Draft</strong>
+        </div>
+      </div>
+
+      <div id="workflow-demo-feedback" class="workflow-feedback hidden" aria-live="polite"></div>
+
+      <div class="workflow-action-list" id="workflow-demo-actions"></div>
+    </article>
+
+    <aside class="panel case-panel workflow-demo-sidebar reveal" style="transition-delay:.05s">
+      <div class="panel-header">
+        <span class="schema-label">Documents and permissions</span>
+        <span class="meta-inline" id="workflow-demo-allowed-count">0 actions available</span>
+      </div>
+
+      <div class="workflow-role-summary">
+        <span class="meta-card__label">Current role summary</span>
+        <strong class="workflow-role-name" id="workflow-demo-role-name">{workflowRoleOptions[0].label}</strong>
+        <p class="section-copy" id="workflow-demo-role-summary">{workflowRoleOptions[0].summary}</p>
+        <ul class="workflow-brief-list" id="workflow-demo-role-responsibilities"></ul>
+      </div>
+
+      <div class="workflow-doc-list" id="workflow-demo-docs"></div>
+    </aside>
+  </div>
+
+  <div class="workflow-demo-grid workflow-demo-grid--lower">
+    <article class="panel case-panel reveal">
+      <div class="panel-header">
+        <span class="schema-label">Workflow stages</span>
+      </div>
+      <p class="section-copy" id="workflow-demo-stage-note">
+        Staff is still preparing the case and required documents.
+      </p>
+      <div class="workflow-stage-list" id="workflow-demo-stages"></div>
+    </article>
+
+    <article class="panel case-panel reveal" style="transition-delay:.05s">
+      <div class="panel-header">
+        <span class="schema-label">Activity log</span>
+        <span class="meta-inline" id="workflow-demo-log-count">3 entries</span>
+      </div>
+      <ol class="workflow-log" id="workflow-demo-log"></ol>
+    </article>
+  </div>
+
+  <noscript>
+    <div class="workflow-feedback">
+      This interactive simulator needs JavaScript enabled. The surrounding page still describes what the demo is meant
+      to show.
+    </div>
+  </noscript>
+
+  <script type="application/json" id="workflow-demo-config" set:html={demoConfig}></script>
+
+  <script>
+    const configNode = document.getElementById("workflow-demo-config");
+
+    if (configNode) {
+      const config = JSON.parse(configNode.textContent || "{}");
+      const roleButtons = Array.from(document.querySelectorAll("[data-workflow-role-switch]"));
+      const actionListNode = document.getElementById("workflow-demo-actions");
+      const currentRoleNode = document.getElementById("workflow-demo-current-role");
+      const statusNode = document.getElementById("workflow-demo-status");
+      const roleNameNode = document.getElementById("workflow-demo-role-name");
+      const roleSummaryNode = document.getElementById("workflow-demo-role-summary");
+      const roleResponsibilitiesNode = document.getElementById("workflow-demo-role-responsibilities");
+      const allowedCountNode = document.getElementById("workflow-demo-allowed-count");
+      const documentsNode = document.getElementById("workflow-demo-docs");
+      const stageNoteNode = document.getElementById("workflow-demo-stage-note");
+      const stagesNode = document.getElementById("workflow-demo-stages");
+      const logNode = document.getElementById("workflow-demo-log");
+      const logCountNode = document.getElementById("workflow-demo-log-count");
+      const feedbackNode = document.getElementById("workflow-demo-feedback");
+      const resetButton = document.getElementById("workflow-demo-reset");
+
+      const roleMap = Object.fromEntries(config.roles.map((role) => [role.id, role]));
+      const stageMap = Object.fromEntries(config.stages.map((stage) => [stage.id, stage]));
+      const statusLabels = {
+        draft: "Draft",
+        submitted: "Submitted",
+        changes_requested: "Changes requested",
+        ready_for_decision: "Ready for decision",
+        approved: "Approved",
+        archived: "Archived",
+      };
+      const statusToneClasses = {
+        draft: "workflow-status-value--draft",
+        submitted: "workflow-status-value--submitted",
+        changes_requested: "workflow-status-value--changes",
+        ready_for_decision: "workflow-status-value--decision",
+        approved: "workflow-status-value--approved",
+        archived: "workflow-status-value--archived",
+      };
+      const documentLabels = {
+        missing: "Missing",
+        uploaded: "Pending review",
+        approved: "Approved",
+        needs_update: "Needs update",
+      };
+      const documentToneClasses = {
+        missing: "workflow-doc-state--missing",
+        uploaded: "workflow-doc-state--uploaded",
+        approved: "workflow-doc-state--approved",
+        needs_update: "workflow-doc-state--changes",
+      };
+
+      const cloneInitialState = () => JSON.parse(JSON.stringify(config.initialState));
+      let state = cloneInitialState();
+
+      const setFeedback = (kind, text) => {
+        if (!feedbackNode) return;
+        feedbackNode.textContent = text;
+        feedbackNode.className = `workflow-feedback workflow-feedback--${kind}`;
+      };
+
+      const clearFeedback = () => {
+        if (!feedbackNode) return;
+        feedbackNode.textContent = "";
+        feedbackNode.className = "workflow-feedback hidden";
+      };
+
+      const getDocument = (id) => state.documents.find((document) => document.id === id);
+      const getRequiredDocuments = () => state.documents.filter((document) => document.required);
+      const requiredDocumentsPrepared = () =>
+        getRequiredDocuments().every((document) => document.state === "uploaded" || document.state === "approved");
+      const requiredDocumentsApproved = () => getRequiredDocuments().every((document) => document.state === "approved");
+      const uploadedDocuments = () => state.documents.filter((document) => document.state === "uploaded");
+
+      const addHistory = (actor, action, detail) => {
+        state.history.push({
+          id: state.nextHistoryId,
+          actor,
+          action,
+          detail,
+        });
+        state.nextHistoryId += 1;
+      };
+
+      const visitStage = (status) => {
+        if (!state.visitedStages.includes(status)) {
+          state.visitedStages.push(status);
+        }
+      };
+
+      const changeStatus = (status) => {
+        state.status = status;
+        visitStage(status);
+      };
+
+      const allowed = (reason) => ({ allowed: true, reason });
+      const blocked = (reason) => ({ allowed: false, reason });
+
+      const actionDefinitions = {
+        staff: [
+          {
+            id: "upload_signed_agreement",
+            label: "Upload signed agreement",
+            description: "Add the missing agreement file so the case can move toward submission.",
+            availability: () => {
+              const agreement = getDocument("signed_agreement");
+
+              if (state.status === "archived") {
+                return blocked("The case is archived. Reset the simulator to continue.");
+              }
+
+              if (state.status === "submitted" || state.status === "ready_for_decision" || state.status === "approved") {
+                return blocked("Staff uploads are only available while preparing or correcting the case.");
+              }
+
+              if (agreement?.state === "missing" || agreement?.state === "needs_update") {
+                return allowed("This satisfies the last missing agreement step before submission.");
+              }
+
+              return blocked("The signed agreement is already attached to the case.");
+            },
+            run: () => {
+              const agreement = getDocument("signed_agreement");
+              if (!agreement) return "The agreement document could not be found.";
+
+              agreement.state = "uploaded";
+              agreement.note = "Uploaded by staff and now waiting for officer review.";
+              addHistory("staff", "Uploaded signed agreement", "The missing agreement is now attached to the case.");
+
+              return "Signed agreement uploaded. The case is closer to being ready for submission.";
+            },
+          },
+          {
+            id: "upload_revised_budget",
+            label: "Upload revised budget form",
+            description: "Replace the budget form after officer review sends the case back for correction.",
+            availability: () => {
+              const budgetForm = getDocument("budget_form");
+
+              if (state.status !== "changes_requested" || budgetForm?.state !== "needs_update") {
+                return blocked("A revised budget form is only needed after the officer requests that correction.");
+              }
+
+              return allowed("This replaces the flagged budget form and prepares the case for resubmission.");
+            },
+            run: () => {
+              const budgetForm = getDocument("budget_form");
+              if (!budgetForm) return "The budget form could not be found.";
+
+              budgetForm.state = "uploaded";
+              budgetForm.note = "Revised by staff and waiting for officer review again.";
+              addHistory("staff", "Uploaded revised budget form", "The requested budget correction has been provided.");
+
+              return "Revised budget form uploaded. The case can now be resubmitted for officer review.";
+            },
+          },
+          {
+            id: "submit_case",
+            label: "Submit case",
+            description: "Move the case from staff preparation into officer review.",
+            availability: () => {
+              if (state.status === "archived") {
+                return blocked("Archived cases cannot be submitted again in this demo.");
+              }
+
+              if (state.status !== "draft" && state.status !== "changes_requested") {
+                return blocked("Only draft cases or returned cases can be submitted.");
+              }
+
+              const blockingDocument = getRequiredDocuments().find(
+                (document) => document.state === "missing" || document.state === "needs_update",
+              );
+
+              if (blockingDocument) {
+                return blocked(`${blockingDocument.label} still needs attention before the case can be submitted.`);
+              }
+
+              return allowed("This sends the case to officer review with the current document set.");
+            },
+            run: () => {
+              const wasReturned = state.status === "changes_requested";
+              changeStatus("submitted");
+              addHistory(
+                "staff",
+                wasReturned ? "Resubmitted case" : "Submitted case",
+                "The case moved into officer review.",
+              );
+
+              return wasReturned
+                ? "Case resubmitted. Officer review can continue."
+                : "Case submitted. The next step belongs to officer review.";
+            },
+          },
+        ],
+        officer: [
+          {
+            id: "approve_pending_documents",
+            label: "Approve pending documents",
+            description: "Review and approve the uploaded documents that are currently waiting.",
+            availability: () => {
+              if (state.status !== "submitted") {
+                return blocked("Documents can be approved only while the case is under officer review.");
+              }
+
+              const pendingDocuments = uploadedDocuments();
+              if (!pendingDocuments.length) {
+                return blocked("There are no uploaded documents waiting for review right now.");
+              }
+
+              return allowed(`This will approve ${pendingDocuments.length} pending document(s).`);
+            },
+            run: () => {
+              const pendingDocuments = uploadedDocuments();
+              pendingDocuments.forEach((document) => {
+                document.state = "approved";
+                document.note = "Reviewed and approved by the officer.";
+              });
+
+              addHistory(
+                "officer",
+                "Approved pending documents",
+                `Approved ${pendingDocuments.map((document) => document.label).join(", ")}.`,
+              );
+
+              return "Pending documents approved. The case can move to the decision stage once review is complete.";
+            },
+          },
+          {
+            id: "request_budget_update",
+            label: "Request budget update",
+            description: "Return the case to staff with a targeted correction request for the budget form.",
+            availability: () => {
+              const budgetForm = getDocument("budget_form");
+
+              if (state.status !== "submitted") {
+                return blocked("Changes can be requested only after the case has been submitted.");
+              }
+
+              if (!budgetForm || budgetForm.state === "missing") {
+                return blocked("A budget form needs to exist before the officer can request an update.");
+              }
+
+              return allowed("This returns the case to staff and flags the budget form for correction.");
+            },
+            run: () => {
+              const budgetForm = getDocument("budget_form");
+              if (!budgetForm) return "The budget form could not be found.";
+
+              budgetForm.state = "needs_update";
+              budgetForm.note = "Officer requested a corrected version before the case can continue.";
+              changeStatus("changes_requested");
+              addHistory(
+                "officer",
+                "Requested budget update",
+                "The case returned to staff because the budget form needs correction.",
+              );
+
+              return "Changes requested. Staff now needs to replace the budget form and resubmit the case.";
+            },
+          },
+          {
+            id: "forward_to_admin",
+            label: "Forward to admin",
+            description: "Complete officer review and move the case to the final decision stage.",
+            availability: () => {
+              if (state.status !== "submitted") {
+                return blocked("Only submitted cases can move to the final decision stage.");
+              }
+
+              if (!requiredDocumentsApproved()) {
+                return blocked("All required documents must be approved before the case can move forward.");
+              }
+
+              return allowed("The case is ready to leave officer review and move to admin decision.");
+            },
+            run: () => {
+              changeStatus("ready_for_decision");
+              addHistory(
+                "officer",
+                "Forwarded case to admin",
+                "Officer review is complete and the case is ready for the final decision stage.",
+              );
+
+              return "Case forwarded. Admin can now review the finished officer package.";
+            },
+          },
+        ],
+        admin: [
+          {
+            id: "approve_case",
+            label: "Approve case",
+            description: "Record the final approval once the case is ready for decision.",
+            availability: () => {
+              if (state.status !== "ready_for_decision") {
+                return blocked("The case must be ready for decision before admin approval is allowed.");
+              }
+
+              return allowed("This records the final approval for the sample case.");
+            },
+            run: () => {
+              changeStatus("approved");
+              addHistory("admin", "Approved case", "Final approval recorded in the demo workflow.");
+
+              return "Case approved. The workflow can now be closed and archived.";
+            },
+          },
+          {
+            id: "archive_case",
+            label: "Archive case",
+            description: "Close the finished case once the workflow is complete.",
+            availability: () => {
+              if (state.status !== "approved") {
+                return blocked("Only approved cases can be archived in this demo.");
+              }
+
+              return allowed("This closes the case and marks the workflow as complete.");
+            },
+            run: () => {
+              changeStatus("archived");
+              addHistory("admin", "Archived case", "The case was closed in the workflow simulator.");
+
+              return "Case archived. Reset the simulator to run through the workflow again.";
+            },
+          },
+        ],
+      };
+
+      const renderRoleButtons = () => {
+        roleButtons.forEach((button) => {
+          const isActive = button.dataset.workflowRoleSwitch === state.currentRole;
+          button.classList.toggle("workflow-role-button-active", isActive);
+          button.setAttribute("aria-pressed", isActive ? "true" : "false");
+        });
+      };
+
+      const renderRoleSummary = () => {
+        const role = roleMap[state.currentRole];
+        const availableActions = actionDefinitions[state.currentRole].filter((action) => action.availability().allowed).length;
+
+        if (currentRoleNode) currentRoleNode.textContent = role.label;
+        if (roleNameNode) roleNameNode.textContent = role.label;
+        if (roleSummaryNode) roleSummaryNode.textContent = role.summary;
+        if (allowedCountNode) {
+          allowedCountNode.textContent = `${availableActions} action${availableActions === 1 ? "" : "s"} available`;
+        }
+
+        if (roleResponsibilitiesNode) {
+          roleResponsibilitiesNode.innerHTML = "";
+          role.responsibilities.forEach((item) => {
+            const listItem = document.createElement("li");
+            listItem.textContent = item;
+            roleResponsibilitiesNode.appendChild(listItem);
+          });
+        }
+      };
+
+      const renderStatus = () => {
+        if (!statusNode) return;
+        statusNode.textContent = statusLabels[state.status];
+        statusNode.className = `workflow-status-value ${statusToneClasses[state.status]}`;
+      };
+
+      const renderActions = () => {
+        if (!actionListNode) return;
+        actionListNode.innerHTML = "";
+
+        actionDefinitions[state.currentRole].forEach((action) => {
+          const availability = action.availability();
+          const card = document.createElement("article");
+          card.className = `workflow-action-card ${availability.allowed ? "workflow-action-card--allowed" : "workflow-action-card--blocked"}`;
+
+          const head = document.createElement("div");
+          head.className = "workflow-action-head";
+
+          const title = document.createElement("h3");
+          title.textContent = action.label;
+          head.appendChild(title);
+
+          const badge = document.createElement("span");
+          badge.className = `workflow-action-badge ${availability.allowed ? "workflow-action-badge--allowed" : "workflow-action-badge--blocked"}`;
+          badge.textContent = availability.allowed ? "Allowed" : "Blocked";
+          head.appendChild(badge);
+
+          const description = document.createElement("p");
+          description.className = "workflow-action-copy";
+          description.textContent = action.description;
+
+          const reason = document.createElement("p");
+          reason.className = "workflow-action-reason";
+          reason.textContent = availability.reason;
+
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "btn-secondary workflow-action-button";
+          button.textContent = action.label;
+          button.setAttribute("data-workflow-action", action.id);
+          button.addEventListener("click", () => {
+            const latestAvailability = action.availability();
+            if (!latestAvailability.allowed) {
+              setFeedback("blocked", latestAvailability.reason);
+              renderActions();
+              return;
+            }
+
+            const message = action.run();
+            setFeedback("success", message);
+            render();
+          });
+
+          card.appendChild(head);
+          card.appendChild(description);
+          card.appendChild(reason);
+          card.appendChild(button);
+          actionListNode.appendChild(card);
+        });
+      };
+
+      const renderDocuments = () => {
+        if (!documentsNode) return;
+        documentsNode.innerHTML = "";
+
+        state.documents.forEach((doc) => {
+          const card = document.createElement("article");
+          card.className = "workflow-doc-card";
+          card.setAttribute("data-workflow-doc", doc.id);
+
+          const head = document.createElement("div");
+          head.className = "workflow-doc-head";
+
+          const titleWrap = document.createElement("div");
+          titleWrap.className = "workflow-doc-title";
+
+          const title = document.createElement("h3");
+          title.textContent = doc.label;
+          titleWrap.appendChild(title);
+
+          if (doc.required) {
+            const requiredChip = document.createElement("span");
+            requiredChip.className = "meta-chip";
+            requiredChip.textContent = "Required";
+            titleWrap.appendChild(requiredChip);
+          }
+
+          const stateBadge = document.createElement("span");
+          stateBadge.className = `workflow-doc-state ${documentToneClasses[doc.state]}`;
+          stateBadge.textContent = documentLabels[doc.state];
+          stateBadge.setAttribute("data-workflow-doc-state", doc.id);
+
+          head.appendChild(titleWrap);
+          head.appendChild(stateBadge);
+
+          const note = document.createElement("p");
+          note.className = "workflow-doc-note";
+          note.textContent = doc.note;
+
+          card.appendChild(head);
+          card.appendChild(note);
+          documentsNode.appendChild(card);
+        });
+      };
+
+      const renderStages = () => {
+        if (!stagesNode) return;
+        stagesNode.innerHTML = "";
+
+        config.stages.forEach((stage) => {
+          const card = document.createElement("article");
+          const isCurrent = stage.id === state.status;
+          const isVisited = state.visitedStages.includes(stage.id);
+
+          card.className = `workflow-stage ${isCurrent ? "workflow-stage--current" : isVisited ? "workflow-stage--done" : "workflow-stage--upcoming"}`;
+
+          const label = document.createElement("strong");
+          label.textContent = stage.label;
+
+          const note = document.createElement("p");
+          note.textContent = stage.note;
+
+          card.appendChild(label);
+          card.appendChild(note);
+          stagesNode.appendChild(card);
+        });
+
+        if (stageNoteNode) {
+          stageNoteNode.textContent = stageMap[state.status].note;
+        }
+      };
+
+      const renderLog = () => {
+        if (!logNode) return;
+        logNode.innerHTML = "";
+
+        const entries = [...state.history].reverse();
+        entries.forEach((entry) => {
+          const item = document.createElement("li");
+          item.className = "workflow-log-item";
+
+          const meta = document.createElement("div");
+          meta.className = "workflow-log-meta";
+
+          const counter = document.createElement("span");
+          counter.className = "workflow-log-id";
+          counter.textContent = String(entry.id).padStart(2, "0");
+
+          const actor = document.createElement("span");
+          actor.className = "workflow-log-actor";
+          actor.textContent = entry.actor;
+
+          meta.appendChild(counter);
+          meta.appendChild(actor);
+
+          const body = document.createElement("div");
+          body.className = "workflow-log-body";
+
+          const action = document.createElement("strong");
+          action.textContent = entry.action;
+
+          const detail = document.createElement("p");
+          detail.textContent = entry.detail;
+
+          body.appendChild(action);
+          body.appendChild(detail);
+
+          item.appendChild(meta);
+          item.appendChild(body);
+          logNode.appendChild(item);
+        });
+
+        if (logCountNode) {
+          logCountNode.textContent = `${state.history.length} entries`;
+        }
+      };
+
+      const render = () => {
+        renderRoleButtons();
+        renderRoleSummary();
+        renderStatus();
+        renderActions();
+        renderDocuments();
+        renderStages();
+        renderLog();
+      };
+
+      roleButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const nextRole = button.dataset.workflowRoleSwitch;
+          if (!nextRole || nextRole === state.currentRole) return;
+          state.currentRole = nextRole;
+          clearFeedback();
+          render();
+        });
+      });
+
+      resetButton?.addEventListener("click", () => {
+        state = cloneInitialState();
+        clearFeedback();
+        render();
+      });
+
+      render();
+    }
+  </script>
+</section>

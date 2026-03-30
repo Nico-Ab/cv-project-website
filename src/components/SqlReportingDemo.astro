@@ -1,0 +1,412 @@
+---
+import type { ProjectRecord } from "../data/projects";
+import {
+  sqlDemoDefaultQuery,
+  sqlDemoPresets,
+  sqlDemoSchema,
+  sqlDemoSeedSql,
+} from "../data/sqlDemo";
+
+export interface Props {
+  project: ProjectRecord;
+}
+
+const { project } = Astro.props;
+const demoConfig = JSON.stringify({
+  defaultQuery: sqlDemoDefaultQuery,
+  presets: sqlDemoPresets,
+  schema: sqlDemoSchema,
+  seedSql: sqlDemoSeedSql,
+});
+---
+<section class={`case-study accent-${project.accentKey}`}>
+  <header class="panel case-hero reveal" data-role="project-hero">
+    <div class="case-hero__main">
+      <div class="eyebrow-row">
+        <span class="schema-label">{project.category}</span>
+        <span class="meta-inline">{project.evidenceLabel}</span>
+      </div>
+
+      <h1 class="case-title">{project.title}</h1>
+      <p class="case-summary">{project.summary}</p>
+
+      <div class="hero-actions project-actions">
+        <a href="#demo" class="btn-primary">Open demo</a>
+        <a href="https://github.com/Nico-Ab/cv-project-website" class="btn-secondary" target="_blank" rel="noreferrer">
+          GitHub repo
+        </a>
+      </div>
+
+      <div class="chip-row case-stack">
+        {project.stack.map((item) => (
+          <span class="meta-chip">{item}</span>
+        ))}
+      </div>
+    </div>
+
+    <aside class="case-facts" aria-label="Demo facts">
+      <div class="meta-card case-fact">
+        <span class="meta-card__label">What you can do</span>
+        <p class="case-fact__copy">Run preset queries, edit SQL, inspect the schema, and view results immediately.</p>
+      </div>
+      <div class="meta-card case-fact">
+        <span class="meta-card__label">How it runs</span>
+        <p class="case-fact__copy">
+          The demo uses <code>sql.js</code>, which compiles SQLite to WebAssembly. The sample dataset stays entirely in
+          your browser.
+        </p>
+      </div>
+    </aside>
+  </header>
+
+  <div class="case-grid">
+    <article class="panel case-panel reveal">
+      <div class="panel-header">
+        <span class="schema-label">What it demonstrates</span>
+      </div>
+      <ul class="data-list">
+        {project.demonstrates.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </article>
+
+    <article class="panel case-panel reveal" style="transition-delay:.05s">
+      <div class="panel-header">
+        <span class="schema-label">What to try</span>
+      </div>
+      <ul class="data-list">
+        <li>Use a preset to inspect the sample mobility data.</li>
+        <li>Edit the SQL and rerun it to compare filters, joins, and aggregates.</li>
+        <li>Use the schema panel to see which tables and columns are available.</li>
+        <li>Try an invalid query to see how errors are handled without breaking the page.</li>
+      </ul>
+    </article>
+  </div>
+
+  <div class="sql-demo-grid" id="demo">
+    <article class="panel case-panel sql-demo-panel reveal">
+      <div class="panel-header">
+        <span class="schema-label">Interactive demo</span>
+        <span class="meta-inline" id="sql-demo-status" aria-live="polite">Loading local SQLite engine...</span>
+      </div>
+
+      <p class="section-copy">
+        This demo uses a small sample dataset inspired by staff mobility reporting. It is a technical demo only, not a
+        production reporting system, and it resets whenever the page reloads.
+      </p>
+
+      <div class="sql-demo-presets" role="list">
+        {sqlDemoPresets.map((preset, index) => (
+          <button
+            type="button"
+            class={`sql-demo-preset ${index === 0 ? "sql-demo-preset-active" : ""}`}
+            data-sql-preset={preset.id}
+            aria-pressed={index === 0 ? "true" : "false"}
+          >
+            <span>{preset.label}</span>
+            <small>{preset.description}</small>
+          </button>
+        ))}
+      </div>
+
+      <label class="sql-demo-label" for="sql-demo-editor">
+        <span class="meta-card__label">SQL query</span>
+        <span class="meta-inline">Only <code>SELECT</code>, <code>WITH</code>, and <code>PRAGMA</code> queries are allowed.</span>
+      </label>
+      <textarea
+        id="sql-demo-editor"
+        class="sql-demo-editor"
+        rows="12"
+        spellcheck="false"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+      >{sqlDemoDefaultQuery}</textarea>
+
+      <div class="hero-actions sql-demo-actions">
+        <button type="button" class="btn-primary" id="sql-demo-run">Run query</button>
+        <button type="button" class="btn-secondary" id="sql-demo-reset">Reset query</button>
+      </div>
+
+      <div id="sql-demo-error" class="sql-demo-message sql-demo-message--error hidden" role="alert"></div>
+    </article>
+
+    <aside class="panel case-panel sql-demo-sidebar reveal" style="transition-delay:.05s">
+      <div class="panel-header">
+        <span class="schema-label">Schema explorer</span>
+        <span class="meta-inline">sample tables</span>
+      </div>
+
+      <div class="sql-demo-schema-list">
+        {sqlDemoSchema.map((table) => (
+          <article class="sql-demo-schema-card">
+            <div class="sql-demo-schema-head">
+              <h3>{table.name}</h3>
+              <span class="meta-inline" data-sql-rowcount={table.name}>rows: --</span>
+            </div>
+            <p>{table.description}</p>
+            <div class="chip-row">
+              {table.columns.map((column) => (
+                <span class="meta-chip">{column}</span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </aside>
+  </div>
+
+  <section class="panel case-panel reveal">
+    <div class="panel-header">
+      <span class="schema-label">Query results</span>
+      <span class="meta-inline" id="sql-demo-metrics" aria-live="polite">No query run yet</span>
+    </div>
+
+    <div id="sql-demo-empty" class="sql-demo-message">
+      Run a preset query or edit the SQL to inspect the sample data.
+    </div>
+
+    <div id="sql-demo-results" class="sql-demo-results hidden">
+      <div class="sql-demo-table-wrap">
+        <table class="sql-demo-table">
+          <thead id="sql-demo-head"></thead>
+          <tbody id="sql-demo-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <script type="application/json" id="sql-demo-config" set:html={demoConfig}></script>
+
+  <script>
+    import initSqlJs from "sql.js";
+    import wasmUrl from "sql.js/dist/sql-wasm.wasm?url";
+
+    const configNode = document.getElementById("sql-demo-config");
+    if (configNode) {
+      const config = JSON.parse(configNode.textContent || "{}");
+      const editor = document.getElementById("sql-demo-editor");
+      const runButton = document.getElementById("sql-demo-run");
+      const resetButton = document.getElementById("sql-demo-reset");
+      const statusNode = document.getElementById("sql-demo-status");
+      const metricsNode = document.getElementById("sql-demo-metrics");
+      const errorNode = document.getElementById("sql-demo-error");
+      const emptyNode = document.getElementById("sql-demo-empty");
+      const resultsNode = document.getElementById("sql-demo-results");
+      const headNode = document.getElementById("sql-demo-head");
+      const bodyNode = document.getElementById("sql-demo-body");
+      const presetButtons = Array.from(document.querySelectorAll("[data-sql-preset]"));
+      const rowCountNodes = Array.from(document.querySelectorAll("[data-sql-rowcount]"));
+
+      let database;
+      let sqlEngine;
+
+      const setStatus = (text) => {
+        if (statusNode) statusNode.textContent = text;
+      };
+
+      const setMetrics = (text) => {
+        if (metricsNode) metricsNode.textContent = text;
+      };
+
+      const showError = (text) => {
+        if (!errorNode) return;
+        errorNode.textContent = text;
+        errorNode.classList.remove("hidden");
+      };
+
+      const hideError = () => {
+        if (!errorNode) return;
+        errorNode.textContent = "";
+        errorNode.classList.add("hidden");
+      };
+
+      const showEmpty = (text) => {
+        if (emptyNode) {
+          emptyNode.textContent = text;
+          emptyNode.classList.remove("hidden");
+        }
+
+        if (resultsNode) {
+          resultsNode.classList.add("hidden");
+        }
+      };
+
+      const showResults = () => {
+        emptyNode?.classList.add("hidden");
+        resultsNode?.classList.remove("hidden");
+      };
+
+      const updatePresetState = (activeId) => {
+        presetButtons.forEach((button) => {
+          const isActive = button.dataset.sqlPreset === activeId;
+          button.classList.toggle("sql-demo-preset-active", isActive);
+          button.setAttribute("aria-pressed", isActive ? "true" : "false");
+        });
+      };
+
+      const updateRowCounts = () => {
+        if (!database) return;
+
+        rowCountNodes.forEach((node) => {
+          const tableName = node.getAttribute("data-sql-rowcount");
+          if (!tableName) return;
+
+          const result = database.exec(`SELECT COUNT(*) AS count FROM ${tableName};`);
+          const count = result?.[0]?.values?.[0]?.[0] ?? 0;
+          node.textContent = `rows: ${count}`;
+        });
+      };
+
+      const clearResultTable = () => {
+        if (headNode) headNode.innerHTML = "";
+        if (bodyNode) bodyNode.innerHTML = "";
+      };
+
+      const renderResult = (result) => {
+        if (!headNode || !bodyNode) return;
+
+        clearResultTable();
+
+        const headRow = document.createElement("tr");
+        result.columns.forEach((column) => {
+          const th = document.createElement("th");
+          th.textContent = String(column);
+          headRow.appendChild(th);
+        });
+        headNode.appendChild(headRow);
+
+        result.values.forEach((row) => {
+          const tr = document.createElement("tr");
+          row.forEach((value) => {
+            const td = document.createElement("td");
+            td.textContent = value === null ? "NULL" : String(value);
+            tr.appendChild(td);
+          });
+          bodyNode.appendChild(tr);
+        });
+      };
+
+      const runQuery = (sql) => {
+        const trimmed = sql.trim();
+        hideError();
+
+        if (!database || !sqlEngine) {
+          showError("The demo is still loading. Please try again in a moment.");
+          clearResultTable();
+          return;
+        }
+
+        if (!trimmed) {
+          showError("Enter a query or choose a preset before running the demo.");
+          clearResultTable();
+          return;
+        }
+
+        if (!/^(select|with|pragma)\b/i.test(trimmed)) {
+          showError("This demo only allows SELECT, WITH, or PRAGMA queries so the sample dataset stays stable.");
+          setMetrics("Query blocked");
+          showEmpty("Read-only query mode keeps the sample database stable.");
+          clearResultTable();
+          return;
+        }
+
+        try {
+          const resultSets = database.exec(trimmed);
+
+          if (!resultSets.length) {
+            setMetrics("0 rows");
+            showEmpty("The query ran successfully but returned no result set.");
+            setStatus("Ready for another query.");
+            clearResultTable();
+            return;
+          }
+
+          const result = resultSets[0];
+
+          if (!result.values.length) {
+            setMetrics(`0 rows, ${result.columns.length} columns`);
+            showEmpty("The query ran successfully but returned no rows.");
+            setStatus("Ready for another query.");
+            clearResultTable();
+            return;
+          }
+
+          renderResult(result);
+          showResults();
+          setMetrics(`${result.values.length} rows, ${result.columns.length} columns`);
+          setStatus("Query ran locally in your browser.");
+        } catch (error) {
+          const message = error instanceof Error ? error.message : "The query could not be executed.";
+          showError(message);
+          setMetrics("Query error");
+          showEmpty("Fix the SQL and run it again.");
+          setStatus("The demo stayed loaded. Adjust the query and retry.");
+          clearResultTable();
+        }
+      };
+
+      const fillQuery = (sql, presetId) => {
+        if (!editor) return;
+        editor.value = sql;
+        updatePresetState(presetId);
+      };
+
+      const resetQuery = () => {
+        fillQuery(config.defaultQuery, config.presets[0]?.id);
+        hideError();
+        setMetrics("No query run yet");
+        showEmpty("Run a preset query or edit the SQL to inspect the sample data.");
+        clearResultTable();
+        setStatus("Ready with the starter query.");
+      };
+
+      runButton?.addEventListener("click", () => {
+        if (!editor) return;
+        runQuery(editor.value);
+      });
+
+      resetButton?.addEventListener("click", () => {
+        resetQuery();
+      });
+
+      editor?.addEventListener("keydown", (event) => {
+        if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+          event.preventDefault();
+          runQuery(editor.value);
+        }
+      });
+
+      presetButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const presetId = button.dataset.sqlPreset;
+          const preset = config.presets.find((entry) => entry.id === presetId);
+          if (!preset) return;
+          fillQuery(preset.sql, preset.id);
+          runQuery(preset.sql);
+        });
+      });
+
+      const initialize = async () => {
+        try {
+          setStatus("Loading local SQLite engine...");
+          sqlEngine = await initSqlJs({
+            locateFile: () => wasmUrl,
+          });
+          database = new sqlEngine.Database();
+          database.run(config.seedSql);
+          updateRowCounts();
+          resetQuery();
+          setStatus("Ready: run a preset query or edit the SQL.");
+        } catch (error) {
+          const message = error instanceof Error ? error.message : "The SQL demo could not be initialized.";
+          showError(message);
+          setStatus("The demo could not be loaded in this browser.");
+        }
+      };
+
+      initialize();
+    }
+  </script>
+</section>

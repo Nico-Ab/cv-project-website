@@ -1,0 +1,13 @@
+---
+import ReviewSchedulerDemo from "../../components/ReviewSchedulerDemo.astro";
+import { getProjectBySlug } from "../../data/projects";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const project = getProjectBySlug("review-scheduling-demo");
+---
+<BaseLayout
+  title={`${project.title} | Project`}
+  description="Interactive spaced-repetition review demo inspired by the German Learning App."
+>
+  <ReviewSchedulerDemo project={project} />
+</BaseLayout>

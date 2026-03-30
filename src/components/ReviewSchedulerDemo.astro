@@ -1,0 +1,483 @@
+---
+import type { ProjectRecord } from "../data/projects";
+import { reviewDemoInitialState, reviewRatingOptions } from "../data/reviewDemo";
+
+export interface Props {
+  project: ProjectRecord;
+}
+
+const { project } = Astro.props;
+const initialCard = reviewDemoInitialState.cards[0];
+const demoConfig = JSON.stringify({
+  initialState: reviewDemoInitialState,
+  ratings: reviewRatingOptions,
+});
+---
+<section class={`case-study accent-${project.accentKey}`}>
+  <header class="panel case-hero reveal" data-role="project-hero">
+    <div class="case-hero__main">
+      <div class="eyebrow-row">
+        <span class="schema-label">{project.category}</span>
+        <span class="meta-inline">{project.evidenceLabel}</span>
+      </div>
+
+      <h1 class="case-title">{project.title}</h1>
+      <p class="case-summary">{project.summary}</p>
+
+      <div class="hero-actions project-actions">
+        <a href="#demo" class="btn-primary">Open demo</a>
+        <a href="https://github.com/Nico-Ab/cv-project-website" class="btn-secondary" target="_blank" rel="noreferrer">
+          GitHub repo
+        </a>
+      </div>
+
+      <div class="chip-row case-stack">
+        {project.stack.map((item) => (
+          <span class="meta-chip">{item}</span>
+        ))}
+      </div>
+    </div>
+
+    <aside class="case-facts" aria-label="Demo facts">
+      <div class="meta-card case-fact">
+        <span class="meta-card__label">What you can do</span>
+        <p class="case-fact__copy">Review sample cards, reveal answers, rate recall, and watch progress and next-review timing update immediately.</p>
+      </div>
+      <div class="meta-card case-fact">
+        <span class="meta-card__label">What it is not</span>
+        <p class="case-fact__copy">
+          This is a compact browser demo inspired by the Android app's review flow, not the full Kotlin app running in
+          another shell.
+        </p>
+      </div>
+    </aside>
+  </header>
+
+  <div class="case-grid">
+    <article class="panel case-panel reveal">
+      <div class="panel-header">
+        <span class="schema-label">What it demonstrates</span>
+      </div>
+      <ul class="data-list">
+        {project.demonstrates.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </article>
+
+    <article class="panel case-panel reveal" style="transition-delay:.05s">
+      <div class="panel-header">
+        <span class="schema-label">What to try</span>
+      </div>
+      <ul class="data-list">
+        <li>Reveal the answer before rating so the review flow stays deliberate.</li>
+        <li>Use different ratings and compare how the next-review timing changes.</li>
+        <li>Watch the deck overview and session log update after each card.</li>
+        <li>Finish the queue and reset the session to run through another path.</li>
+      </ul>
+    </article>
+  </div>
+
+  <div class="review-demo-grid" id="demo">
+    <article class="panel case-panel review-demo-panel reveal">
+      <div class="panel-header review-demo-toolbar">
+        <span class="schema-label">Review flow simulator</span>
+        <button type="button" class="btn-secondary" id="review-demo-reset">Reset session</button>
+      </div>
+
+      <p class="section-copy">
+        This demo uses a small sample queue and simplified spacing rules. The goal is to show the review loop clearly:
+        prompt, reveal, rating, scheduling feedback, and steady session progress.
+      </p>
+
+      <div class="review-demo-summary">
+        <div class="meta-card review-demo-summary-card">
+          <span class="meta-card__label">Progress</span>
+          <strong class="meta-card__value" id="review-demo-progress">0 / {reviewDemoInitialState.cards.length} reviewed</strong>
+        </div>
+        <div class="meta-card review-demo-summary-card">
+          <span class="meta-card__label">Remaining today</span>
+          <strong class="meta-card__value" id="review-demo-remaining">{reviewDemoInitialState.cards.length} cards due</strong>
+        </div>
+        <div class="meta-card review-demo-summary-card">
+          <span class="meta-card__label">Current step</span>
+          <strong class="meta-card__value" id="review-demo-current-step">Reveal the answer, then rate recall.</strong>
+        </div>
+      </div>
+
+      <div id="review-demo-feedback" class="review-demo-feedback hidden" aria-live="polite"></div>
+
+      <article class="review-card" id="review-demo-card">
+        <div class="review-card__header">
+          <span class="schema-label">Card {1} of {reviewDemoInitialState.cards.length}</span>
+          <span class="meta-inline" id="review-demo-card-status">Due now</span>
+        </div>
+
+        <div class="review-card__body">
+          <p class="review-card__prompt" id="review-demo-card-front">{initialCard.front}</p>
+          <div class="review-card__answer hidden" id="review-demo-answer">
+            <strong>{initialCard.back}</strong>
+            <p>{initialCard.example}</p>
+          </div>
+        </div>
+
+        <div class="hero-actions review-demo-actions">
+          <button type="button" class="btn-primary" id="review-demo-show-answer">Show answer</button>
+          <div class="review-rating-group">
+            {reviewRatingOptions.map((rating) => (
+              <button
+                type="button"
+                class="btn-secondary review-rating-button"
+                data-review-rating={rating.id}
+                disabled
+              >
+                {rating.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </article>
+    </article>
+
+    <aside class="panel case-panel review-demo-sidebar reveal" style="transition-delay:.05s">
+      <div class="panel-header">
+        <span class="schema-label">Scheduling idea</span>
+        <span class="meta-inline">sample rules</span>
+      </div>
+
+      <div class="review-demo-rating-list">
+        {reviewRatingOptions.map((rating) => (
+          <article class="review-demo-rating-card">
+            <div class="review-demo-rating-head">
+              <strong>{rating.label}</strong>
+            </div>
+            <p>{rating.note}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="review-demo-note">
+        <span class="meta-card__label">What changes after each rating</span>
+        <p class="section-copy">The demo updates interval length, ease, and next-review timing so the effect stays visible instead of hidden behind the session.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="review-demo-grid review-demo-grid--lower">
+    <article class="panel case-panel reveal">
+      <div class="panel-header">
+        <span class="schema-label">Deck overview</span>
+        <span class="meta-inline" id="review-demo-next">The first card is ready to review.</span>
+      </div>
+      <div class="review-deck-list" id="review-demo-deck">
+        {reviewDemoInitialState.cards.map((card, index) => (
+          <article class={`review-deck-card ${index === 0 ? "review-deck-card--current" : ""}`} data-review-card={card.id}>
+            <div class="review-deck-card__head">
+              <h3>{card.front}</h3>
+              <span class={`review-deck-state ${index === 0 ? "review-deck-state--current" : ""}`} data-review-session-state={card.id}>
+                {index === 0 ? "Current" : "Due"}
+              </span>
+            </div>
+            <p>{card.back}</p>
+            <div class="chip-row">
+              <span class="meta-chip" data-review-next-label={card.id}>Due now</span>
+              <span class="meta-chip" data-review-interval-label={card.id}>interval {Math.max(1, card.intervalDays)}d</span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </article>
+
+    <article class="panel case-panel reveal" style="transition-delay:.05s">
+      <div class="panel-header">
+        <span class="schema-label">Session log</span>
+        <span class="meta-inline" id="review-demo-log-count">No reviews yet</span>
+      </div>
+      <ol class="review-log" id="review-demo-log">
+        <li class="review-log-item review-log-item--empty">Rate a card to start the session log.</li>
+      </ol>
+    </article>
+  </div>
+
+  <script type="application/json" id="review-demo-config" set:html={demoConfig}></script>
+
+  <script>
+    const configNode = document.getElementById("review-demo-config");
+
+    if (configNode) {
+      const config = JSON.parse(configNode.textContent || "{}");
+      const showAnswerButton = document.getElementById("review-demo-show-answer");
+      const resetButton = document.getElementById("review-demo-reset");
+      const answerNode = document.getElementById("review-demo-answer");
+      const progressNode = document.getElementById("review-demo-progress");
+      const remainingNode = document.getElementById("review-demo-remaining");
+      const currentStepNode = document.getElementById("review-demo-current-step");
+      const feedbackNode = document.getElementById("review-demo-feedback");
+      const cardFrontNode = document.getElementById("review-demo-card-front");
+      const cardStatusNode = document.getElementById("review-demo-card-status");
+      const nextNode = document.getElementById("review-demo-next");
+      const logNode = document.getElementById("review-demo-log");
+      const logCountNode = document.getElementById("review-demo-log-count");
+      const ratingButtons = Array.from(document.querySelectorAll("[data-review-rating]"));
+
+      const enhanceCards = (cards) =>
+        cards.map((card) => ({
+          ...card,
+          reviewed: false,
+          lastRating: null,
+          nextReviewLabel: "Due now",
+        }));
+
+      const cloneInitialState = () => {
+        const initial = JSON.parse(JSON.stringify(config.initialState));
+        initial.cards = enhanceCards(initial.cards);
+        return initial;
+      };
+
+      let state = cloneInitialState();
+      let answerVisible = false;
+
+      const ratingMap = Object.fromEntries(config.ratings.map((rating) => [rating.id, rating]));
+
+      const currentCard = () => state.cards[state.currentIndex] || null;
+
+      const setFeedback = (kind, text) => {
+        if (!feedbackNode) return;
+        feedbackNode.textContent = text;
+        feedbackNode.className = `review-demo-feedback review-demo-feedback--${kind}`;
+      };
+
+      const clearFeedback = () => {
+        if (!feedbackNode) return;
+        feedbackNode.textContent = "";
+        feedbackNode.className = "review-demo-feedback hidden";
+      };
+
+      const formatNextReview = (days) => {
+        if (days <= 1) return "Tomorrow";
+        return `In ${days} days`;
+      };
+
+      const roundEase = (value) => Math.round(value * 100) / 100;
+
+      const calculateSchedule = (card, rating) => {
+        const baseInterval = Math.max(1, card.intervalDays || 1);
+
+        if (rating === "hard") {
+          const nextIntervalDays = card.repetitions === 0 ? 1 : Math.max(1, Math.round(baseInterval * 1.35));
+          return {
+            nextIntervalDays,
+            nextEaseFactor: roundEase(Math.max(1.7, card.easeFactor - 0.12)),
+          };
+        }
+
+        if (rating === "easy") {
+          const nextIntervalDays =
+            card.repetitions === 0 ? 5 : Math.max(3, Math.round(baseInterval * (card.easeFactor + 0.35)));
+          return {
+            nextIntervalDays,
+            nextEaseFactor: roundEase(card.easeFactor + 0.08),
+          };
+        }
+
+        const nextIntervalDays = card.repetitions === 0 ? 3 : Math.max(2, Math.round(baseInterval * card.easeFactor));
+        return {
+          nextIntervalDays,
+          nextEaseFactor: roundEase(card.easeFactor),
+        };
+      };
+
+      const renderRatingButtons = () => {
+        const hasCard = Boolean(currentCard());
+
+        ratingButtons.forEach((button) => {
+          button.disabled = !hasCard || !answerVisible;
+        });
+      };
+
+      const renderSummary = () => {
+        const total = state.cards.length;
+        const remaining = total - state.reviewedCount;
+
+        if (progressNode) progressNode.textContent = `${state.reviewedCount} / ${total} reviewed`;
+        if (remainingNode) remainingNode.textContent = remaining === 1 ? "1 card due" : `${remaining} cards due`;
+
+        if (!currentStepNode) return;
+
+        if (!currentCard()) {
+          currentStepNode.textContent = "Session complete. Reset to run through the queue again.";
+          return;
+        }
+
+        currentStepNode.textContent = answerVisible
+          ? "Choose a rating to schedule the next review."
+          : "Reveal the answer, then rate recall.";
+      };
+
+      const renderCard = () => {
+        const card = currentCard();
+
+        if (!cardFrontNode || !cardStatusNode || !answerNode || !showAnswerButton) return;
+
+        if (!card) {
+          cardFrontNode.textContent = "Session complete";
+          cardStatusNode.textContent = "All cards scheduled";
+          answerNode.classList.remove("hidden");
+          answerNode.innerHTML = "<strong>Queue finished.</strong><p>All sample cards now have updated next-review timing.</p>";
+          showAnswerButton.disabled = true;
+          showAnswerButton.textContent = "Answer shown";
+          return;
+        }
+
+        cardFrontNode.textContent = card.front;
+        cardStatusNode.textContent = `Card ${state.currentIndex + 1} of ${state.cards.length}`;
+
+        if (answerVisible) {
+          answerNode.classList.remove("hidden");
+          answerNode.innerHTML = `<strong>${card.back}</strong><p>${card.example}</p>`;
+          showAnswerButton.disabled = true;
+          showAnswerButton.textContent = "Answer shown";
+        } else {
+          answerNode.classList.add("hidden");
+          answerNode.innerHTML = `<strong>${card.back}</strong><p>${card.example}</p>`;
+          showAnswerButton.disabled = false;
+          showAnswerButton.textContent = "Show answer";
+        }
+      };
+
+      const renderDeck = () => {
+        state.cards.forEach((card, index) => {
+          const cardNode = document.querySelector(`[data-review-card="${card.id}"]`);
+          const stateNode = document.querySelector(`[data-review-session-state="${card.id}"]`);
+          const nextNodeForCard = document.querySelector(`[data-review-next-label="${card.id}"]`);
+          const intervalNode = document.querySelector(`[data-review-interval-label="${card.id}"]`);
+
+          if (!cardNode || !stateNode || !nextNodeForCard || !intervalNode) return;
+
+          cardNode.className = "review-deck-card";
+
+          if (card.reviewed) {
+            cardNode.classList.add("review-deck-card--done");
+            stateNode.className = "review-deck-state review-deck-state--done";
+            stateNode.textContent = card.lastRating ? `Scheduled ${ratingMap[card.lastRating].label}` : "Scheduled";
+          } else if (index === state.currentIndex) {
+            cardNode.classList.add("review-deck-card--current");
+            stateNode.className = "review-deck-state review-deck-state--current";
+            stateNode.textContent = "Current";
+          } else {
+            stateNode.className = "review-deck-state";
+            stateNode.textContent = "Due";
+          }
+
+          nextNodeForCard.textContent = card.nextReviewLabel;
+          intervalNode.textContent = `interval ${Math.max(1, card.intervalDays)}d`;
+        });
+
+        if (!nextNode) return;
+
+        const nextCard = currentCard();
+        nextNode.textContent = nextCard
+          ? `${nextCard.front} is currently in review.`
+          : "The queue is complete and each sample card has a new next-review time.";
+      };
+
+      const renderLog = () => {
+        if (!logNode || !logCountNode) return;
+
+        if (!state.history.length) {
+          logCountNode.textContent = "No reviews yet";
+          logNode.innerHTML = '<li class="review-log-item review-log-item--empty">Rate a card to start the session log.</li>';
+          return;
+        }
+
+        logCountNode.textContent = `${state.history.length} review${state.history.length === 1 ? "" : "s"} logged`;
+        logNode.innerHTML = "";
+
+        [...state.history].reverse().forEach((entry) => {
+          const item = document.createElement("li");
+          item.className = "review-log-item";
+
+          const meta = document.createElement("div");
+          meta.className = "review-log-meta";
+          meta.innerHTML = `<span class="review-log-id">${String(entry.id).padStart(2, "0")}</span><span class="review-log-rating">${ratingMap[entry.rating].label}</span>`;
+
+          const body = document.createElement("div");
+          body.className = "review-log-body";
+          body.innerHTML = `<strong>${entry.front}</strong><p>Scheduled ${entry.nextReviewLabel.toLowerCase()} after a ${ratingMap[entry.rating].label.toLowerCase()} rating.</p>`;
+
+          item.appendChild(meta);
+          item.appendChild(body);
+          logNode.appendChild(item);
+        });
+      };
+
+      const render = () => {
+        renderSummary();
+        renderCard();
+        renderRatingButtons();
+        renderDeck();
+        renderLog();
+      };
+
+      const rateCurrentCard = (rating) => {
+        const card = currentCard();
+
+        if (!card || !answerVisible) {
+          setFeedback("blocked", "Reveal the answer before rating the card.");
+          return;
+        }
+
+        const schedule = calculateSchedule(card, rating);
+        card.intervalDays = schedule.nextIntervalDays;
+        card.easeFactor = schedule.nextEaseFactor;
+        card.repetitions += 1;
+        card.reviewed = true;
+        card.lastRating = rating;
+        card.nextReviewLabel = formatNextReview(schedule.nextIntervalDays);
+
+        state.history.push({
+          id: state.nextHistoryId,
+          cardId: card.id,
+          front: card.front,
+          rating,
+          nextIntervalDays: schedule.nextIntervalDays,
+          nextReviewLabel: card.nextReviewLabel,
+        });
+        state.nextHistoryId += 1;
+        state.reviewedCount += 1;
+        state.currentIndex += 1;
+        answerVisible = false;
+
+        setFeedback(
+          "success",
+          `${card.front} scheduled ${card.nextReviewLabel.toLowerCase()} after a ${ratingMap[rating].label.toLowerCase()} rating.`,
+        );
+        render();
+      };
+
+      showAnswerButton?.addEventListener("click", () => {
+        if (!currentCard()) return;
+        answerVisible = true;
+        clearFeedback();
+        render();
+      });
+
+      ratingButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const rating = button.getAttribute("data-review-rating");
+          if (!rating) return;
+          rateCurrentCard(rating);
+        });
+      });
+
+      resetButton?.addEventListener("click", () => {
+        state = cloneInitialState();
+        answerVisible = false;
+        clearFeedback();
+        render();
+      });
+
+      render();
+    }
+  </script>
+</section>

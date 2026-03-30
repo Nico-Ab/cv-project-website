@@ -1,0 +1,13 @@
+---
+import WorkflowSimulatorDemo from "../../components/WorkflowSimulatorDemo.astro";
+import { getProjectBySlug } from "../../data/projects";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const project = getProjectBySlug("workflow-permissions-demo");
+---
+<BaseLayout
+  title={`${project.title} | Project`}
+  description="Interactive workflow and permissions simulator inspired by Erasmus staff mobility portal logic."
+>
+  <WorkflowSimulatorDemo project={project} />
+</BaseLayout>

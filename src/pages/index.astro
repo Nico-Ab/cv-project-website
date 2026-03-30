@@ -33,6 +33,8 @@ const technicalStrengths = [
   "When something breaks, I like to debug methodically and document both the cause and the fix.",
   "My background in Computer Science has given me a strong foundation for moving between software, data, and system-oriented work.",
 ];
+const portfolioProjects = projects.filter((project) => project.kind === "project");
+const liveDemos = projects.filter((project) => project.kind === "demo");
 ---
 <BaseLayout
   title="Nico Abramowski | Technical Portfolio"
@@ -126,18 +128,46 @@ const technicalStrengths = [
 
   <section class="section-heading reveal">
     <div>
-      <h2>Selected projects</h2>
+      <h2>Projects and live demos</h2>
     </div>
     <p>
-      Real projects with clearer proof: what they are, what was implemented, and what they demonstrate technically.
+      Three project case studies and three compact browser demos, separated so the real project work stays clear while the interactive pieces stay easy to explore.
     </p>
   </section>
 
-  <div class="project-grid">
-    {projects.map((project, index) => (
-      <div class="reveal" style={`transition-delay:${index * 0.04}s`}>
-        <ProjectCard project={project} href={withBasePath(base, project.href)} />
+  <section class="project-section">
+    <div class="project-group reveal">
+      <div class="project-group__header">
+        <div>
+          <h3>Project case studies</h3>
+          <p>Implemented work from web, Android, and systems contexts.</p>
+        </div>
       </div>
-    ))}
-  </div>
+
+      <div class="project-grid">
+        {portfolioProjects.map((project, index) => (
+          <div class="reveal" style={`transition-delay:${index * 0.04}s`}>
+            <ProjectCard project={project} href={withBasePath(base, project.href)} />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="project-group reveal" style="transition-delay:.08s">
+      <div class="project-group__header">
+        <div>
+          <h3>Live demos</h3>
+          <p>Small interactive demos inside the portfolio, each focused on one piece of implementation logic.</p>
+        </div>
+      </div>
+
+      <div class="project-grid">
+        {liveDemos.map((project, index) => (
+          <div class="reveal" style={`transition-delay:${0.12 + index * 0.04}s`}>
+            <ProjectCard project={project} href={withBasePath(base, project.href)} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
 </BaseLayout>

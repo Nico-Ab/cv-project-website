@@ -4,7 +4,9 @@ test('homepage renders updated profile and base-aware project links', async ({ p
   await page.goto('./');
   await expect(page.getByRole('heading', { level: 1, name: /software and technical work/i })).toBeVisible();
   await expect(page.locator('[data-role="query-console"]').first()).toBeVisible();
-  await expect(page.locator('[data-role="project-card"]')).toHaveCount(3);
+  await expect(page.getByRole('heading', { level: 3, name: 'Project case studies' })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 3, name: 'Live demos' })).toBeVisible();
+  await expect(page.locator('[data-role="project-card"]')).toHaveCount(6);
   await expect(
     page.locator('[data-role="project-card"][href$="/cv-project-website/projects/erasmus-staff-mobility-portal"]')
   ).toHaveCount(1);
@@ -14,9 +16,21 @@ test('homepage renders updated profile and base-aware project links', async ({ p
   await expect(
     page.locator('[data-role="project-card"][href$="/cv-project-website/projects/linuxhost-tsn-plugin"]')
   ).toHaveCount(1);
-  await expect(page.locator('[data-role="project-card"]').filter({ hasText: 'Erasmus Staff Mobility Portal' })).toHaveCount(1);
-  await expect(page.locator('[data-role="project-card"]').filter({ hasText: 'German Learning App' })).toHaveCount(1);
-  await expect(page.locator('[data-role="project-card"]').filter({ hasText: 'Linux Host TSN / NETCONF Plugin' })).toHaveCount(1);
+  await expect(
+    page.locator('[data-role="project-card"][href$="/cv-project-website/projects/browser-sql-reporting-demo"]')
+  ).toHaveCount(1);
+  await expect(
+    page.locator('[data-role="project-card"][href$="/cv-project-website/projects/workflow-permissions-demo"]')
+  ).toHaveCount(1);
+  await expect(
+    page.locator('[data-role="project-card"][href$="/cv-project-website/projects/review-scheduling-demo"]')
+  ).toHaveCount(1);
+  await expect(page.locator('.project-card__title').filter({ hasText: 'Erasmus Staff Mobility Portal' })).toHaveCount(1);
+  await expect(page.locator('.project-card__title').filter({ hasText: 'German Learning App' })).toHaveCount(1);
+  await expect(page.locator('.project-card__title').filter({ hasText: 'Linux Host TSN / NETCONF Plugin' })).toHaveCount(1);
+  await expect(page.locator('.project-card__title').filter({ hasText: 'Browser SQL Reporting Demo' })).toHaveCount(1);
+  await expect(page.locator('.project-card__title').filter({ hasText: 'Workflow & Permissions Demo' })).toHaveCount(1);
+  await expect(page.locator('.project-card__title').filter({ hasText: 'Review Scheduling Demo' })).toHaveCount(1);
   await expect(page.locator('body')).not.toContainText('Active build sequence');
   await expect(page.locator('body')).not.toContainText('Warehouse / Analytics Engineering');
 });

@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@astrojs/tailwind": "^5.1.0",
-    "astro": "^4.13.0"
+    "astro": "^4.13.0",
+    "sql.js": "^1.14.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.1",
@@ -21,5 +22,4 @@
     "prettier": "^3.3.3",
     "tailwindcss": "^3.4.14"
   }
-  
 }
