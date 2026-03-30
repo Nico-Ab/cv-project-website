@@ -38,7 +38,9 @@
 
 @layer base {
   html {
+    min-height: 100%;
     scroll-behavior: smooth;
+    overflow-x: clip;
   }
 
   body {
@@ -49,6 +51,8 @@
     font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+    overscroll-behavior-y: none;
   }
 
   ::selection {
@@ -383,6 +387,10 @@
   pointer-events: none;
 }
 
+.workspace-background {
+  overflow: clip;
+}
+
 .workspace-grid {
   background-image:
     linear-gradient(to right, rgba(102, 119, 136, 0.07) 1px, transparent 1px),
@@ -538,22 +546,41 @@
 }
 
 .sidebar-status {
-  padding: 1.15rem;
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.35rem 1.15rem 1.15rem;
+  min-width: 0;
+}
+
+.sidebar-status .schema-label {
+  display: block;
+  line-height: 1.35;
 }
 
 .sidebar-status p {
-  margin: 0.6rem 0 0;
+  margin: 0;
   color: var(--muted);
-  font-size: 0.93rem;
-  line-height: 1.6;
+  font-size: 0.89rem;
+  line-height: 1.55;
 }
 
 .sidebar-status__foot {
-  margin-top: 0.8rem;
+  margin-top: 0;
 }
 
 .sidebar-footer {
-  margin-top: auto;
+  flex: none;
+  padding: 0.9rem 0.95rem 1.1rem 1.1rem;
+  border-top: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(248, 244, 236, 0.58), var(--bg-elevated) 36%);
+}
+
+.dark .sidebar-footer {
+  background: linear-gradient(180deg, rgba(20, 27, 34, 0.52), var(--bg-elevated) 36%);
+}
+
+.sidebar-footer .mode-toggle {
+  width: 100%;
 }
 
 .mode-toggle {
@@ -1776,16 +1803,19 @@
 
   .workspace-shell {
     display: grid;
-    grid-template-columns: 19rem minmax(0, 1fr);
+    grid-template-columns: minmax(20rem, 21rem) minmax(0, 1fr);
     min-height: 100vh;
+    align-items: stretch;
   }
 
   .workspace-sidebar {
-    display: block;
+    display: flex;
+    flex-direction: column;
     position: sticky;
     top: 0;
     align-self: start;
     height: 100vh;
+    overflow: hidden;
     border-right: 1px solid var(--line);
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent 20%), var(--bg-elevated);
   }
@@ -1795,12 +1825,27 @@
   }
 
   .sidebar-frame {
-    height: 100%;
-    padding: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 1.1rem 0.95rem 0.5rem 1.1rem;
+    overflow: hidden;
   }
 
   .sidebar-nav {
+    display: grid;
+    gap: 0.9rem;
+    flex: 1 1 auto;
     margin-top: 0.25rem;
+    min-height: 0;
+    align-content: start;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    padding-right: 0.1rem;
+    padding-bottom: 0.35rem;
   }
 
   .page-frame {

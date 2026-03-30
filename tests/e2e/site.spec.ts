@@ -38,6 +38,7 @@ test('homepage renders updated profile and base-aware project links', async ({ p
 test('sidebar links navigate', async ({ page }) => {
   await page.goto('./');
   await expect(page.locator('[data-role="workspace-sidebar"]')).toBeVisible();
+  await expect(page.locator('[data-role="sidebar-profile"]')).toContainText('University of Rostock');
   await page.getByRole('link', { name: /About/ }).first().click();
   await expect(page).toHaveURL(/about/);
   await expect(page.getByRole('heading', { level: 1, name: /About/ })).toBeVisible();
@@ -45,11 +46,44 @@ test('sidebar links navigate', async ({ page }) => {
   await expect(page.locator('body')).not.toContainText('data warehousing and analytics engineering');
 });
 
+test('desktop sidebar can scroll to the theme toggle', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto('./');
+
+  const sidebarFrame = page.locator('[data-role="sidebar-frame"]');
+  const themeToggle = page.locator('[data-role="sidebar-theme-toggle"]');
+
+  await expect(sidebarFrame).toBeVisible();
+  await expect(themeToggle).toBeVisible();
+
+  const scrollInfo = await sidebarFrame.evaluate((node) => {
+    const element = node as HTMLElement;
+    const before = element.scrollTop;
+    element.scrollTop = element.scrollHeight;
+    return {
+      before,
+      after: element.scrollTop,
+      scrollHeight: element.scrollHeight,
+      clientHeight: element.clientHeight,
+    };
+  });
+
+  expect(scrollInfo.scrollHeight).toBeGreaterThanOrEqual(scrollInfo.clientHeight);
+
+  if (scrollInfo.scrollHeight > scrollInfo.clientHeight + 1) {
+    expect(scrollInfo.after).toBeGreaterThan(scrollInfo.before);
+  }
+
+  await expect(themeToggle).toBeVisible();
+});
+
 test('theme toggle works and persists', async ({ page }) => {
   await page.goto('./');
   const html = page.locator('html');
   const before = await html.getAttribute('class');
-  await page.getByRole('button', { name: /Toggle theme/ }).first().click();
+  const themeToggle = page.locator('[data-role="sidebar-theme-toggle"]');
+  await themeToggle.focus();
+  await page.keyboard.press('Enter');
   const after = await html.getAttribute('class');
   expect(before).not.toEqual(after);
   const verifyPage = await page.context().newPage();
@@ -97,4 +131,21 @@ test('project cards stay readable on mobile', async ({ page }) => {
 
   expect(titleOverflows).toBeFalsy();
   expect(chipRowOverflows).toBeFalsy();
+});
+
+test('homepage does not leave a large empty scroll tail after the final section', async ({ page }) => {
+  await page.goto('./');
+
+  const tailSpace = await page.evaluate(() => {
+    const projectCards = Array.from(document.querySelectorAll('[data-role="project-card"]'));
+    const lastCard = projectCards[projectCards.length - 1];
+
+    if (!lastCard) return Number.POSITIVE_INFINITY;
+
+    const rect = lastCard.getBoundingClientRect();
+    const absoluteBottom = rect.bottom + window.scrollY;
+    return document.documentElement.scrollHeight - absoluteBottom;
+  });
+
+  expect(tailSpace).toBeLessThan(260);
 });

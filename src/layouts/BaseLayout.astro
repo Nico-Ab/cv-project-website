@@ -106,7 +106,7 @@ const isActive = (href: string) => {
 
     <div class="workspace-shell">
       <aside class="workspace-sidebar" data-role="workspace-sidebar">
-        <div class="sidebar-frame">
+        <div class="sidebar-frame" data-role="sidebar-frame">
           <a href={overviewHref} class="brand-lockup">
             <BrandMark />
             <div class="brand-copy">
@@ -115,11 +115,11 @@ const isActive = (href: string) => {
             </div>
           </a>
 
-          <div class="sidebar-status panel accent-cyan">
+          <div class="sidebar-status panel accent-cyan" data-role="sidebar-profile">
             <span class="schema-label">Current profile</span>
             <p>
-              At the end of my Computer Science studies at the University of Rostock, with practical work across software
-              implementation, Android, Linux-based workflows, and technical documentation.
+              At the end of my Computer Science studies at the University of Rostock, with practical implementation work
+              across web software, Android, Linux-based workflows, and technical documentation.
             </p>
             <div class="sidebar-status__foot">
               <a class="inline-link" href={aboutHref}>Read the full profile</a>
@@ -164,13 +164,13 @@ const isActive = (href: string) => {
               </a>
             </div>
           </nav>
+        </div>
 
-          <div class="sidebar-footer">
-            <button class="mode-toggle themeToggle" aria-label="Toggle theme">
-              <span class="mode-toggle__label">Theme</span>
-              <span class="mode-toggle__value" data-theme-label>light</span>
-            </button>
-          </div>
+        <div class="sidebar-footer">
+          <button class="mode-toggle themeToggle" aria-label="Toggle theme" data-role="sidebar-theme-toggle">
+            <span class="mode-toggle__label">Theme</span>
+            <span class="mode-toggle__value" data-theme-label>light</span>
+          </button>
         </div>
       </aside>
 
